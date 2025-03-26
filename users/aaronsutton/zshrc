@@ -1,0 +1,25 @@
+autoload -z edit-command-line
+zle -N edit-command-line
+
+bindkey -v
+bindkey -M vicmd "/" fzf-history-widget
+bindkey -M vicmd v edit-command-line
+
+SAVEHIST=8000
+HISTFILE=~/.zsh_history
+
+PROMPT='%(?.%F{green}⏺.%F{red}⏺)%f %2~ ❯ '
+
+autoload -Uz add-zsh-hook vcs_info
+
+setopt prompt_subst
+
+alias vz="fzf --bind 'enter:become(vim {})'"
+
+export FZF_DEFAULT_COMMAND='ag -l "."'
+export FZF_DEFAULT_OPTS="-e \
+	  --height 40% \
+		--color dark \
+		--layout=reverse"
+
+alias ls='ls --color'
