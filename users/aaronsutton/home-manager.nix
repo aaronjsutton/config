@@ -26,8 +26,8 @@ in {
   ];
 
   home.file = {
-    ".gitconfig".source = dotfiles/gitconfig;
-    ".gitignore".source = dotfiles/gitignore;
+    ".gitconfig".source = ./gitconfig;
+    ".gitignore".source = ./gitignore;
   };
 
   home.sessionVariables = {
