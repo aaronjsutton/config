@@ -43,9 +43,8 @@ in {
 		enableZshIntegration = true;
 		defaultCommand = "ag -l .";
 		defaultOptions = [
-			"--height 40%"
-			"--color light"
-			"--layout reverse"
+			"--height=40%"
+			"--layout=reverse"
 		];
 	};
 
