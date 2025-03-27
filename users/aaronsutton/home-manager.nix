@@ -15,14 +15,11 @@ in {
     github-cli
 		delta
     entr
-		nodejs
 		typescript
-		terraform-ls
 		awscli2
 		jujutsu
-
-		stylelint
-		stylelint-lsp
+		btop
+		nodejs
   ];
 
   home.file = {
