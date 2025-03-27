@@ -1,4 +1,4 @@
-NIXNAME ?= vm-intel
+NIXNAME ?= macbook-pro-m3
 
 UNAME := $(shell uname)
 
