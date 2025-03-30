@@ -78,6 +78,8 @@ in {
 		enable = true;
 		viAlias = true;
 		vimAlias = true;
+		package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+
 		plugins = with pkgs.vimPlugins; [
 			rose-pine
 			typescript-tools-nvim
