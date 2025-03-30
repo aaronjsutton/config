@@ -5,8 +5,8 @@
 		enable = false;
 	};
 
-  users.users.aaronsutton = {
-    home = "/Users/aaronsutton";
+  users.users.aaron = {
+    home = "/Users/aaron";
     shell = pkgs.zsh;
   };
 }

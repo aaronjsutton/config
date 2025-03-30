@@ -35,7 +35,7 @@
 
 		darwinConfigurations.macbook-pro-m3 = mkSystem "macbook-pro-m3" {
       system = "aarch64-darwin";
-      user   = "aaronsutton";
+      user   = "aaron";
       darwin = true;
     };
 	};
