@@ -31,3 +31,8 @@ export FZF_DEFAULT_OPTS="-e \
 		--layout=reverse"
 
 alias ls='ls --color'
+
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+
+complete -C $(which aws_completer) aws
