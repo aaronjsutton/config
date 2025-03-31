@@ -18,7 +18,6 @@ in {
 		typescript
 		awscli2
 		jujutsu
-		btop
 		nodejs
   ];
 
@@ -28,7 +27,6 @@ in {
   };
 
 	xdg.configFile = {
-		"btop/btop.conf".text = builtins.readFile ./btop.conf;
 		"ghostty/config".text = builtins.readFile ./ghostty;
 	};
 
@@ -79,6 +77,14 @@ in {
     };
   };
 
+	programs.btop = {
+		enable = true;
+		settings = {
+			color_theme = "TTY";
+			theme_background = false;
+		};
+	};
+
 	programs.neovim = {
 		enable = true;
 		viAlias = true;
@@ -93,6 +99,7 @@ in {
 			nvim-ufo
 			(nvim-treesitter.withPlugins (
 				plugins: with plugins; [
+					c
 					css
 					dockerfile
 					elixir
