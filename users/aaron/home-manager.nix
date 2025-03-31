@@ -27,6 +27,11 @@ in {
     ".gitignore".source = ./gitignore;
   };
 
+	xdg.configFile = {
+		"btop/btop.conf".text = builtins.readFile ./btop.conf;
+		"ghostty/config".text = builtins.readFile ./ghostty;
+	};
+
   home.sessionVariables = {
     EDITOR = "nvim";
   };

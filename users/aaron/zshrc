@@ -13,6 +13,14 @@ PROMPT='%(?.%F{green}⏺.%F{red}⏺)%f %2~ ❯ '
 autoload -Uz add-zsh-hook vcs_info
 
 setopt prompt_subst
+setopt share_history
+setopt inc_append_history
+setopt inc_append_history_time
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_save_no_dups
+setopt hist_reduce_blanks
 
 alias vz="fzf --bind 'enter:become(vim {})'"
 
