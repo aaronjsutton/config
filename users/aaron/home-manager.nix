@@ -92,15 +92,17 @@ in {
 		package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
 		plugins = with pkgs.vimPlugins; [
-			rose-pine
 			typescript-tools-nvim
 			plenary-nvim
 			nvim-lspconfig
 			nvim-ufo
+			lush-nvim
+			zenbones-nvim
 			(nvim-treesitter.withPlugins (
 				plugins: with plugins; [
 					c
 					css
+					csv
 					dockerfile
 					elixir
 					erlang
