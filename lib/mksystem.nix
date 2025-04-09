@@ -29,7 +29,7 @@ in systemFunc rec {
   modules = [
     { nixpkgs.overlays = overlays; }
 
-    { nixpkgs.config.allowUnfree = false; }
+    { nixpkgs.config.allowUnfree = true; }
 
     machineConfig
     userOSConfig

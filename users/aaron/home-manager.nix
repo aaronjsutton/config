@@ -9,16 +9,16 @@ in {
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
-    silver-searcher
-    tree
-    jq
-    github-cli
-		delta
-    entr
-		typescript
 		awscli2
+		delta
 		jujutsu
 		nodejs
+		typescript
+    entr
+    github-cli
+    jq
+    silver-searcher
+    tree
   ];
 
   home.file = {
@@ -92,34 +92,34 @@ in {
 		package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
 		plugins = with pkgs.vimPlugins; [
-			typescript-tools-nvim
-			plenary-nvim
+			copilot-vim
+			cyberdream-nvim
+			inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.vimPlugins.kanagawa-nvim
 			nvim-lspconfig
 			nvim-ufo
-			lush-nvim
-			zenbones-nvim
+			plenary-nvim
+			typescript-tools-nvim
 			(nvim-treesitter.withPlugins (
 				plugins: with plugins; [
 					c
 					css
-					csv
 					dockerfile
 					elixir
 					erlang
+					go
 					html
-					terraform
 					javascript
 					jsdoc
 					json
 					jsonc
 					lua
 					nix
-					go
 					python
+					terraform
+					toml
 					tsx
 					typescript
 					yaml
-					toml
 				]
 			))
 		];
@@ -128,6 +128,7 @@ in {
   programs.zsh = {
     enable = true;
 		enableCompletion = true;
+
 		initExtra = builtins.readFile ./zshrc;
 
 		plugins = [ ];

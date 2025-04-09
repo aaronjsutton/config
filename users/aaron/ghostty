@@ -2,15 +2,17 @@ font-family = "Cascadia Code"
 font-style = "SemiLight"
 font-feature = +calt, +ss01, +ss20
 font-size = "13.5"
-theme = dark:zenbones_dark,light:zenbones_light
+theme = dark:kanagawa-dragon,light:kanagawa-lotus
+
+background-opacity = 0.96
+background-blur = true
+unfocused-split-opacity = 1.0
 
 window-theme = system
 window-colorspace = display-p3
 window-padding-x = 8
 window-padding-balance = true
+window-inherit-font-size = true
 
 cursor-style = bar
 mouse-hide-while-typing = true
-
-unfocused-split-opacity = 1
-split-divider-color = #2e2e2e
