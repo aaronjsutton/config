@@ -1,4 +1,3 @@
-# TODO: Test this.
 { pkgs, inputs, ... }:
 
 {

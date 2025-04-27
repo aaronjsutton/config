@@ -21,6 +21,8 @@ in {
     tree
   ];
 
+  programs.home-manager.enable = true;
+
   home.file = {
     ".gitconfig".source = ./gitconfig;
     ".gitignore".source = ./gitignore;
@@ -48,8 +50,6 @@ in {
 		];
 	};
 
-  programs.home-manager.enable = true;
-
   xdg.enable = true;
 
 	programs.git = {
@@ -70,7 +70,7 @@ in {
 
     config = {
       global = {
-        warn_timeout = "1m";
+        warn_timeout = "30s";
 				strict_env = true;
 				hide_env_diff = true;
       };
@@ -92,10 +92,8 @@ in {
 		package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
 		plugins = with pkgs.vimPlugins; [
-			copilot-vim
-			cyberdream-nvim
 			inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.vimPlugins.kanagawa-nvim
-			nvim-lspconfig
+			inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.vimPlugins.nvim-lspconfig
 			nvim-ufo
 			plenary-nvim
 			typescript-tools-nvim
@@ -112,6 +110,7 @@ in {
 					jsdoc
 					json
 					jsonc
+					ledger
 					lua
 					nix
 					python
