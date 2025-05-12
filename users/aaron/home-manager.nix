@@ -36,8 +36,28 @@ in {
     EDITOR = "nvim";
   };
 
+	programs.fish = {
+		enable = true;
+	};
+
 	programs.jujutsu = {
 		enable = true;
+		settings = {
+			user = {
+				name = "Aaron Sutton";
+			};
+
+			ui = {
+				default-command = ["log"];
+				pager = "delta";
+			};
+
+			signing = {
+				behavior = "own";
+				backend = "ssh";
+				key = "~/.ssh/id_ed25519_signing.pub";
+			};
+		};
 	};
 
 	programs.fzf = {

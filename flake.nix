@@ -2,23 +2,26 @@
   description = "NixOS systems and tools";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
 		nixos-wsl.url = "github:nix-community/NixOS-WSL";
 		nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
 		home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+      url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-		neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+		neovim-nightly-overlay = {
+			url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+		};
 
 		jujutsu.url = "github:martinvonz/jj";
     zig.url = "github:mitchellh/zig-overlay";

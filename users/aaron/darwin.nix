@@ -10,6 +10,6 @@
 
   users.users.aaron = {
     home = "/Users/aaron";
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
   };
 }
