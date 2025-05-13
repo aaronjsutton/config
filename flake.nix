@@ -46,7 +46,7 @@
     };
 
 		nixosConfigurations.wsl = mkSystem "wsl" {
-			system = "x86_64-linux";
+			system = "aarch64-linux";
 			user = "aaron";
 			wsl = true;
 		};

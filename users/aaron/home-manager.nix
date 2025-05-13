@@ -42,14 +42,33 @@ in {
 
 	programs.jujutsu = {
 		enable = true;
+
 		settings = {
 			user = {
 				name = "Aaron Sutton";
+				email = "hey@aaron.as";
 			};
 
 			ui = {
 				default-command = ["log"];
 				pager = "delta";
+				diff.format = "git";
+			};
+
+			templates = {
+				log_node = ''
+				coalesce(
+					if(!self, "🮀"),
+					if(current_working_copy, "◎"),
+					if(root, "┴"),
+					if(immutable, "●", "○"),
+				)
+				'';
+				op_log_node = ''if(current_operation, "@", "○")'';
+			};
+
+			template-aliases = {
+				"format_timestamp(timestamp)" = "timestamp.ago()";
 			};
 
 			signing = {
@@ -148,7 +167,7 @@ in {
     enable = true;
 		enableCompletion = true;
 
-		initExtra = builtins.readFile ./zshrc;
+		initContent = builtins.readFile ./zshrc;
 
 		plugins = [ ];
   };
