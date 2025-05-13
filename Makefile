@@ -17,3 +17,7 @@ ifeq ($(UNAME), Darwin)
 else
 	sudo nixos-rebuild check --flake ".#$(NIXNAME)"
 endif
+
+.PHONY: wsl
+wsl:
+	 nix build ".#nixosConfigurations.wsl.config.system.build.tarballBuilder"

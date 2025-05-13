@@ -5,6 +5,9 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
+		nixos-wsl.url = "github:nix-community/NixOS-WSL";
+		nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+
 		home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,5 +41,11 @@
       user   = "aaron";
       darwin = true;
     };
+
+		nixosConfigurations.wsl = mkSystem "wsl" {
+			system = "x86_64-linux";
+			user = "aaron";
+			wsl = true;
+		};
 	};
 }
