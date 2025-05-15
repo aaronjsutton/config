@@ -23,13 +23,11 @@ in {
 
   programs.home-manager.enable = true;
 
-  home.file = {
-    ".gitconfig".source = ./gitconfig;
-    ".gitignore".source = ./gitignore;
-  };
-
-	xdg.configFile = {
-		"ghostty/config".text = builtins.readFile ./ghostty;
+	xdg = {
+		enable = true;
+		configFile = {
+			"ghostty/config".text = builtins.readFile ./ghostty;
+		};
 	};
 
   home.sessionVariables = {
@@ -82,6 +80,7 @@ in {
 	programs.fzf = {
 		enable = true;
 		enableZshIntegration = true;
+    enableFishIntegration = true;
 		defaultCommand = "ag -l .";
 		defaultOptions = [
 			"--height=40%"
@@ -89,16 +88,22 @@ in {
 		];
 	};
 
-  xdg.enable = true;
-
 	programs.git = {
 		enable = true;
 		lfs.enable = true;
+		userName = "Aaron Sutton";
+		userEmail = "hey@aaron.as";
+		ignores = [
+			".DS_Store"
+			".direnv/"
+			"*.sw?"
+		];
 	};
 
 	programs.zoxide = {
 		enable = true;
     enableZshIntegration = true;
+    enableFishIntegration = true;
 	};
 
   programs.direnv = {
@@ -131,8 +136,8 @@ in {
 		package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
 		plugins = with pkgs.vimPlugins; [
-			inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.vimPlugins.kanagawa-nvim
-			inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.vimPlugins.nvim-lspconfig
+			kanagawa-nvim
+			nvim-lspconfig
 			nvim-ufo
 			plenary-nvim
 			typescript-tools-nvim
@@ -166,9 +171,7 @@ in {
   programs.zsh = {
     enable = true;
 		enableCompletion = true;
-
 		initContent = builtins.readFile ./zshrc;
-
 		plugins = [ ];
   };
 }
