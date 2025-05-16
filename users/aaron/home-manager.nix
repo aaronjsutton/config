@@ -50,7 +50,7 @@ in {
 			ui = {
 				default-command = ["log"];
 				pager = "delta";
-				diff.format = "git";
+				diff-formatter = "git";
 			};
 
 			templates = {
