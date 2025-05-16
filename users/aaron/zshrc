@@ -8,7 +8,7 @@ bindkey -M vicmd v edit-command-line
 SAVEHIST=8000
 HISTFILE=~/.zsh_history
 
-PROMPT='%(?.%F{green}⏺.%F{red}⏺)%f %2~ ❯ '
+PROMPT='%(?.%F{green}●.%F{red}●)%f %2~ ❯ '
 
 autoload -Uz add-zsh-hook vcs_info
 
