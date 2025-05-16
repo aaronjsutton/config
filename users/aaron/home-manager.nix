@@ -62,7 +62,7 @@ in {
 					if(immutable, "●", "○"),
 				)
 				'';
-				op_log_node = ''if(current_operation, "@", "○")'';
+				op_log_node = ''if(current_operation, "◎", "○")'';
 			};
 
 			template-aliases = {
