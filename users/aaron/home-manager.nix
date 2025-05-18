@@ -12,8 +12,6 @@ in {
 		awscli2
 		delta
 		jujutsu
-		nodejs
-		typescript
     entr
     github-cli
     jq
@@ -35,6 +33,10 @@ in {
   };
 
 	programs.fish = {
+		enable = true;
+	};
+
+	programs.tmux = {
 		enable = true;
 	};
 
