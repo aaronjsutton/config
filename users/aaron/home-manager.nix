@@ -2,17 +2,15 @@
 
 { config, lib, pkgs, ... }:
 
-let
-	isDarwin = pkgs.stdenv.isDarwin;
-  isLinux = pkgs.stdenv.isLinux;
-in {
-  home.stateVersion = "24.11";
+{
+  home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
 		awscli2
 		delta
 		jujutsu
     entr
+		nil
     github-cli
     jq
     silver-searcher
@@ -24,9 +22,13 @@ in {
 	xdg = {
 		enable = true;
 		configFile = {
-			"ghostty/config".text = builtins.readFile ./ghostty;
+			"ghostty" = {
+				source = ./ghostty;
+				recursive = true;
+			};
 		};
 	};
+
 
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -138,7 +140,7 @@ in {
 		package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
 		plugins = with pkgs.vimPlugins; [
-			kanagawa-nvim
+			kanagawa-paper-nvim
 			nvim-lspconfig
 			nvim-ufo
 			plenary-nvim

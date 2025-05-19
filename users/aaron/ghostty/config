@@ -2,7 +2,7 @@ font-family = "Cascadia Code"
 font-style = "SemiLight"
 font-feature = +calt, +ss01, +ss20
 font-size = "13.5"
-theme = dark:kanagawa-dragon,light:kanagawa-lotus
+theme = dark:kanagawa-paper-ink,light:kanagawa-paper-canvas
 
 background-opacity = 0.96
 background-blur = true
