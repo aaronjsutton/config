@@ -29,7 +29,6 @@
 		};
 	};
 
-
   home.sessionVariables = {
     EDITOR = "nvim";
   };
@@ -82,12 +81,28 @@
 	};
 
 	programs.fzf = {
+    colors = {
+      bg      = "-1";
+      "bg+"   = "#2a2a37";
+      fg      = "-1";
+      "fg+"   = "#dcd7ba";
+      hl      = "#938aa9";
+      "hl+"   = "#c4746e";
+      header  = "#b6927b";
+      info    = "#658594";
+      pointer = "#7aa89f";
+      marker  = "#7aa89f";
+      prompt  = "#c4746e";
+      spinner = "#8ea49e";
+		};
 		enable = true;
 		enableZshIntegration = true;
     enableFishIntegration = true;
-		defaultCommand = "ag -l .";
+		defaultCommand = "ag -l '.'";
 		defaultOptions = [
+			"-e"
 			"--height=40%"
+			"--color=dark"
 			"--layout=reverse"
 		];
 	};
@@ -176,6 +191,15 @@
     enable = true;
 		enableCompletion = true;
 		initContent = builtins.readFile ./zshrc;
-		plugins = [ ];
+		shellAliases = {
+			vz = "fzf --bind 'enter:become(vim {})'";
+			ls = "ls --color";
+			tree = "tree -C";
+		};
+		history = {
+			save = 8000;
+			share = true;
+			path = "~/.zsh_history";
+		};
   };
 }
