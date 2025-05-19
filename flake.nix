@@ -2,19 +2,18 @@
   description = "NixOS systems and tools";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
 
 		nixos-wsl.url = "github:nix-community/NixOS-WSL";
 		nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
 		home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     darwin = {
-      url = "github:LnL7/nix-darwin/master";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
