@@ -192,14 +192,19 @@
 		enableCompletion = true;
 		initContent = builtins.readFile ./zshrc;
 		shellAliases = {
-			vz = "fzf --bind 'enter:become(vim {})'";
 			ls = "ls --color";
 			tree = "tree -C";
 		};
 		history = {
 			save = 8000;
 			share = true;
-			path = "~/.zsh_history";
+			path = "${config.home.homeDirectory}/.zsh_history";
+			append = true;
+			ignoreDups = true;
+			ignoreAllDups = true;
+			ignoreSpace = true;
+			saveNoDups = true;
+			extended = true;
 		};
   };
 }
