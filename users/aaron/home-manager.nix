@@ -10,6 +10,7 @@
 		delta
 		jujutsu
     entr
+		just
 		nil
     github-cli
     jq
@@ -173,6 +174,7 @@
 					jsdoc
 					json
 					jsonc
+					just
 					ledger
 					lua
 					nix
