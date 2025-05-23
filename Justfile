@@ -24,4 +24,4 @@ check:
     sudo nixos-rebuild check --flake ".#${NIXNAME}"
 
 wsl:
-	 nix build ".#nixosConfigurations.wsl.config.system.build.tarballBuilder"
+		nix build ".#nixosConfigurations.wsl.config.system.build.tarballBuilder"
