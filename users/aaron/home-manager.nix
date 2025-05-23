@@ -6,12 +6,11 @@
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
-		awscli2
 		delta
 		jujutsu
-    entr
 		just
 		nil
+    entr
     github-cli
     jq
     silver-searcher
@@ -23,6 +22,7 @@
 	xdg = {
 		enable = true;
 		configFile = {
+			"nvim/init.lua" = ./init.lua;
 			"ghostty" = {
 				source = ./ghostty;
 				recursive = true;
