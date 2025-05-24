@@ -22,7 +22,7 @@
 	xdg = {
 		enable = true;
 		configFile = {
-			"nvim/init.lua" = ./init.lua;
+			"nvim/init.lua".source = ./init.lua;
 			"ghostty" = {
 				source = ./ghostty;
 				recursive = true;
@@ -194,7 +194,7 @@
 		enableCompletion = true;
 		initContent = builtins.readFile ./zshrc;
 		shellAliases = {
-			ls = "ls --color";
+			ls = "ls --group-directories-first --color";
 			tree = "tree -C";
 		};
 		history = {
