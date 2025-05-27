@@ -1,17 +1,16 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
 
-	environment.pathsToLink = [ "/share/fish" ];
+	environment.pathsToLink = [ "/share/zsh" ];
 
-	# Add ~/.local/bin to PATH
 	environment.localBinInPath = true;
 
-	programs.fish.enable = true;
+	programs.zsh.enable = true;
 
   users.users.aaron = {
     isNormalUser = true;
     home = "/home/aaron";
-    shell = pkgs.fish;
+    shell = pkgs.zsh;
   };
 }
