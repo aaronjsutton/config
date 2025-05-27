@@ -17,7 +17,7 @@ switch:
 [macos]
 check:
     nix build ".#darwinConfigurations.${NIXNAME}.system"
-    ./result/sw/bin/darwin-rebuild check --flake "$(pwd)#${NIXNAME}"
+    sudo ./result/sw/bin/darwin-rebuild check --flake "$(pwd)#${NIXNAME}"
 
 [linux]
 check:
