@@ -7,6 +7,7 @@
 
   home.packages = with pkgs; [
 		delta
+		coreutils
 		jujutsu
 		just
 		nil
@@ -194,8 +195,10 @@
 		enableCompletion = true;
 		initContent = builtins.readFile ./zshrc;
 		shellAliases = {
-			ls = "ls --group-directories-first --color";
+			ls = "ls --color --group-directories-first";
+			ll = "ls --color --group-directories-first -lah";
 			tree = "tree -C";
+			zource = "source ~/.zshrc";
 		};
 		history = {
 			save = 8000;
