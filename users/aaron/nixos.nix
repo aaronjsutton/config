@@ -1,12 +1,9 @@
-{ pkgs, ... }:
+{pkgs, ...}: {
+  environment.pathsToLink = ["/share/zsh"];
 
-{
+  environment.localBinInPath = true;
 
-	environment.pathsToLink = [ "/share/zsh" ];
-
-	environment.localBinInPath = true;
-
-	programs.zsh.enable = true;
+  programs.zsh.enable = true;
 
   users.users.aaron = {
     isNormalUser = true;
