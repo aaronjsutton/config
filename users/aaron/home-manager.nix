@@ -12,13 +12,13 @@
 
   home.packages = with pkgs; [
     delta
-    coreutils
+    entr
+    eza
+    github-cli
+    jq
     jujutsu
     just
     nil
-    entr
-    github-cli
-    jq
     silver-searcher
     tree
   ];
@@ -201,9 +201,9 @@
     enableCompletion = true;
     initContent = builtins.readFile ./zshrc;
     shellAliases = {
-      ls = "ls --color --group-directories-first";
-      ll = "ls --color --group-directories-first -lah";
-      tree = "tree -C";
+      ls = "eza --git --group-directories-first";
+      tree = "eza --tree";
+			ltr = "tree";
       zource = "source ~/.zshrc";
     };
     history = {
