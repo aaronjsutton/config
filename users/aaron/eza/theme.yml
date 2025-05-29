@@ -1,0 +1,2 @@
+extensions:
+  tsx: { filename: {foreground: Yellow}}

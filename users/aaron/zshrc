@@ -9,7 +9,7 @@ bindkey -v
 bindkey -M vicmd "/" fzf-history-widget
 bindkey -M vicmd v edit-command-line
 
-PROMPT='%F{#a9a8a0}%2~%f %(?.%F{green}❯.%F{red}❯)%f '
+PROMPT='%F{default}%2~%f %(?.%F{green}❯.%F{red}❯)%f '
 
 complete -C $(which aws_completer) aws
 

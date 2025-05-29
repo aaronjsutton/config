@@ -33,6 +33,9 @@
         source = ./ghostty;
         recursive = true;
       };
+      "eza" = {
+        source = ./eza;
+      };
     };
   };
 
