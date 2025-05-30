@@ -1,18 +1,18 @@
+background-blur = true
+background-opacity = 0.96
+cursor-style = bar
 font-family = "Cascadia Code"
-font-style = "SemiLight"
 font-feature = +calt, +ss01, +ss20
 font-size = "13.5"
-theme = dark:kanagawa-paper-ink,light:kanagawa-paper-canvas
-
-background-opacity = 0.96
-background-blur = true
-unfocused-split-opacity = 1.0
-
-window-theme = system
-window-colorspace = display-p3
-window-padding-x = 8
-window-padding-balance = true
-window-inherit-font-size = true
-
-cursor-style = bar
+font-style = "SemiLight"
+macos-icon = "xray"
+macos-titlebar-style = "transparent"
 mouse-hide-while-typing = true
+theme = dark:kanagawa-paper-ink,light:kanagawa-paper-canvas
+unfocused-split-opacity = 1.0
+window-colorspace = display-p3
+window-inherit-font-size = true
+window-padding-balance = true
+window-padding-x = 8
+window-theme = system
+working-directory = inherit

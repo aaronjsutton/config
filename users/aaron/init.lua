@@ -61,6 +61,7 @@ vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float)
 -- vim.lsp.enable('typescript-go')
 vim.lsp.enable('nil_ls')
 vim.lsp.enable('ts_ls')
+vim.lsp.enable('stylelint_lsp')
 
 require'nvim-treesitter.configs'.setup {
 	highlight = {
