@@ -3,11 +3,13 @@ set shell := ["bash", "-euxo", "pipefail", "-c"]
 export NIXNAME := "macbook-pro-m3"
 
 [macos]
+build:
+	nix build \
+		--extra-experimental-features nix-command \
+		--extra-experimental-features flakes \
+		".#darwinConfigurations.${NIXNAME}.system"
+
 switch:
-    nix build \
-      --extra-experimental-features nix-command \
-      --extra-experimental-features flakes \
-      ".#darwinConfigurations.${NIXNAME}.system"
     sudo ./result/sw/bin/darwin-rebuild switch --flake "$(pwd)#${NIXNAME}"
 
 [linux]

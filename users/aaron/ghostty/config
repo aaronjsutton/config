@@ -1,7 +1,7 @@
 background-blur = true
 background-opacity = 0.96
 cursor-style = bar
-font-family = "Cascadia Code"
+font-family = "Cascadia Code NF"
 font-feature = +calt, +ss01, +ss20
 font-size = "13.5"
 font-style = "SemiLight"
