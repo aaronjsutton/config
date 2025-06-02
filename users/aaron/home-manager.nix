@@ -52,7 +52,6 @@
 		enableZshIntegration = true;
 		extraOptions = [
 			"--git-ignore"
-			"--header"
 		];
 		theme = {
 			extensions = {
@@ -72,12 +71,6 @@
 					filename = {
 						foreground = "Yellow";
 						is_bold = true;
-					};
-				};
-				lock = {
-					filename = {
-						foreground = "Gray";
-						is_bold = false;
 					};
 				};
 			};
