@@ -13,7 +13,6 @@
   home.packages = with pkgs; [
     delta
     entr
-    eza
     github-cli
     jq
     jujutsu
@@ -51,16 +50,34 @@
 	programs.eza = {
 		enable = true;
 		enableZshIntegration = true;
+		extraOptions = [
+			"--git-ignore"
+			"--header"
+		];
 		theme = {
 			extensions = {
 				tsx = {
 					filename = {
 						foreground = "Yellow";
+						is_bold = true;
 					};
 				};
 				nix = {
 					filename = {
 						foreground = "Yellow";
+						is_bold = true;
+					};
+				};
+				tf = {
+					filename = {
+						foreground = "Yellow";
+						is_bold = true;
+					};
+				};
+				lock = {
+					filename = {
+						foreground = "Gray";
+						is_bold = false;
 					};
 				};
 			};

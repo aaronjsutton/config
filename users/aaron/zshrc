@@ -16,3 +16,5 @@ complete -C $(which aws_completer) aws
 vz() {
 	fzf -q "${*:-}" --bind 'enter:become(vim {})'
 }
+
+EZA_CONFIG_DIR=~/.config/eza
