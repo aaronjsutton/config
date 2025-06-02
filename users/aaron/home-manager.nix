@@ -33,9 +33,6 @@
         source = ./ghostty;
         recursive = true;
       };
-      "eza" = {
-        source = ./eza;
-      };
     };
   };
 
@@ -50,6 +47,25 @@
   programs.tmux = {
     enable = true;
   };
+
+	programs.eza = {
+		enable = true;
+		enableZshIntegration = true;
+		theme = {
+			extensions = {
+				tsx = {
+					filename = {
+						foreground = "Yellow";
+					};
+				};
+				nix = {
+					filename = {
+						foreground = "Yellow";
+					};
+				};
+			};
+		};
+	};
 
   programs.jujutsu = {
     enable = true;
