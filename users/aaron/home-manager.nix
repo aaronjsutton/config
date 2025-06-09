@@ -164,8 +164,6 @@
 
   programs.direnv = {
     enable = true;
-
-    nix-direnv.enable = true;
     enableZshIntegration = true;
 
     config = {
@@ -229,6 +227,9 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
+		enableFzfHistory = true;
+		enableFastSyntaxHighlighting = true;
+		enableAutosuggestions = false;
     initContent = builtins.readFile ./zshrc;
     shellAliases = {
       ls = "eza --git --group-directories-first";
@@ -236,6 +237,9 @@
 			ltr = "tree";
       zource = "source ~/.zshrc";
     };
+		variables = {
+			EZA_CONFIG_DIR = "~/.config/eza";
+		};
     history = {
       save = 8000;
       share = true;
