@@ -97,12 +97,15 @@
 
 			git = {
 				private-commits = "description(glob:'private:*')";
+				push-bookmark-prefix = "aaron/push-";
+				auto-local-bookmark = true;
 			};
 
       ui = {
         default-command = ["log"];
         pager = "delta";
         diff-formatter = ":git";
+				diff-editor = ["nvim" "-c" "DiffEditor $left $right $output"];
       };
 
       templates = {
@@ -208,6 +211,7 @@
       nvim-ufo
       plenary-nvim
       typescript-tools-nvim
+			hunk-nvim
       (nvim-treesitter.withPlugins (
         plugins:
           with plugins; [
