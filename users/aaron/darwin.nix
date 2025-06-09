@@ -12,6 +12,8 @@
   networking.hostName = "mac";
 
 	services.lorri.enable = true;
+	
+	# ^ ???
 	system.primaryUser = "aaron";
 
   users.users.aaron = {
