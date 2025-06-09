@@ -43,7 +43,7 @@
       inherit overlays nixpkgs inputs;
     };
   in {
-    darwinConfigurations.macbook-pro-m3 = mkSystem "macbook-pro-m3" {
+    darwinConfigurations.miller = mkSystem "macbook-pro-m3" {
       system = "aarch64-darwin";
       user = "aaron";
       darwin = true;

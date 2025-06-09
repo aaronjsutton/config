@@ -1,6 +1,6 @@
 set shell := ["bash", "-euxo", "pipefail", "-c"]
 
-export NIXNAME := "macbook-pro-m3"
+export NIXNAME := ""
 
 default: switch
 

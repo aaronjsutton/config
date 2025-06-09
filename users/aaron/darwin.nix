@@ -9,7 +9,7 @@
   programs.zsh.enable = true;
 
   networking.computerName = "Aaron’s MacBook Pro";
-  networking.hostName = "mac";
+  networking.hostName = "miller";
 
 	services.lorri.enable = true;
 	
