@@ -11,6 +11,7 @@
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
+		rsync
     delta
     entr
     github-cli
@@ -63,13 +64,13 @@
 				};
 				nix = {
 					filename = {
-						foreground = "Yellow";
+						foreground = "Purple";
 						is_bold = true;
 					};
 				};
 				tf = {
 					filename = {
-						foreground = "Yellow";
+						foreground = "Purple";
 						is_bold = true;
 					};
 				};
