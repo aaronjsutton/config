@@ -11,6 +11,9 @@
   networking.computerName = "Aaron’s MacBook Pro";
   networking.hostName = "mac";
 
+	services.lorri.enable = true;
+	system.primaryUser = "aaron";
+
   users.users.aaron = {
     home = "/Users/aaron";
     shell = pkgs.zsh;

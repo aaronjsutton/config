@@ -17,4 +17,4 @@ vz() {
 	fzf -q "${*:-}" --bind 'enter:become(vim {})'
 }
 
-export EZA_CONFIG_DIR=~/.config/eza
+# export EZA_CONFIG_DIR=~/.config/eza
