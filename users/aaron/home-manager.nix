@@ -72,13 +72,13 @@
 				};
 				nix = {
 					filename = {
-						foreground = "Purple";
+						foreground = "Yellow";
 						is_bold = true;
 					};
 				};
 				tf = {
 					filename = {
-						foreground = "Purple";
+						foreground = "Yellow";
 						is_bold = true;
 					};
 				};
