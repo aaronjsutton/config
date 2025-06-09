@@ -38,10 +38,6 @@
     EDITOR = "nvim";
   };
 
-  programs.fish = {
-    enable = true;
-  };
-
 	programs.gh = {
 		enable = true;
 	};

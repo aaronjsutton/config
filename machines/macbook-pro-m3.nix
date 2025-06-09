@@ -10,7 +10,7 @@
 
   programs.zsh.enable = true;
 
-  environment.shells = with pkgs; [bashInteractive zsh fish];
+  environment.shells = with pkgs; [bashInteractive zsh];
 
   system.stateVersion = 6;
 }
