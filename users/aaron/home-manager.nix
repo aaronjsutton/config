@@ -12,18 +12,16 @@
 
   home.packages = with pkgs; [
 		rsync
-    delta
     entr
-    github-cli
-    jq
-    jujutsu
     just
     nil
     silver-searcher
     tree
   ];
 
-  programs.home-manager.enable = true;
+  programs.home-manager = {
+		enable = true;
+	};
 
   xdg = {
     enable = true;
@@ -44,15 +42,25 @@
     enable = true;
   };
 
+	programs.gh = {
+		enable = true;
+	};
+
+	programs.jq = {
+		enable = true;
+	};
+
   programs.tmux = {
     enable = true;
   };
 
 	programs.eza = {
 		enable = true;
+		git = true;
 		enableZshIntegration = true;
 		extraOptions = [
 			"--git-ignore"
+			"--group-directories-first"
 		];
 		theme = {
 			extensions = {
@@ -146,6 +154,7 @@
 
   programs.git = {
     enable = true;
+		delta.enable = true;
     lfs.enable = true;
     userName = "Aaron Sutton";
     userEmail = "hey@aaron.as";
@@ -165,6 +174,7 @@
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
+		silent = true;
 
     config = {
       global = {
@@ -187,7 +197,6 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
-    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
     plugins = with pkgs.vimPlugins; [
       kanagawa-paper-nvim
@@ -225,19 +234,18 @@
   };
 
   programs.zsh = {
+		autocd = true;
+		autosuggestion.enable = false;
     enable = true;
     enableCompletion = true;
-		enableFzfHistory = true;
-		enableFastSyntaxHighlighting = true;
-		enableAutosuggestions = false;
+		syntaxHighlighting = {
+			enable = true;
+		};
     initContent = builtins.readFile ./zshrc;
     shellAliases = {
-      ls = "eza --git --group-directories-first";
-      tree = "eza --tree";
-			ltr = "tree";
       zource = "source ~/.zshrc";
     };
-		variables = {
+		sessionVariables = {
 			EZA_CONFIG_DIR = "~/.config/eza";
 		};
     history = {

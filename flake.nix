@@ -22,7 +22,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    jujutsu.url = "github:martinvonz/jj";
+    jujutsu.url = "github:jj-vcs/jj";
     zig.url = "github:mitchellh/zig-overlay";
   };
 
@@ -34,8 +34,9 @@
     ...
   } @ inputs: let
     overlays = [
-      inputs.jujutsu.overlays.default
-      inputs.zig.overlays.default
+				inputs.jujutsu.overlays.default
+				inputs.zig.overlays.default
+				inputs.neovim-nightly-overlay.overlays.default
     ];
 
     mkSystem = import ./lib/mksystem.nix {

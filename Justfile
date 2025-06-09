@@ -2,6 +2,8 @@ set shell := ["bash", "-euxo", "pipefail", "-c"]
 
 export NIXNAME := "macbook-pro-m3"
 
+default: switch
+
 build:
 	nix build \
 		--extra-experimental-features nix-command \
