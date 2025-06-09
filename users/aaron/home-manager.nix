@@ -95,6 +95,10 @@
         email = "hey@aaron.as";
       };
 
+			git = {
+				private-commits = "description(glob:'private:*')";
+			};
+
       ui = {
         default-command = ["log"];
         pager = "delta";
