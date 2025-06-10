@@ -176,7 +176,7 @@
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
-		silent = true;
+		silent = false;
 
     config = {
       global = {
