@@ -55,7 +55,6 @@
 		git = true;
 		enableZshIntegration = true;
 		extraOptions = [
-			"--git-ignore"
 			"--group-directories-first"
 		];
 		theme = {
