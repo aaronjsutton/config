@@ -1,6 +1,6 @@
 set shell := ["bash", "-euxo", "pipefail", "-c"]
 
-export NIXNAME := ""
+export NIXNAME := "miller"
 
 default: switch
 
