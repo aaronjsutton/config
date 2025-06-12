@@ -12,6 +12,7 @@
 
   home.packages = with pkgs; [
 		rsync
+		hut
     entr
     just
     nil
@@ -93,7 +94,7 @@
 			git = {
 				private-commits = "description(glob:'private:*')";
 				push-bookmark-prefix = "aaron/push-";
-				auto-local-bookmark = true;
+				auto-local-bookmark = false;
 			};
 
       ui = {
@@ -176,7 +177,6 @@
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
-		silent = false;
 
     config = {
       global = {

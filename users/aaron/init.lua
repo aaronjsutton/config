@@ -61,8 +61,8 @@ vim.keymap.set("v", "<leader>s", ":'<,'>sort<CR>")
 
 -- Currently has a massive memory consumption problem.
 -- vim.lsp.enable('typescript-go')
-vim.lsp.enable('nil_ls')
 vim.lsp.enable('ts_ls')
+vim.lsp.enable('nil_ls')
 vim.lsp.enable('stylelint_lsp')
 
 require'nvim-treesitter.configs'.setup {

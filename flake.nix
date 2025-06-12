@@ -36,16 +36,16 @@
   } @ inputs: let
     overlays = [
 				inputs.jujutsu.overlays.default
-				inputs.zig.overlays.default
 				inputs.neovim-nightly-overlay.overlays.default
 				inputs.nil.overlays.default
+				inputs.zig.overlays.default
     ];
 
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;
     };
   in {
-    darwinConfigurations.miller = mkSystem "macbook-pro-m3" {
+    darwinConfigurations.lovelace = mkSystem "macbook-pro-m3" {
       system = "aarch64-darwin";
       user = "aaron";
       darwin = true;
