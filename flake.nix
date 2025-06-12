@@ -22,6 +22,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+		nil.url = "github:oxalica/nil";
     jujutsu.url = "github:jj-vcs/jj";
     zig.url = "github:mitchellh/zig-overlay";
   };
@@ -37,6 +38,7 @@
 				inputs.jujutsu.overlays.default
 				inputs.zig.overlays.default
 				inputs.neovim-nightly-overlay.overlays.default
+				inputs.nil.overlays.default
     ];
 
     mkSystem = import ./lib/mksystem.nix {
