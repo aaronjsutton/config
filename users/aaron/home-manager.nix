@@ -27,9 +27,12 @@
   xdg = {
     enable = true;
     configFile = {
-      "nvim/init.lua".source = ./init.lua;
       "ghostty" = {
-        source = ./ghostty;
+        source = ./config/ghostty;
+        recursive = true;
+      };
+      "nvim" = {
+        source = ./config/nvim;
         recursive = true;
       };
     };
