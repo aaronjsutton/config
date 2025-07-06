@@ -16,3 +16,4 @@ window-padding-balance = true
 window-padding-x = 8
 window-theme = system
 working-directory = inherit
+keybind = global:cmd+grave_accent=toggle_quick_terminal

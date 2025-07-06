@@ -27,6 +27,7 @@
     if darwin
     then inputs.darwin.lib.darwinSystem
     else nixpkgs.lib.nixosSystem;
+
   home-manager =
     if darwin
     then inputs.home-manager.darwinModules
