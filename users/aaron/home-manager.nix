@@ -40,6 +40,8 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+		GOPATH = "${config.xdg.cacheHome}/go";
+
   };
 
 	programs.gh = {

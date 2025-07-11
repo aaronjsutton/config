@@ -51,7 +51,7 @@
       darwin = true;
     };
 
-    nixosConfigurations.dell-precision-3430 = mkSystem "dell-precision-3430" {
+    nixosConfigurations.hammond = mkSystem "dell-precision-3430" {
       system = "x86_84-linux";
       user = "aaron";
       wsl = true;
