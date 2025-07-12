@@ -98,8 +98,6 @@
 
 			git = {
 				private-commits = "description(glob:'private:*')";
-				push-bookmark-prefix = "aaron/push-";
-				auto-local-bookmark = false;
 			};
 
       ui = {
@@ -110,6 +108,7 @@
       };
 
       templates = {
+				git_push_bookmark = ''"aaron/push-" ++ change_id.short()'';
         log_node = ''
           coalesce(
           	if(!self, "🮀"),

@@ -52,16 +52,23 @@ vim.keymap.set('', '<Up>', '<Nop>', { noremap = true })
 vim.keymap.set('', '<Left>', '<Nop>', { noremap = true })
 vim.keymap.set('', '<Right>', '<Nop>', { noremap = true })
 vim.keymap.set('', '<Down>', '<Nop>', { noremap = true })
-
 vim.keymap.set("n", "]g", vim.diagnostic.goto_next)
 vim.keymap.set("n", "[g", vim.diagnostic.goto_prev)
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float)
 vim.keymap.set("v", "<leader>s", ":'<,'>sort<CR>")
 
+vim.diagnostic.config({ 
+	virtual_lines = true,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = ' ⬤',
+			[vim.diagnostic.severity.WARN]  = ' ◎',
+		}
+	}
+})
 
--- Currently has a massive memory consumption problem.
--- vim.lsp.enable('typescript-go')
-vim.lsp.enable('ts_ls')
+vim.lsp.enable('typescript-go')
+vim.lsp.enable('tofu_ls')
 vim.lsp.enable('nil_ls')
 vim.lsp.enable('stylelint_lsp')
 
@@ -75,5 +82,3 @@ require'nvim-treesitter.configs'.setup {
 		enable = true
 	},
 }
-
-vim.cmd [[hi LspInlayHint guibg=none]]

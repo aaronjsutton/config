@@ -52,9 +52,8 @@
     };
 
     nixosConfigurations.hammond = mkSystem "dell-precision-3430" {
-      system = "x86_84-linux";
+      system = "x86_64-linux";
       user = "aaron";
-      wsl = true;
     };
 
     nixosConfigurations.wsl = mkSystem "wsl" {
