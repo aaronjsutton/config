@@ -64,26 +64,7 @@
 			"--group-directories-first"
 		];
 		theme = {
-			extensions = {
-				tsx = {
-					filename = {
-						foreground = "Yellow";
-						is_bold = true;
-					};
-				};
-				nix = {
-					filename = {
-						foreground = "Yellow";
-						is_bold = true;
-					};
-				};
-				tf = {
-					filename = {
-						foreground = "Yellow";
-						is_bold = true;
-					};
-				};
-			};
+			extensions = { };
 		};
 	};
 
