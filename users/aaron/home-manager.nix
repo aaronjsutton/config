@@ -190,7 +190,6 @@
       nvim-lspconfig
       nvim-ufo
       plenary-nvim
-      typescript-tools-nvim
 			hunk-nvim
       (nvim-treesitter.withPlugins (
         plugins:

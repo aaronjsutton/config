@@ -5,6 +5,8 @@
 
   programs.zsh.enable = true;
 
+	services.lorri.enable = true;
+
   users.users.aaron = {
     isNormalUser = true;
     home = "/home/aaron";

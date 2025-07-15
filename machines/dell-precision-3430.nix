@@ -1,7 +1,11 @@
 {
 	pkgs,
 	...
-}: {
+}: let
+  authorizedKeys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAxpIWQv9lBTM4jHlhbv1ufrBBPmmv4TzzPLPVKlQajO aaronsutton@aarons-mbp.lan"
+  ];
+in{
 
 	imports = [
 		./hardware/dell-precision-3430.nix
@@ -12,7 +16,7 @@
 	  settings.experimental-features = [ "nix-command" "flakes" ];
 	};
 
-	boot.loader = {
+  boot.loader = {
     systemd-boot = {
       enable = true;
     };
@@ -27,10 +31,12 @@
 
   boot.supportedFilesystems = ["ntfs"];
 
-	networking = {
+  environment.systemPackages = with pkgs; [vim btop];
+
+  networking = {
     hostName = "hammond";
-    defaultGateway = "192.168.2.1";
 		useDHCP = false;
+    defaultGateway = "192.168.2.1";
     nameservers = [ "192.168.2.1" ];
     interfaces = {
       eno2.ipv4.addresses = [ {
@@ -40,9 +46,44 @@
     };
   };
 
-  programs.zsh.enable = true;
+  time.timeZone = "America/New_York";
 
-  environment.shells = with pkgs; [bashInteractive zsh];
+  users.users."aaron" = {
+    isNormalUser = true;
+    extraGroups = ["wheel"];
+    openssh.authorizedKeys.keys = authorizedKeys;
+  };
 
-  system.stateVersion = "25.05";
+  users.groups.git = {};
+
+  systemd.tmpfiles.rules = [
+    "d /srv/git 0770 git git -"
+  ];
+
+  users.users."git" = {
+    group = "git";
+    isSystemUser = true;
+    home = "/srv/git";
+    shell = "${pkgs.git}/bin/git-shell";
+    openssh.authorizedKeys.keys = authorizedKeys;
+  };
+
+
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+    settings.PubkeyAuthentication = true;
+  };
+
+  services.xserver = {
+    autorun = false;
+    enable = true;
+    desktopManager = {
+      xterm.enable = false;
+      xfce.enable = true;
+    };
+    displayManager.defaultSession = "xfce";
+  };
+
+  system.stateVersion = "23.05";
 }
