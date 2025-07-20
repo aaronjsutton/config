@@ -10,7 +10,7 @@
 
   programs.zsh.enable = true;
 
-  environment.shells = with pkgs; [bashInteractive zsh];
+  environment.shells = with pkgs; [bashInteractive zsh nushell];
 
   system.stateVersion = 6;
 }

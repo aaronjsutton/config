@@ -23,6 +23,7 @@
 
   users.users.aaron = {
     home = "/Users/aaron";
-    shell = pkgs.zsh;
+		# See: https://github.com/nix-darwin/nix-darwin/issues/779
+    shell = pkgs.nushell;
   };
 }

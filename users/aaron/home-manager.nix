@@ -41,7 +41,6 @@
   home.sessionVariables = {
     EDITOR = "nvim";
 		GOPATH = "${config.xdg.cacheHome}/go";
-
   };
 
 	programs.gh = {
@@ -156,7 +155,7 @@
   programs.zoxide = {
     enable = true;
     enableZshIntegration = true;
-    enableFishIntegration = true;
+    enableNushellIntegration = true;
   };
 
   programs.direnv = {
@@ -179,6 +178,18 @@
       theme_background = false;
     };
   };
+
+	programs.nushell = {
+		enable = true;
+		settings = {
+			show_banner = false;
+			buffer_editor = "vi";
+			edit_mode = "vi";
+		};
+		envFile = ''
+			$env.XDG_CONFIG_HOME = '${config.xdg.configHome}'
+		'';
+	};
 
   programs.neovim = {
     enable = true;
