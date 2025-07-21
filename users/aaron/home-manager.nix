@@ -186,7 +186,7 @@
 			buffer_editor = "vi";
 			edit_mode = "vi";
 		};
-		envFile = ''
+		envFile.text = ''
 			$env.XDG_CONFIG_HOME = '${config.xdg.configHome}'
 		'';
 	};

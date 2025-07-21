@@ -237,11 +237,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1752780124,
-        "narHash": "sha256-5dn97vIYxn6VozKePOQSDxVCsrl38nDdMJXx86KIJH0=",
+        "lastModified": 1753055804,
+        "narHash": "sha256-KerePGJYX47ex6OY3CWsid4AltO2gDtQROunYJ0eCEE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c718918222bdb104397762dea67e6b397a7927fe",
+        "rev": "adf195f021a8cbb0c317f75b52e96c82616526f9",
         "type": "github"
       },
       "original": {
@@ -258,11 +258,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1752999745,
-        "narHash": "sha256-FiESLparw941AVaY1XQTLbdm3SkaBpmOWKpYEtCfLCs=",
+        "lastModified": 1753084829,
+        "narHash": "sha256-BD9mP/ahbhW8UiQukSlOzy2EKUI4EFfMWazcjggXFLQ=",
         "owner": "jj-vcs",
         "repo": "jj",
-        "rev": "38a23f9b24d66d313af051cd90a639ab5c64742a",
+        "rev": "f7377bd3185cb37df7b91d0dd77521ac777a9b15",
         "type": "github"
       },
       "original": {
@@ -425,6 +425,7 @@
         "nil": "nil",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
+        "wrapper-manager": "wrapper-manager",
         "zig": "zig"
       }
     },
@@ -500,6 +501,21 @@
         "type": "github"
       }
     },
+    "wrapper-manager": {
+      "locked": {
+        "lastModified": 1751998186,
+        "narHash": "sha256-np2RxS8tRz/jGfUSYKxzg7cCi4dS8PL8gutLZfPMbIY=",
+        "owner": "viperml",
+        "repo": "wrapper-manager",
+        "rev": "8ad2484b485acad0632cb0af15b5eb704e3c1d0a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "viperml",
+        "repo": "wrapper-manager",
+        "type": "github"
+      }
+    },
     "zig": {
       "inputs": {
         "flake-compat": "flake-compat_4",
@@ -507,11 +523,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1752972093,
-        "narHash": "sha256-pSlkvU1yfOPWKO1boc5RLBM7M1gQcIWKvl9XLs1QeUY=",
+        "lastModified": 1753100098,
+        "narHash": "sha256-WHKCLH46XI5tTN7YhqG5OOvc1YHXsLeGWEJMhyyjxNc=",
         "owner": "mitchellh",
         "repo": "zig-overlay",
-        "rev": "c9627e87b75b3d130268685602ed747e83d5ea5b",
+        "rev": "ed67920f739cb1fe952d945fc041afec2b400ae2",
         "type": "github"
       },
       "original": {

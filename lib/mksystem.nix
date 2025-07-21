@@ -4,19 +4,20 @@
   nixpkgs,
   overlays,
   inputs,
+	wrapper-manager,
 }: name: {
   system,
   user,
   darwin ? false,
   wsl ? false,
 }: let
+
   isWSL = wsl;
+	# isLinux = !darwin && !isWSL;
 
-  isLinux = !darwin && !isWSL;
+  machine = ../machines/${name}.nix;
 
-  machineConfig = ../machines/${name}.nix;
-
-  userOSConfig =
+  user =
     ../users/${user}/${
       if darwin
       then "darwin"
@@ -40,7 +41,6 @@ in
 
     modules = [
       {nixpkgs.overlays = overlays;}
-
       {nixpkgs.config.allowUnfree = true;}
 
       (
@@ -49,8 +49,8 @@ in
         else {}
       )
 
-      machineConfig
-      userOSConfig
+      machine
+      user
       home-manager.home-manager
       {
         home-manager.useGlobalPkgs = true;

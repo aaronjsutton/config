@@ -6,14 +6,15 @@
 
     nixos-wsl.url = "github:nix-community/nixos-wsl";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
-
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+		wrapper-manager.url = "github:viperml/wrapper-manager";
 
     darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -31,6 +32,7 @@
     self,
     nixpkgs,
     home-manager,
+		wrapper-manager,
     darwin,
     ...
   } @ inputs: let
@@ -42,7 +44,7 @@
     ];
 
     mkSystem = import ./lib/mksystem.nix {
-      inherit overlays nixpkgs inputs;
+      inherit overlays nixpkgs inputs wrapper-manager;
     };
   in {
     darwinConfigurations.lovelace = mkSystem "macbook-pro-m3" {
