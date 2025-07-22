@@ -68,11 +68,13 @@ in{
     openssh.authorizedKeys.keys = authorizedKeys;
   };
 
-
   services.openssh = {
     enable = true;
-    settings.PasswordAuthentication = false;
-    settings.PubkeyAuthentication = true;
+		settings = {
+			PasswordAuthentication = false;
+			PubkeyAuthentication = true;
+			AllowAgentForwarding = true;
+		};
   };
 
   services.xserver = {
@@ -82,8 +84,9 @@ in{
       xterm.enable = false;
       xfce.enable = true;
     };
-    displayManager.defaultSession = "xfce";
   };
+
+	services.displayManager.defaultSession = "xfce";
 
   system.stateVersion = "23.05";
 }

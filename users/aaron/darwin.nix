@@ -1,10 +1,17 @@
-{pkgs, ...}: 
-{
-  nixpkgs.overlays = import ../../lib/overlays.nix;
+{pkgs, wrapper-manager, ...}: let
+	wm-eval = wrapper-manager.lib {
+    inherit pkgs;
+		modules = [
+			# import  modules here
+		];
+	};
+in
+	{
+	nixpkgs.overlays = import ../../lib/overlays.nix;
 
-  homebrew = {
-    enable = false;
-  };
+	homebrew = {
+		enable = false;
+	};
 
 	nix = {
 		settings.trusted-users = [ "root" "aaron" "@wheel" ];
@@ -24,6 +31,7 @@
   users.users.aaron = {
     home = "/Users/aaron";
 		# See: https://github.com/nix-darwin/nix-darwin/issues/779
-    shell = pkgs.nushell;
+		# shell = pkgs.nushell;
+    shell = pkgs.zsh;
   };
 }

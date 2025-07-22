@@ -9,7 +9,11 @@ bindkey -v
 bindkey -M vicmd "/" fzf-history-widget
 bindkey -M vicmd v edit-command-line
 
-PROMPT='%F{default}%2~%f %(?.%F{green}❯.%F{red}❯)%f '
+if [[ -n $SSH_CONNECTION ]]; then
+  PROMPT='%F{cyan}%n@%m %F{default}%2~%f %(?.%F{green}❯.%F{red}❯)%f '
+else
+  PROMPT='%F{default}%2~%f %(?.%F{green}❯.%F{red}❯)%f '
+fi
 
 complete -C $(which aws_completer) aws
 

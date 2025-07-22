@@ -17,7 +17,7 @@
 
   machine = ../machines/${name}.nix;
 
-  user =
+  user-config =
     ../users/${user}/${
       if darwin
       then "darwin"
@@ -50,7 +50,7 @@ in
       )
 
       machine
-      user
+      user-config
       home-manager.home-manager
       {
         home-manager.useGlobalPkgs = true;

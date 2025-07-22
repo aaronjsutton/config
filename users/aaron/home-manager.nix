@@ -104,11 +104,6 @@
         "format_timestamp(timestamp)" = "timestamp.ago()";
       };
 
-      signing = {
-        behavior = "own";
-        backend = "ssh";
-        key = "~/.ssh/id_ed25519_signing.pub";
-      };
     };
   };
 

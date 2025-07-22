@@ -7,6 +7,13 @@
 
 	services.lorri.enable = true;
 
+	virtualisation.containers.enable = true;
+	virtualisation = {
+		podman = {
+			enable = true;
+		};
+	};
+
   users.users.aaron = {
     isNormalUser = true;
     home = "/home/aaron";
