@@ -85,6 +85,7 @@
         pager = "delta";
         diff-formatter = ":git";
 				diff-editor = ["nvim" "-c" "DiffEditor $left $right $output"];
+				merge-editor = "vimdiff";
       };
 
       templates = {
