@@ -1,5 +1,6 @@
 {
 	pkgs,
+	wm-eval,
 	...
 }: let
   authorizedKeys = [
@@ -31,7 +32,7 @@ in{
 
   boot.supportedFilesystems = ["ntfs"];
 
-  environment.systemPackages = with pkgs; [vim btop];
+  environment.systemPackages = with pkgs; [vim btop wm-eval.config.build.toplevel] ;
 
   networking = {
     hostName = "hammond";
