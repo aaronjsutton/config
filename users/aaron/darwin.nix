@@ -1,11 +1,12 @@
-{pkgs, wrapper-manager, ...}: let
-	wm-eval = wrapper-manager.lib {
-    inherit pkgs;
-		modules = [
-			# import  modules here
-		];
-	};
-in
+{pkgs, /* wrapper-manager ,*/ ...}: 
+# let
+	#	wm-eval = wrapper-manager.lib {
+	#    inherit pkgs;
+	#		modules = [
+	#			# import  modules here
+	#		];
+	#	};
+# in
 	{
 	nixpkgs.overlays = import ../../lib/overlays.nix;
 
@@ -16,6 +17,11 @@ in
 	nix = {
 		settings.trusted-users = [ "root" "aaron" "@wheel" ];
 		linux-builder.enable = true;
+		distributedBuilds = true;
+		buildMachines.hammond = {
+			hostName = "hammond";	
+			systems = [ "x86_64-linux" ];
+		};
 	};
 
   environment.pathsToLink = ["/share/zsh"];
