@@ -18,12 +18,21 @@
 		settings.trusted-users = [ "root" "aaron" "@wheel" ];
 		linux-builder.enable = true;
 		distributedBuilds = true;
-		buildMachines.hammond = {
-			hostName = "hammond";	
-			systems = [ "x86_64-linux" ];
-		};
+		buildMachines = [
+			{
+				hostName = "hammond";	
+				protocol = "ssh-ng";
+				supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+				systems = [ "x86_64-linux" ];
+			}
+		];
+
+		extraOptions = ''
+			builders-use-substitutes = true
+		'';
 	};
 
+	environment.systemPackages = [ pkgs.container ];
   environment.pathsToLink = ["/share/zsh"];
   programs.zsh.enable = true;
 
