@@ -32,7 +32,6 @@
 		'';
 	};
 
-	environment.systemPackages = [ pkgs.container ];
   environment.pathsToLink = ["/share/zsh"];
   programs.zsh.enable = true;
 

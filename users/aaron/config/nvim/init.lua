@@ -20,6 +20,15 @@ require("kanagawa-paper").setup({
 })
 
 vim.cmd("colorscheme kanagawa-paper")
+vim.opt.list = true
+vim.opt.listchars = {
+  tab = "»·",
+  trail = "·",
+  space = "·",
+  extends = "…",
+  precedes = "…",
+  nbsp = "␣",
+}
 
 vim.opt.mouse = ''
 vim.opt.number = true
@@ -56,6 +65,7 @@ vim.keymap.set("n", "]g", vim.diagnostic.goto_next)
 vim.keymap.set("n", "[g", vim.diagnostic.goto_prev)
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float)
 vim.keymap.set("v", "<leader>s", ":'<,'>sort<CR>")
+vim.keymap.set("n", "<Leader>L", ":set list!<CR>")
 
 require'nvim-treesitter.configs'.setup {
 	highlight = {
