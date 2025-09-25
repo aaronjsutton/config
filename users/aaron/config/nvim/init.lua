@@ -20,7 +20,8 @@ require("kanagawa-paper").setup({
 })
 
 vim.cmd("colorscheme kanagawa-paper")
-vim.opt.list = true
+
+vim.opt.list = false
 vim.opt.listchars = {
   tab = "»·",
   trail = "·",
@@ -77,6 +78,7 @@ require'nvim-treesitter.configs'.setup {
 		enable = true
 	},
 }
+
 vim.diagnostic.config({ 
 	virtual_lines = true,
 	signs = {
@@ -95,3 +97,4 @@ vim.lsp.enable('typescript-go')
 vim.lsp.enable('tofu_ls')
 vim.lsp.enable('biome')
 vim.lsp.enable('nil_ls')
+vim.lsp.enable('csharp_ls')

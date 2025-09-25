@@ -150,13 +150,10 @@
 
   programs.zoxide = {
     enable = true;
-    enableZshIntegration = true;
-    enableNushellIntegration = true;
   };
 
   programs.direnv = {
     enable = true;
-    enableZshIntegration = true;
 
     config = {
       global = {
@@ -202,6 +199,7 @@
         plugins:
           with plugins; [
             c
+            csharp
             css
             dockerfile
             elixir
