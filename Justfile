@@ -1,27 +1,25 @@
 set shell := ["bash", "-euxo", "pipefail", "-c"]
+set quiet
 
-export NIXNAME := "lovelace"
+export HOSTNAME := "lovelace"
 
 default: switch
 
 build:
-	nix build \
-		--extra-experimental-features nix-command \
-		--extra-experimental-features flakes \
-		".#darwinConfigurations.${NIXNAME}.system"
+	nix build ".#darwinConfigurations.${HOSTNAME}.system"
 
 [macos]
 switch: build
-    sudo ./result/sw/bin/darwin-rebuild switch --flake "$(pwd)#${NIXNAME}"
+	sudo ./result/sw/bin/darwin-rebuild switch --flake "$(pwd)#${HOSTNAME}"
 
 [linux]
 switch: build
-    sudo nixos-rebuild switch --flake ".#${NIXNAME}"
+    sudo nixos-rebuild switch --flake ".#${HOSTNAME}"
 
 [macos]
 check: build
-    sudo ./result/sw/bin/darwin-rebuild check --flake "$(pwd)#${NIXNAME}"
+    sudo ./result/sw/bin/darwin-rebuild check --flake "$(pwd)#${HOSTNAME}"
 
 [linux]
 check: build
-    sudo nixos-rebuild check --flake ".#${NIXNAME}"
+    sudo nixos-rebuild check --flake ".#${HOSTNAME}"

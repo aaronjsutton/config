@@ -2,17 +2,19 @@
   isWSL,
   inputs,
   ...
-}: {
+}:
+{
   config,
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
-		rsync
-		hut
+    rsync
+    hut
     entr
     just
     nil
@@ -20,9 +22,14 @@
     tree
   ];
 
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    GOPATH = "${config.xdg.cacheHome}/go";
+  };
+
   programs.home-manager = {
-		enable = true;
-	};
+    enable = true;
+  };
 
   xdg = {
     enable = true;
@@ -38,34 +45,28 @@
     };
   };
 
-  home.sessionVariables = {
-    EDITOR = "nvim";
-		GOPATH = "${config.xdg.cacheHome}/go";
+  programs.gh = {
+    enable = true;
   };
 
-	programs.gh = {
-		enable = true;
-	};
-
-	programs.jq = {
-		enable = true;
-	};
+  programs.jq = {
+    enable = true;
+  };
 
   programs.tmux = {
     enable = true;
   };
 
-	programs.eza = {
-		enable = true;
-		git = true;
-		enableZshIntegration = true;
-		extraOptions = [
-			"--group-directories-first"
-		];
-		theme = {
-			extensions = { };
-		};
-	};
+  programs.eza = {
+    enable = true;
+    git = true;
+    extraOptions = [
+      "--group-directories-first"
+    ];
+    theme = {
+      extensions = { };
+    };
+  };
 
   programs.jujutsu = {
     enable = true;
@@ -76,20 +77,24 @@
         email = "hey@aaron.as";
       };
 
-			git = {
-				private-commits = "description(glob:'private:*')";
-			};
+      git = {
+        private-commits = "description(glob:'private:*')";
+      };
 
       ui = {
-        default-command = ["log"];
+        default-command = [ "log" ];
         pager = "delta";
         diff-formatter = ":git";
-				diff-editor = ["nvim" "-c" "DiffEditor $left $right $output"];
-				merge-editor = "vimdiff";
+        diff-editor = [
+          "nvim"
+          "-c"
+          "DiffEditor $left $right $output"
+        ];
+        merge-editor = "vimdiff";
       };
 
       templates = {
-				git_push_bookmark = ''"aaron/push-" ++ change_id.short()'';
+        git_push_bookmark = ''"aaron/push-" ++ change_id.short()'';
         log_node = ''
           coalesce(
           	if(!self, "🮀"),
@@ -137,7 +142,7 @@
 
   programs.git = {
     enable = true;
-		delta.enable = true;
+    delta.enable = true;
     lfs.enable = true;
     userName = "Aaron Sutton";
     userEmail = "hey@aaron.as";
@@ -172,74 +177,73 @@
     };
   };
 
-	programs.nushell = {
-		enable = true;
-		settings = {
-			show_banner = false;
-			buffer_editor = "vi";
-			edit_mode = "vi";
-		};
-		envFile.text = ''
-			$env.XDG_CONFIG_HOME = '${config.xdg.configHome}'
-		'';
-	};
+  programs.nushell = {
+    enable = true;
+    settings = {
+      show_banner = false;
+      buffer_editor = "vi";
+      edit_mode = "vi";
+    };
+    envFile.text = ''
+      			$env.XDG_CONFIG_HOME = '${config.xdg.configHome}'
+      		'';
+  };
 
   programs.neovim = {
     enable = true;
-    viAlias = true;
-    vimAlias = true;
-
     plugins = with pkgs.vimPlugins; [
       kanagawa-paper-nvim
       nvim-lspconfig
       nvim-ufo
       plenary-nvim
-			hunk-nvim
+      hunk-nvim
       (nvim-treesitter.withPlugins (
-        plugins:
-          with plugins; [
-            c
-            csharp
-            css
-            dockerfile
-            elixir
-            erlang
-            go
-            html
-            javascript
-            jsdoc
-            json
-            jsonc
-            just
-            ledger
-            lua
-            nix
-            python
-            terraform
-            toml
-            tsx
-            typescript
-            yaml
-          ]
+        plugins: with plugins; [
+          c
+          c-sharp
+          css
+          dockerfile
+          elixir
+          erlang
+          go
+          html
+          javascript
+          jsdoc
+          json
+          jsonc
+          just
+          ledger
+          lua
+          nix
+          python
+          terraform
+          toml
+          tsx
+          typescript
+          yaml
+        ]
       ))
     ];
   };
 
   programs.zsh = {
-		autocd = true;
-		autosuggestion.enable = false;
+    autocd = true;
+    autosuggestion.enable = false;
     enable = true;
     enableCompletion = true;
-		syntaxHighlighting = {
-			enable = true;
-		};
-    initContent = builtins.readFile ./zshrc;
+    syntaxHighlighting = {
+      enable = true;
+    };
+    initContent = builtins.readFile ./init.zsh;
     shellAliases = {
+      j = "just";
+      vi = "nvim";
+      vim = "nvim";
       zource = "source ~/.zshrc";
     };
-		sessionVariables = {
-			EZA_CONFIG_DIR = "~/.config/eza";
-		};
+    sessionVariables = {
+      EZA_CONFIG_DIR = "~/.config/eza";
+    };
     history = {
       save = 8000;
       share = true;

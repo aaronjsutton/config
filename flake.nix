@@ -52,7 +52,6 @@
           overlays
           nixpkgs
           inputs
-          wrapper-manager
           ;
       };
 

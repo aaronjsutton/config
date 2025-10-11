@@ -1,21 +1,26 @@
 {
-	pkgs,
-	wm-eval,
-	...
-}: let
+  pkgs,
+  wm-eval,
+  ...
+}:
+let
   authorizedKeys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAxpIWQv9lBTM4jHlhbv1ufrBBPmmv4TzzPLPVKlQajO aaronsutton@aarons-mbp.lan"
   ];
-in{
+in
+{
 
-	imports = [
-		./hardware/dell-precision-3430.nix
-	];
+  imports = [
+    ./hardware/dell-precision-3430.nix
+  ];
 
-	nix = {
-		enable = true;
-	  settings.experimental-features = [ "nix-command" "flakes" ];
-	};
+  nix = {
+    enable = true;
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
 
   boot.loader = {
     systemd-boot = {
@@ -30,20 +35,26 @@ in{
     };
   };
 
-  boot.supportedFilesystems = ["ntfs"];
+  boot.supportedFilesystems = [ "ntfs" ];
 
-  environment.systemPackages = with pkgs; [vim btop wm-eval.config.build.toplevel] ;
+  environment.systemPackages = with pkgs; [
+    vim
+    btop
+    wm-eval.config.build.toplevel
+  ];
 
   networking = {
     hostName = "hammond";
-		useDHCP = false;
+    useDHCP = false;
     defaultGateway = "192.168.2.1";
     nameservers = [ "192.168.2.1" ];
     interfaces = {
-      eno2.ipv4.addresses = [ {
-        address = "192.168.2.2";
-        prefixLength = 24;
-      } ];
+      eno2.ipv4.addresses = [
+        {
+          address = "192.168.2.2";
+          prefixLength = 24;
+        }
+      ];
     };
   };
 
@@ -51,11 +62,11 @@ in{
 
   users.users."aaron" = {
     isNormalUser = true;
-    extraGroups = ["wheel"];
+    extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = authorizedKeys;
   };
 
-  users.groups.git = {};
+  users.groups.git = { };
 
   systemd.tmpfiles.rules = [
     "d /srv/git 0770 git git -"
@@ -71,11 +82,11 @@ in{
 
   services.openssh = {
     enable = true;
-		settings = {
-			PasswordAuthentication = false;
-			PubkeyAuthentication = true;
-			AllowAgentForwarding = true;
-		};
+    settings = {
+      PasswordAuthentication = false;
+      PubkeyAuthentication = true;
+      AllowAgentForwarding = true;
+    };
   };
 
   services.xserver = {
@@ -87,7 +98,7 @@ in{
     };
   };
 
-	services.displayManager.defaultSession = "xfce";
+  services.displayManager.defaultSession = "xfce";
 
   system.stateVersion = "23.05";
 }

@@ -14,7 +14,5 @@ PROMPT='%F{cyan}%n@%m %F{default}%2~%f %(?.%F{green}❯.%F{red}❯)%f '
 complete -C $(which aws_completer) aws
 
 vz() {
-	fzf -q "${*:-}" --bind 'enter:become(vim {})'
+	fzf -q "${*:-}" --bind 'enter:become(nvim {})'
 }
-
-# export EZA_CONFIG_DIR=~/.config/eza
