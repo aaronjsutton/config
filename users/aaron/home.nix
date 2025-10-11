@@ -20,6 +20,7 @@
     nil
     silver-searcher
     tree
+    viddy
   ];
 
   home.sessionVariables = {

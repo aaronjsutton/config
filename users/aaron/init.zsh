@@ -16,3 +16,7 @@ complete -C $(which aws_completer) aws
 vz() {
 	fzf -q "${*:-}" --bind 'enter:become(nvim {})'
 }
+
+jw() {
+	viddy -t jj --ignore-working-copy log --color=always
+}
