@@ -7,6 +7,7 @@
 
     nixos-wsl.url = "github:nix-community/nixos-wsl";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+
     wrapper-manager.url = "github:viperml/wrapper-manager";
 
     darwin = {
@@ -24,8 +25,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nil.url = "github:oxalica/nil";
     jujutsu.url = "github:jj-vcs/jj";
+    nil.url = "github:oxalica/nil";
     zig.url = "github:mitchellh/zig-overlay";
   };
 
