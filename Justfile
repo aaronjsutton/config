@@ -5,11 +5,11 @@ export HOSTNAME := "lovelace"
 
 default: switch
 
-build:
+@build:
 	nix build ".#darwinConfigurations.${HOSTNAME}.system"
 
 [macos]
-switch: build
+@switch: build
 	sudo ./result/sw/bin/darwin-rebuild switch --flake "$(pwd)#${HOSTNAME}"
 
 [linux]

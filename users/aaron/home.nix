@@ -13,11 +13,12 @@
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
-    rsync
-    hut
     entr
+    hut
     just
     nil
+    omnisharp-roslyn
+    rsync
     silver-searcher
     tree
     viddy
@@ -83,15 +84,12 @@
       };
 
       ui = {
+        conflict-marker-style = "git";
         default-command = [ "log" ];
-        pager = "delta";
+        diff-editor = [ "nvim" "-c" "DiffEditor $left $right $output" ];
         diff-formatter = ":git";
-        diff-editor = [
-          "nvim"
-          "-c"
-          "DiffEditor $left $right $output"
-        ];
-        merge-editor = "vimdiff";
+        merge-editor = ["nvim" "-d" "$left" "$base" "$right" "-o" "$output"];
+        pager = "delta";
       };
 
       templates = {
@@ -179,7 +177,7 @@
   };
 
   programs.nushell = {
-    enable = true;
+    enable = false;
     settings = {
       show_banner = false;
       buffer_editor = "vi";
@@ -217,6 +215,7 @@
           lua
           nix
           python
+          razor
           terraform
           toml
           tsx
@@ -235,16 +234,20 @@
     syntaxHighlighting = {
       enable = true;
     };
+
     initContent = builtins.readFile ./init.zsh;
+
     shellAliases = {
       j = "just";
       vi = "nvim";
       vim = "nvim";
       zource = "source ~/.zshrc";
     };
+
     sessionVariables = {
       EZA_CONFIG_DIR = "~/.config/eza";
     };
+
     history = {
       save = 8000;
       share = true;

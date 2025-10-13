@@ -2,19 +2,38 @@
 {
   homebrew = {
     enable = true;
-    casks = [ "ghostty" ];
+    casks = [ 
+      "slack" 
+      "finch" 
+      "visual-studio-code" 
+      "ghostty" 
+    ];
   };
 
   nix = {
     settings.trusted-users = [
       "root"
       "aaron"
-      "@wheel"
+      "@admin"
     ];
 
-    linux-builder.enable = true;
+    linux-builder = {
+      enable = true;
+      ephemeral = true;
+      maxJobs = 4;
+      config = {
+        virtualisation = {
+          darwin-builder = {
+            diskSize = 40 * 1024;
+            memorySize = 8 * 1024;
+          };
+          cores = 6;
+        };
+      };  
+    };
 
     distributedBuilds = true;
+
     buildMachines = [
       {
         hostName = "hammond";
@@ -30,8 +49,8 @@
     ];
 
     extraOptions = ''
-      			builders-use-substitutes = true
-      		'';
+      builders-use-substitutes = true
+    '';
   };
 
   environment.pathsToLink = [ "/share/zsh" ];
@@ -39,10 +58,12 @@
 
   services.lorri.enable = true;
 
-  networking.computerName = "Aaron’s MacBook Pro";
-  networking.hostName = "lovelace";
-
   system.primaryUser = "aaron";
+
+  networking = {
+    computerName = "Aaron’s MacBook Pro";
+    hostName = "lovelace";
+  };
 
   users.users.aaron = {
     home = "/Users/aaron";

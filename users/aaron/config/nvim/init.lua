@@ -31,25 +31,25 @@ vim.opt.listchars = {
   nbsp = "␣",
 }
 
+vim.opt.clipboard = "unnamed"
 vim.opt.mouse = ''
 vim.opt.number = true
 
-vim.opt.expandtab = false  
-vim.opt.showcmd = false  
 vim.opt.autochdir = true
-
 vim.opt.autoindent = true  
-vim.opt.shiftwidth = 2     
-vim.opt.tabstop = 2       
-vim.opt.softtabstop = 2
-vim.opt.textwidth = 80
-
-vim.opt.modelines = 3
-vim.opt.showmode = false
-vim.opt.showcmd = false
 vim.opt.cmdheight = 1
+vim.opt.expandtab = false  
+vim.opt.modelines = 3
+vim.opt.shiftwidth = 2     
 vim.opt.shortmess:append({ S = true, s = true, W = true, A = true, a = true, t = true, I = true })
+vim.opt.showcmd = false
+vim.opt.showcmd = false  
+vim.opt.showmode = false
 vim.opt.signcolumn = "number"
+vim.opt.smartindent = false
+vim.opt.softtabstop = 2
+vim.opt.tabstop = 2       
+vim.opt.textwidth = 80
 
 vim.o.foldcolumn = '0'
 vim.o.foldlevel = 4
@@ -93,8 +93,16 @@ vim.lsp.config('biome', {
 	cmd = { 'bunx', '--bun', 'biome', 'lsp-proxy' },
 })
 
+vim.filetype.add {
+	[vim.fn.expand("~/.config/ghostty/config")] = "dosini",
+	extension = {
+		razor = 'razor',
+		cshtml = 'razor',
+	},
+}
+
 vim.lsp.enable('typescript-go')
 vim.lsp.enable('tofu_ls')
 vim.lsp.enable('biome')
 vim.lsp.enable('nil_ls')
-vim.lsp.enable('csharp_ls')
+vim.lsp.enable('roslyn_ls')
