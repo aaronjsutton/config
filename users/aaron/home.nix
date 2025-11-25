@@ -1,8 +1,12 @@
 {
   isWSL,
   inputs,
+currentSystem,
   ...
 }:
+let
+  unstable = import inputs.unstable { system = currentSystem; };
+in
 {
   config,
   lib,
@@ -49,6 +53,7 @@
 
   programs.gh = {
     enable = true;
+    package = unstable.gh; 
   };
 
   programs.jq = {
