@@ -168,6 +168,7 @@
       global = {
         warn_timeout = "2m";
         strict_env = true;
+        hide_env_diff = true;
       };
     };
   };
