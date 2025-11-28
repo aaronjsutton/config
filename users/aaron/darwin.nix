@@ -11,6 +11,13 @@
   };
 
   nix = {
+    enable = true;
+
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+
     settings.trusted-users = [
       "root"
       "aaron"
@@ -54,6 +61,7 @@
   };
 
   environment.pathsToLink = [ "/share/zsh" ];
+
   programs.zsh.enable = true;
 
   services.lorri.enable = true;
