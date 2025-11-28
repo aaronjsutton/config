@@ -5,7 +5,6 @@
     casks = [ 
       "slack" 
       "finch" 
-      "visual-studio-code" 
       "ghostty" 
     ];
   };
