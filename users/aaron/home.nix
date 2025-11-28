@@ -1,12 +1,8 @@
 {
   isWSL,
   inputs,
-currentSystem,
   ...
 }:
-let
-  unstable = import inputs.unstable { system = currentSystem; };
-in
 {
   config,
   lib,
@@ -53,7 +49,6 @@ in
 
   programs.gh = {
     enable = true;
-    package = unstable.gh; 
   };
 
   programs.jq = {
@@ -144,12 +139,18 @@ in
     ];
   };
 
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+  };
+
   programs.git = {
     enable = true;
-    delta.enable = true;
     lfs.enable = true;
-    userName = "Aaron Sutton";
-    userEmail = "hey@aaron.as";
+    settings = {
+      user.name = "Aaron Sutton";
+      user.email = "hey@aaron.as";
+    };
     ignores = [
       ".DS_Store"
       ".direnv/"
@@ -163,12 +164,10 @@ in
 
   programs.direnv = {
     enable = true;
-
     config = {
       global = {
-        warn_timeout = "30s";
+        warn_timeout = "2m";
         strict_env = true;
-        hide_env_diff = true;
       };
     };
   };
@@ -179,18 +178,6 @@ in
       color_theme = "TTY";
       theme_background = false;
     };
-  };
-
-  programs.nushell = {
-    enable = false;
-    settings = {
-      show_banner = false;
-      buffer_editor = "vi";
-      edit_mode = "vi";
-    };
-    envFile.text = ''
-      			$env.XDG_CONFIG_HOME = '${config.xdg.configHome}'
-      		'';
   };
 
   programs.neovim = {

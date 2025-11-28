@@ -1,15 +1,14 @@
-set shell := ["bash", "-euxo", "pipefail", "-c"]
 set quiet
 
 export HOSTNAME := "lovelace"
 
 default: switch
 
-@build:
-	nix build ".#darwinConfigurations.${HOSTNAME}.system"
+build:
+	nix build -v ".#darwinConfigurations.${HOSTNAME}.system"
 
 [macos]
-@switch: build
+switch: build
 	sudo ./result/sw/bin/darwin-rebuild switch --flake "$(pwd)#${HOSTNAME}"
 
 [linux]

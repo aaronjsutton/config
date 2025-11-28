@@ -2,22 +2,17 @@
   description = "Aaron’s NixOS configurations";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     systems.url = "github:nix-systems/default";
-    unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-
-    nixos-wsl.url = "github:nix-community/nixos-wsl";
-    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
-
-    wrapper-manager.url = "github:viperml/wrapper-manager";
 
     darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -33,13 +28,12 @@
 
   outputs =
     {
-      self,
-      nixpkgs,
-      systems,
-      home-manager,
-      wrapper-manager,
-      darwin,
-      ...
+    darwin,
+    home-manager,
+    nixpkgs,
+    self,
+    systems,
+    ...
     }@inputs:
     let
       overlays = [
@@ -47,6 +41,14 @@
         inputs.neovim-nightly-overlay.overlays.default
         inputs.nil.overlays.default
         inputs.zig.overlays.default
+        (final: prev: let
+          system = prev.stdenv.hostPlatform.system;
+          unstable = import inputs.nixpkgs-unstable {
+            inherit system;
+          };
+        in {
+          inherit (unstable) gh direnv;
+        })
       ];
 
       mkSystem = import ./lib/mksystem.nix {
@@ -71,13 +73,6 @@
         user = "aaron";
       };
 
-      nixosConfigurations.wsl = mkSystem "wsl" {
-        system = "aarch64-linux";
-        user = "aaron";
-        wsl = true;
-      };
-
       formatter = eachSystem (system: (import nixpkgs { inherit system; }).nixfmt-rfc-style);
     };
-
 }
