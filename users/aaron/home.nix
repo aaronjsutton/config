@@ -10,6 +10,8 @@
   ...
 }:
 {
+  programs.home-manager.enable = true;
+
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
@@ -27,10 +29,6 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     GOPATH = "${config.xdg.cacheHome}/go";
-  };
-
-  programs.home-manager = {
-    enable = true;
   };
 
   xdg = {
@@ -60,7 +58,7 @@
   };
 
   programs.eza = {
-    enable = true;
+    enable = false;
     git = true;
     extraOptions = [
       "--group-directories-first"
@@ -139,17 +137,17 @@
     ];
   };
 
-  programs.delta = {
-    enable = true;
-    enableGitIntegration = true;
-  };
 
   programs.git = {
     enable = true;
-    lfs.enable = true;
+    lfs ={
+      enable = true;
+    };
     settings = {
-      user.name = "Aaron Sutton";
-      user.email = "hey@aaron.as";
+      user = {
+        name = "Aaron Sutton";
+        email = "hey@aaron.as";
+      };
     };
     ignores = [
       ".DS_Store"
@@ -158,8 +156,14 @@
     ];
   };
 
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+  };
+
   programs.zoxide = {
     enable = true;
+    enableZshIntegration = true;
   };
 
   programs.direnv = {
@@ -184,11 +188,9 @@
   programs.neovim = {
     enable = true;
     plugins = with pkgs.vimPlugins; [
+      hunk-nvim
       kanagawa-paper-nvim
       nvim-lspconfig
-      nvim-ufo
-      plenary-nvim
-      hunk-nvim
       (nvim-treesitter.withPlugins (
         plugins: with plugins; [
           c
@@ -216,6 +218,8 @@
           yaml
         ]
       ))
+      nvim-ufo
+      plenary-nvim
     ];
   };
 
@@ -235,10 +239,6 @@
       vi = "nvim";
       vim = "nvim";
       zource = "source ~/.zshrc";
-    };
-
-    sessionVariables = {
-      EZA_CONFIG_DIR = "~/.config/eza";
     };
 
     history = {

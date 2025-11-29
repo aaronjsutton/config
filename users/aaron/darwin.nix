@@ -1,5 +1,18 @@
 { pkgs, ... }:
 {
+  networking.computerName = "Aaron’s MacBook Pro";
+  networking.hostName = "lovelace";
+
+
+  system.primaryUser = "aaron";
+
+  users.users.aaron = {
+    home = "/Users/aaron";
+    shell = pkgs.zsh;
+  };
+
+  services.lorri.enable = true;
+
   homebrew = {
     enable = true;
     casks = [ 
@@ -57,23 +70,5 @@
     extraOptions = ''
       builders-use-substitutes = true
     '';
-  };
-
-  environment.pathsToLink = [ "/share/zsh" ];
-
-  programs.zsh.enable = true;
-
-  services.lorri.enable = true;
-
-  system.primaryUser = "aaron";
-
-  networking = {
-    computerName = "Aaron’s MacBook Pro";
-    hostName = "lovelace";
-  };
-
-  users.users.aaron = {
-    home = "/Users/aaron";
-    shell = pkgs.zsh;
   };
 }

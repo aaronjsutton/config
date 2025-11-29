@@ -95,10 +95,15 @@ vim.lsp.config('biome', {
 
 vim.filetype.add {
 	[vim.fn.expand("~/.config/ghostty/config")] = "dosini",
+
 	extension = {
 		razor = 'razor',
 		cshtml = 'razor',
 	},
+
+	pattern = {
+    [".*%.env%.example"] = "sh",
+	}
 }
 
 vim.lsp.enable('typescript-go')
