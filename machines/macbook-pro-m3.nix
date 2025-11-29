@@ -3,12 +3,11 @@
   ...
 }:
 {
+  system.stateVersion = 6;
+
   programs.zsh.enable = true;
 
-  environment.shells = with pkgs; [
-    bashInteractive
-    zsh
-  ];
+  nixpkgs.config.allowUnfree = true;
 
-  system.stateVersion = 6;
+  environment.shells = with pkgs; [ bashInteractive zsh ];
 }
