@@ -22,13 +22,13 @@
     omnisharp-roslyn
     rsync
     silver-searcher
-    tree
     viddy
   ];
 
   home.sessionVariables = {
     EDITOR = "nvim";
     GOPATH = "${config.xdg.cacheHome}/go";
+    EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";
   };
 
   xdg = {
@@ -40,6 +40,10 @@
       };
       "nvim" = {
         source = ./config/nvim;
+        recursive = true;
+      };
+      "eza" = {
+        source = ./config/eza;
         recursive = true;
       };
     };
@@ -58,14 +62,11 @@
   };
 
   programs.eza = {
-    enable = false;
+    enable = true;
     git = true;
     extraOptions = [
       "--group-directories-first"
     ];
-    theme = {
-      extensions = { };
-    };
   };
 
   programs.jujutsu = {
