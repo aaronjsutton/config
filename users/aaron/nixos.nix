@@ -1,11 +1,6 @@
 { pkgs, ... }:
 {
-  environment.pathsToLink = [ "/share/zsh" ];
-
-  environment.localBinInPath = true;
-
   programs.zsh.enable = true;
-
   services.lorri.enable = true;
 
   virtualisation.containers.enable = true;
