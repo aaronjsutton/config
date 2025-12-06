@@ -22,7 +22,6 @@
     };
 
     jujutsu.url = "github:jj-vcs/jj";
-    nil.url = "github:oxalica/nil";
     zig.url = "github:mitchellh/zig-overlay";
   };
 
@@ -39,7 +38,6 @@
       overlays = [
         inputs.jujutsu.overlays.default
         inputs.neovim-nightly-overlay.overlays.default
-        inputs.nil.overlays.default
         inputs.zig.overlays.default
         (final: prev: let
           system = prev.stdenv.hostPlatform.system;
@@ -47,7 +45,7 @@
             inherit system;
           };
         in {
-          inherit (unstable) gh direnv;
+          inherit (unstable) gh direnv nil;
         })
       ];
 
