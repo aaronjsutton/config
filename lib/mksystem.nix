@@ -25,14 +25,17 @@ let
     if darwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
 
 in
-systemFunc rec {
-  inherit system;
-
+systemFunc {
   modules = [
-    { nixpkgs.overlays = overlays; }
-    { nixpkgs.config.allowUnfree = true; }
-
-    (if isWSL then inputs.nixos-wsl.nixosModules.wsl else { })
+      { 
+        nixpkgs = {
+          hostPlatform = {
+            inherit system;
+          };
+          overlays = overlays; 
+          config.allowUnfree = true;
+        };
+      }
 
     machine
     user-config
@@ -45,7 +48,6 @@ systemFunc rec {
         inputs = inputs;
       };
     }
-
     {
       config._module.args = {
         currentSystem = system;

@@ -2,9 +2,15 @@
   description = "Aaron’s NixOS configurations";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
     systems.url = "github:nix-systems/default";
+
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
 
     darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
@@ -21,8 +27,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    jujutsu.url = "github:jj-vcs/jj";
-    zig.url = "github:mitchellh/zig-overlay";
+    jujutsu = {
+      url = "github:jj-vcs/jj";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
+    zig = {
+      url = "github:mitchellh/zig-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
   outputs =
@@ -39,6 +54,7 @@
         inputs.jujutsu.overlays.default
         inputs.neovim-nightly-overlay.overlays.default
         inputs.zig.overlays.default
+
         (final: prev: let
           system = prev.stdenv.hostPlatform.system;
           unstable = import inputs.nixpkgs-unstable {
@@ -60,7 +76,7 @@
       eachSystem = nixpkgs.lib.genAttrs (import systems);
     in
     {
-      darwinConfigurations.lovelace = mkSystem "macbook-pro-m3" {
+      darwinConfigurations.lovelace = mkSystem "macbook-pro-mx" {
         system = "aarch64-darwin";
         user = "aaron";
         darwin = true;

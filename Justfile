@@ -3,7 +3,7 @@ export NIX_NAME := "lovelace"
 default: switch
 
 build:
-	nix build -v ".#darwinConfigurations.${NIX_NAME}.system"
+	nix build ".#darwinConfigurations.${NIX_NAME}.system"
 
 [macos]
 switch: build

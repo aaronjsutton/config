@@ -1,6 +1,5 @@
 {
   pkgs,
-  wm-eval,
   ...
 }:
 let
@@ -40,7 +39,6 @@ in
   environment.systemPackages = with pkgs; [
     vim
     btop
-    wm-eval.config.build.toplevel
   ];
 
   networking = {

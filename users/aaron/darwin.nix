@@ -3,18 +3,20 @@
   networking.computerName = "Aaron’s MacBook Pro";
   networking.hostName = "lovelace";
 
-
-  system.primaryUser = "aaron";
-
   users.users.aaron = {
     home = "/Users/aaron";
     shell = pkgs.zsh;
   };
 
+  system.primaryUser = "aaron";
+
   services.lorri.enable = true;
 
   homebrew = {
     enable = true;
+    onActivation = {
+      cleanup = "uninstall";
+    };
     casks = [ 
       "slack" 
       "finch" 

@@ -19,7 +19,6 @@
     hut
     just
     nil
-    omnisharp-roslyn
     rsync
     silver-searcher
     viddy

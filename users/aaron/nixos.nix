@@ -1,17 +1,15 @@
 { pkgs, ... }:
 {
   programs.zsh.enable = true;
+
   services.lorri.enable = true;
 
-  virtualisation.containers.enable = true;
   virtualisation = {
-    podman = {
-      enable = true;
-    };
+    containers.enable = true;
+    podman.enable = true;
   };
 
   users.users.aaron = {
-    isNormalUser = true;
     home = "/home/aaron";
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [

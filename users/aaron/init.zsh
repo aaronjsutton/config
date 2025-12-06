@@ -11,12 +11,10 @@ bindkey -M vicmd v edit-command-line
 
 PROMPT='%F{cyan}%n@%m %F{default}%2~%f %(?.%F{green}❯.%F{red}❯)%f '
 
-complete -C $(which aws_completer) aws
-
 vz() {
 	fzf -q "${*:-}" --bind 'enter:become(nvim {})'
 }
 
-jw() {
-	viddy -t jj --ignore-working-copy log --color=always
-}
+eval $(/opt/homebrew/bin/brew shellenv)
+
+complete -C $(which aws_completer) aws
