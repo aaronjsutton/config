@@ -144,15 +144,6 @@
     enableZshIntegration = true;
   };
 
-  programs.direnv.enable = true;
-  programs.direnv.settings = {
-    global = {
-      hide_env_diff = true;
-      strict_env = true;
-      warn_timeout = "1m0s";
-    };
-  };
-
   programs.btop.enable = true;
   programs.btop.settings = {
     color_theme = "TTY";
@@ -163,7 +154,7 @@
   programs.neovim.plugins = builtins.attrValues {
     inherit (pkgs.vimPlugins)
     hunk-nvim
-    kanagawa-nvim
+    rose-pine
     nvim-lspconfig
     telescope-nvim
     plenary-nvim;

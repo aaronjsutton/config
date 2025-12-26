@@ -58,7 +58,7 @@
         (final: prev: let
           system = prev.stdenv.hostPlatform.system;
           unstable = import inputs.nixpkgs-unstable {
-            hostPlatform.system = system;
+            inherit system;
           };
         in {
           inherit (unstable) gh direnv nil;

@@ -6,25 +6,15 @@ vim.opt.laststatus = 3
 vim.opt.cmdheight = 1
 vim.opt.statusline = " %f %m %= %l:%c"
 
-require("kanagawa").setup({
-	compile = true,
-	transparent = true,
-	undercurl = true,            
-	background = {
-		light = "lotus",
-		dark = "dragon"
+require("rose-pine").setup({
+	styles = {
+		bold = true,
+		italic = false,
+		transparency = true,
 	},
-	overrides = function(colors)
-		return {
-			["@variable.builtin"]  = {
-				bold = true,
-				italic = false
-			},
-		}
-	end,
 })
 
-vim.cmd("colorscheme kanagawa")
+vim.cmd("colorscheme rose-pine")
 
 vim.opt.list = false
 vim.opt.listchars = {

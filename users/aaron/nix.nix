@@ -13,8 +13,6 @@
       "aaron"
       "@admin"
     ];
-
-    allow-dirty = false;
   };
 
 
