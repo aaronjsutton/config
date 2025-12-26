@@ -144,34 +144,33 @@
     enableZshIntegration = true;
   };
 
-  programs.direnv = {
-    enable = true;
-    config = {
-      global = {
-        warn_timeout = "2m";
-        strict_env = true;
-        hide_env_diff = true;
-      };
+  programs.direnv.enable = true;
+  programs.direnv.settings = {
+    global = {
+      hide_env_diff = true;
+      strict_env = true;
+      warn_timeout = "1m0s";
     };
   };
 
-  programs.btop = {
-    enable = true;
-    settings = {
-      color_theme = "TTY";
-      theme_background = false;
-    };
+  programs.btop.enable = true;
+  programs.btop.settings = {
+    color_theme = "TTY";
+    theme_background = false;
   };
 
-  programs.neovim = {
-    enable = true;
-    plugins = with pkgs.vimPlugins; [
-      hunk-nvim
-      kanagawa-nvim
-      nvim-lspconfig
-      telescope-nvim
-      (nvim-treesitter.withPlugins (
-        plugins: with plugins; [
+  programs.neovim.enable = true;
+  programs.neovim.plugins = builtins.attrValues {
+    inherit (pkgs.vimPlugins)
+    hunk-nvim
+    kanagawa-nvim
+    nvim-lspconfig
+    telescope-nvim
+    plenary-nvim;
+  } ++ [
+      (pkgs.vimPlugins.nvim-treesitter.withPlugins (
+        plugins: builtins.attrValues {
+          inherit (plugins)
           c
           c-sharp
           css
@@ -194,12 +193,10 @@
           toml
           tsx
           typescript
-          yaml
-        ]
+          yaml;
+        }
       ))
-      plenary-nvim
     ];
-  };
 
   programs.zsh = {
     autocd = true;
