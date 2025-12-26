@@ -58,7 +58,7 @@
         (final: prev: let
           system = prev.stdenv.hostPlatform.system;
           unstable = import inputs.nixpkgs-unstable {
-            inherit system;
+            hostPlatform.system = system;
           };
         in {
           inherit (unstable) gh direnv nil;
@@ -87,6 +87,6 @@
         user = "aaron";
       };
 
-      formatter = eachSystem (system: (import nixpkgs { inherit system; }).nixfmt-rfc-style);
+      formatter = eachSystem (system: (import nixpkgs { inherit system; }).nixfmt-tree);
     };
 }

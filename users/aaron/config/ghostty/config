@@ -6,19 +6,17 @@ font-feature = +calt
 font-size = "16"
 font-style = "Regular"
 macos-icon = "retro"
-macos-titlebar-style = "transparent"
 mouse-hide-while-typing = true
-theme = dark:kanagawa-paper-ink,light:kanagawa-paper-canvas
-unfocused-split-opacity = 1.0
-window-colorspace = display-p3
+shell-integration = zsh
+shell-integration-features = cursor,title,sudo,ssh-env,ssh-terminfo
+theme = dark:kanagawa-dragon,light:kanagawa-lotus
+unfocused-split-opacity = 1
 window-inherit-font-size = true
 window-padding-balance = true
 window-padding-x = 8
-window-theme = system
 working-directory = inherit
-shell-integration-features = cursor,title,sudo,ssh-env,ssh-terminfo
 
-keybind = global:cmd+alt+grave_accent=toggle_quick_terminal
+keybind = global:cmd+shift+grave_accent=toggle_quick_terminal
 
 keybind = cmd+alt+j=goto_split:down
 keybind = cmd+alt+k=goto_split:up

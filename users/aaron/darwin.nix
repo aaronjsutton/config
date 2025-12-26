@@ -7,70 +7,21 @@
     home = "/Users/aaron";
     shell = pkgs.zsh;
   };
-
+  
+  # Legacy option needed by some parts of our configuration.
+  # https://nix-darwin.github.io/nix-darwin/manual/#opt-system.primaryUser
   system.primaryUser = "aaron";
-
+  
+  # Experimental: Use lorri for faster build times 
+  # in direnv-enabled projects.
   services.lorri.enable = true;
-
-  homebrew = {
-    enable = true;
-    onActivation = {
-      cleanup = "uninstall";
-    };
-    casks = [ 
-      "slack" 
-      "finch" 
-      "ghostty" 
-    ];
-  };
-
-  nix = {
-    enable = true;
-
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-
-    settings.trusted-users = [
-      "root"
-      "aaron"
-      "@admin"
-    ];
-
-    linux-builder = {
-      enable = true;
-      ephemeral = true;
-      maxJobs = 4;
-      config = {
-        virtualisation = {
-          darwin-builder = {
-            diskSize = 40 * 1024;
-            memorySize = 8 * 1024;
-          };
-          cores = 6;
-        };
-      };  
-    };
-
-    distributedBuilds = true;
-
-    buildMachines = [
-      {
-        hostName = "hammond";
-        protocol = "ssh-ng";
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-        systems = [ "x86_64-linux" ];
-      }
-    ];
-
-    extraOptions = ''
-      builders-use-substitutes = true
-    '';
-  };
+  
+  # Manage a few graphical apps via Homebrew. 
+  # Graphical apps installed by Nix don't play nice with Spotlight, etc.
+  homebrew.enable = true;
+  homebrew.casks = [ 
+    "slack" 
+    "finch" 
+    "ghostty" 
+  ];
 }

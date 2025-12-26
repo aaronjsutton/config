@@ -3,12 +3,17 @@ vim.opt.writebackup = false
 
 vim.opt.modeline = true
 vim.opt.laststatus = 3
+vim.opt.cmdheight = 1
 vim.opt.statusline = " %f %m %= %l:%c"
 
-require("kanagawa-paper").setup({
-	cache = true,
+require("kanagawa").setup({
+	compile = true,
 	transparent = true,
 	undercurl = true,            
+	background = {
+		light = "lotus",
+		dark = "dragon"
+	},
 	overrides = function(colors)
 		return {
 			["@variable.builtin"]  = {
@@ -19,7 +24,7 @@ require("kanagawa-paper").setup({
 	end,
 })
 
-vim.cmd("colorscheme kanagawa-paper")
+vim.cmd("colorscheme kanagawa")
 
 vim.opt.list = false
 vim.opt.listchars = {
@@ -37,7 +42,6 @@ vim.opt.number = true
 
 vim.opt.autochdir = true
 vim.opt.autoindent = true  
-vim.opt.cmdheight = 1
 vim.opt.expandtab = false  
 vim.opt.modelines = 3
 vim.opt.shiftwidth = 2     

@@ -1,5 +1,4 @@
 {
-  isWSL,
   inputs,
   ...
 }:
@@ -21,7 +20,6 @@
     nil
     rsync
     silver-searcher
-    viddy
   ];
 
   home.sessionVariables = {
@@ -30,83 +28,63 @@
     EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";
   };
 
-  xdg = {
-    enable = true;
-    configFile = {
-      "ghostty" = {
-        source = ./config/ghostty;
-        recursive = true;
-      };
-      "nvim" = {
-        source = ./config/nvim;
-        recursive = true;
-      };
-      "eza" = {
-        source = ./config/eza;
-        recursive = true;
-      };
+  xdg.enable = true;
+  xdg.configFile = {
+    "ghostty" = {
+      source = ./config/ghostty;
+      recursive = true;
+    };
+    "nvim" = {
+      source = ./config/nvim;
+      recursive = true;
+    };
+    "eza" = {
+      source = ./config/eza;
+      recursive = true;
     };
   };
 
-  programs.gh = {
-    enable = true;
-  };
+  programs.eza.enable = true;
+  programs.eza.git = true;
+  programs.eza.extraOptions = [
+    "--group-directories-first"
+  ];
 
-  programs.jq = {
-    enable = true;
-  };
+  programs.gh.enable = true;
+  programs.jq.enable = true;
+  programs.tmux.enable = true;
 
-  programs.tmux = {
-    enable = true;
-  };
+  programs.jujutsu.enable = true;
+  programs.jujutsu.settings  = {
+    user.name = "Aaron Sutton";
+    user.email = "hey@aaron.as";
 
-  programs.eza = {
-    enable = true;
-    git = true;
-    extraOptions = [
-      "--group-directories-first"
-    ];
-  };
+    git.private-commits = "description(glob:'private:*')";
 
-  programs.jujutsu = {
-    enable = true;
+    ui = {
+      conflict-marker-style = "git";
+      default-command = [ "log" ];
+      diff-editor = [ "nvim" "-c" "DiffEditor $left $right $output" ];
+      diff-formatter = ":git";
+      merge-editor = ["nvim" "-d" "$left" "$base" "$right" "-o" "$output"];
+      pager = "delta";
+    };
 
-    settings = {
-      user = {
-        name = "Aaron Sutton";
-        email = "hey@aaron.as";
-      };
-
-      git = {
-        private-commits = "description(glob:'private:*')";
-      };
-
-      ui = {
-        conflict-marker-style = "git";
-        default-command = [ "log" ];
-        diff-editor = [ "nvim" "-c" "DiffEditor $left $right $output" ];
-        diff-formatter = ":git";
-        merge-editor = ["nvim" "-d" "$left" "$base" "$right" "-o" "$output"];
-        pager = "delta";
-      };
-
-      templates = {
-        git_push_bookmark = ''"aaron/push-" ++ change_id.short()'';
-        log_node = ''
+    templates = {
+      git_push_bookmark = ''"aaron/push-" ++ change_id.short()'';
+      log_node = ''
           coalesce(
-          	if(!self, "🮀"),
-          	if(current_working_copy, "◎"),
-          	if(root, "┴"),
-          	if(immutable, "●", "○"),
+            if(!self, "🮀"),
+            if(current_working_copy, "◎"),
+            if(root, "┴"),
+            if(immutable, "●", "○"),
           )
-        '';
-        op_log_node = ''if(current_operation, "◎", "○")'';
-      };
+      '';
+      op_log_node = ''if(current_operation, "◎", "○")'';
+    };
 
-      template-aliases = {
-        "format_timestamp(timestamp)" = "timestamp.ago()";
-      };
-
+    template-aliases = {
+      "format_timestamp(timestamp)" = "timestamp.ago()";
     };
   };
 
@@ -189,8 +167,9 @@
     enable = true;
     plugins = with pkgs.vimPlugins; [
       hunk-nvim
-      kanagawa-paper-nvim
+      kanagawa-nvim
       nvim-lspconfig
+      telescope-nvim
       (nvim-treesitter.withPlugins (
         plugins: with plugins; [
           c
@@ -218,7 +197,6 @@
           yaml
         ]
       ))
-      nvim-ufo
       plenary-nvim
     ];
   };
@@ -228,9 +206,7 @@
     autosuggestion.enable = false;
     enable = true;
     enableCompletion = true;
-    syntaxHighlighting = {
-      enable = true;
-    };
+    syntaxHighlighting.enable = true;
 
     initContent = builtins.readFile ./init.zsh;
 

@@ -1,61 +1,49 @@
 {
-  nixpkgs,
-  overlays,
-  inputs,
+nixpkgs,
+overlays,
+inputs,
 }:
-name:
+machine:
 {
-  system,
-  user,
-  darwin ? false,
-  wsl ? false,
+system,
+user,
+darwin ? false,
+wsl ? false,
 }:
 let
-
-  isWSL = wsl;
-  # isLinux = !darwin && !isWSL;
-
-  machine = ../machines/${name}.nix;
-
-  user-config = ../users/${user}/${if darwin then "darwin" else "nixos"}.nix;
-
+  config = ../users/${user}/${if darwin then "darwin" else "nixos"}.nix;
   systemFunc = if darwin then inputs.darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
-
   home-manager =
     if darwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
-
 in
-systemFunc {
-  modules = [
+  systemFunc {
+    modules = [
       { 
         nixpkgs = {
-          hostPlatform = {
-            inherit system;
-          };
+          hostPlatform.system = system;
           overlays = overlays; 
           config.allowUnfree = true;
         };
       }
 
-    machine
-    user-config
-    home-manager.home-manager
-    {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.users.${user} = (import ../users/${user}/home.nix) {
-        isWSL = isWSL;
-        inputs = inputs;
-      };
-    }
-    {
-      config._module.args = {
-        currentSystem = system;
-        currentSystemName = name;
-        currentSystemUser = user;
-        isWSL = isWSL;
-        inputs = inputs;
-      };
-    }
-  ];
-}
+      ../machines/${machine}.nix 
+      ../users/${user}/nix.nix
+      config 
+      home-manager.home-manager
+      {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users.${user} = (import ../users/${user}/home.nix) {
+          inputs = inputs;
+        };
+      }
+      {
+        config._module.args = {
+          inherit machine;
+          currentSystem = system;
+          currentSystemUser = user;
+          inputs = inputs;
+        };
+      }
+    ];
+  }
