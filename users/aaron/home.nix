@@ -14,7 +14,6 @@
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
-    entr
     hut
     just
     nil
@@ -118,31 +117,27 @@
 
   programs.git = {
     enable = true;
-    lfs ={
-      enable = true;
-    };
-    settings = {
-      user = {
-        name = "Aaron Sutton";
-        email = "hey@aaron.as";
-      };
-    };
-    ignores = [
-      ".DS_Store"
-      ".direnv/"
-      "*.sw?"
-    ];
+    lfs.enable = true;
   };
 
-  programs.delta = {
-    enable = true;
-    enableGitIntegration = true;
+  programs.git.settings = {
+    user = {
+      name = "Aaron Sutton";
+      email = "hey@aaron.as";
+    };
   };
 
-  programs.zoxide = {
-    enable = true;
-    enableZshIntegration = true;
-  };
+  programs.git.ignores = [
+    ".DS_Store"
+    ".direnv/"
+    "*.sw?"
+  ];
+
+  programs.delta.enable = true;
+  programs.delta.enableGitIntegration = true;
+
+  programs.zoxide.enable = true;
+  programs.zoxide.enableZshIntegration = true;
 
   programs.btop.enable = true;
   programs.btop.settings = {
@@ -154,9 +149,9 @@
   programs.neovim.plugins = builtins.attrValues {
     inherit (pkgs.vimPlugins)
     hunk-nvim
-    rose-pine
+    zenbones-nvim
     nvim-lspconfig
-    telescope-nvim
+    lush-nvim
     plenary-nvim;
   } ++ [
       (pkgs.vimPlugins.nvim-treesitter.withPlugins (

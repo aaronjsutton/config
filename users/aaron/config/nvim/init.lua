@@ -6,15 +6,13 @@ vim.opt.laststatus = 3
 vim.opt.cmdheight = 1
 vim.opt.statusline = " %f %m %= %l:%c"
 
-require("rose-pine").setup({
-	styles = {
-		bold = true,
-		italic = false,
-		transparency = true,
-	},
-})
+vim.g.neobones = { 
+	transparent_background = true ,
+	italic_comments = true,
+	italic_strings = false,
+}
 
-vim.cmd("colorscheme rose-pine")
+vim.cmd("colorscheme neobones")
 
 vim.opt.list = false
 vim.opt.listchars = {

@@ -8,13 +8,13 @@
     shell = pkgs.zsh;
   };
 
-  # Manage a few graphical apps via Homebrew. 
-  # Graphical apps installed by Nix don't play nice with Spotlight, etc.
+  # Manage some graphical apps with Homebrew. 
   homebrew.enable = true;
   homebrew.casks = [ 
-    "slack" 
     "finch" 
     "ghostty" 
+    "slack"
+    "steam"
   ];
   
   # Legacy option needed by some parts of our configuration.
@@ -28,8 +28,12 @@
   programs.direnv.settings = {
     global = {
       hide_env_diff = true;
+      log_filter = "^$";
+      log_format = "-";
       strict_env = true;
-      warn_timeout = "1m0s";
+      warn_timeout = "300ms";
     };
+
+    whitelist.prefix = ["~/Code"];
   };
 }

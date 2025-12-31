@@ -15,8 +15,6 @@
     ];
   };
 
-
-  # Configure the built-in Linux builder.
   nix.linux-builder = {
     enable = true;
     ephemeral = true;

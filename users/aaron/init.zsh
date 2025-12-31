@@ -9,7 +9,7 @@ bindkey -v
 bindkey -M vicmd "/" fzf-history-widget
 bindkey -M vicmd v edit-command-line
 
-PROMPT='%B%F{yellow}%n%F{red}@%F{blue}%m %b%f%2~%f %(?.%F{green}❯.%F{red}❯)%f '
+PROMPT='%F{cyan}%n@%m %b%f%2~%f %(?.%F{green}❯.%F{red}❯)%f '
 
 vz() {
 	fzf -q "${*:-}" --bind 'enter:become(nvim {})'
