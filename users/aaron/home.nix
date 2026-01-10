@@ -19,6 +19,7 @@
     nil
     rsync
     silver-searcher
+    shadowenv
   ];
 
   home.sessionVariables = {
@@ -56,7 +57,7 @@
   programs.jujutsu.enable = true;
   programs.jujutsu.settings  = {
     user.name = "Aaron Sutton";
-    user.email = "hey@aaron.as";
+    user.email = "aaron@aaron.as";
 
     git.private-commits = "description(glob:'private:*')";
 

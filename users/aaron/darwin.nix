@@ -11,6 +11,7 @@
   # Manage some graphical apps with Homebrew. 
   homebrew.enable = true;
   homebrew.casks = [ 
+    "blender" 
     "finch" 
     "ghostty" 
     "slack"
