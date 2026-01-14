@@ -8,7 +8,7 @@ build:
 
 [macos]
 build:
-	nix build ".#darwinConfigurations.${MACHINE_NAME}.system"
+	nix build --show-trace --abort-on-warn ".#darwinConfigurations.${MACHINE_NAME}.system"
 
 [linux]
 switch: build

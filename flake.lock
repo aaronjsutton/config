@@ -110,15 +110,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1768349174,
-        "narHash": "sha256-Ez5kq/7oFcJKxz6j9FuBK5RYE9qmYF0nTtJCphBJoyk=",
-        "owner": "jj-vcs",
+        "lastModified": 1768371247,
+        "narHash": "sha256-dTu+fOz1If5o/RTjLwzzQq49agQnBzFlNilkhcb1tf4=",
+        "owner": "aaronjsutton",
         "repo": "jj",
-        "rev": "8eae34d88931ee179b15e55ee968c4a35e99c330",
+        "rev": "a8fd6983f2205803550c93409350ca2ba58228c3",
         "type": "github"
       },
       "original": {
-        "owner": "jj-vcs",
+        "owner": "aaronjsutton",
+        "ref": "aaron/flake-warning",
         "repo": "jj",
         "type": "github"
       }

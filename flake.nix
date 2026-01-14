@@ -28,7 +28,7 @@
     };
 
     jujutsu = {
-      url = "github:jj-vcs/jj";
+      url = "github:aaronjsutton/jj?ref=aaron/flake-warning";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };

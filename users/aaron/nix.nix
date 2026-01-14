@@ -3,6 +3,7 @@
   nix.package = pkgs.nixVersions.latest;
 
   nix.settings = {
+    warn-dirty = false;
     experimental-features = [
       "nix-command"
       "flakes"
