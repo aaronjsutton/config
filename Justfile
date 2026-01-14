@@ -1,14 +1,19 @@
-export NIX_NAME := "lovelace"
+export MACHINE_NAME := "lovelace"
 
 default: switch
 
+[linux]
 build:
-	@nix build ".#darwinConfigurations.${NIX_NAME}.system"
+	nix build ".#nixosConfigurations.${MACHINE_NAME}.system"
 
 [macos]
-switch: build
-	sudo ./result/sw/bin/darwin-rebuild switch --flake ".#${NIX_NAME}"
+build:
+	nix build ".#darwinConfigurations.${MACHINE_NAME}.system"
 
 [linux]
 switch: build
-	sudo nixos-rebuild switch --flake ".#${NIX_NAME}"
+	sudo nixos-rebuild switch --flake ".#${MACHINE_NAME}"
+
+[macos]
+switch: build
+	sudo ./result/sw/bin/darwin-rebuild switch --flake ".#${MACHINE_NAME}"
