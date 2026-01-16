@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   nix.enable = true;
   nix.package = pkgs.nixVersions.latest;
 
@@ -28,13 +29,13 @@
         };
         cores = 6;
       };
-    };  
+    };
   };
 
   nix.buildMachines = [ ];
   nix.distributedBuilds = true;
 
   nix.extraOptions = ''
-      builders-use-substitutes = true
+    builders-use-substitutes = true
   '';
 }

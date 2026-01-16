@@ -53,9 +53,10 @@
   programs.gh.enable = true;
   programs.jq.enable = true;
   programs.tmux.enable = true;
+  programs.tmux.extraConfig = builtins.readFile ./config/tmux/tmux.conf;
 
   programs.jujutsu.enable = true;
-  programs.jujutsu.settings  = {
+  programs.jujutsu.settings = {
     user.name = "Aaron Sutton";
     user.email = "aaron@aaron.as";
 
@@ -64,23 +65,39 @@
     ui = {
       conflict-marker-style = "git";
       default-command = [ "log" ];
-      diff-editor = [ "nvim" "-c" "DiffEditor $left $right $output" ];
+      diff-editor = [
+        "nvim"
+        "-c"
+        "DiffEditor $left $right $output"
+      ];
       diff-formatter = ":git";
-      merge-editor = ["nvim" "-d" "$left" "$base" "$right" "-o" "$output"];
+      merge-editor = [
+        "nvim"
+        "-d"
+        "$left"
+        "$base"
+        "$right"
+        "-o"
+        "$output"
+      ];
       pager = "delta";
     };
 
     templates = {
       git_push_bookmark = ''"aaron/push-" ++ change_id.short()'';
       log_node = ''
-          coalesce(
-            if(!self, "🮀"),
-            if(current_working_copy, "◎"),
-            if(root, "┴"),
-            if(immutable, "●", "○"),
-          )
+        coalesce(
+          if(!self, "🮀"),
+          if(current_working_copy, "◎"),
+          if(root, "┴"),
+          if(immutable, "●", "○"),
+        )
       '';
       op_log_node = ''if(current_operation, "◎", "○")'';
+    };
+
+    revet-aliases = {
+      "private()" = "subject('private:*')";
     };
 
     template-aliases = {
@@ -115,7 +132,6 @@
     ];
   };
 
-
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -147,40 +163,45 @@
   };
 
   programs.neovim.enable = true;
-  programs.neovim.plugins = builtins.attrValues {
-    inherit (pkgs.vimPlugins)
-    hunk-nvim
-    zenbones-nvim
-    nvim-lspconfig
-    lush-nvim
-    plenary-nvim;
-  } ++ [
+  programs.neovim.plugins =
+    builtins.attrValues {
+      inherit (pkgs.vimPlugins)
+        hunk-nvim
+        zenbones-nvim
+        nvim-lspconfig
+        lush-nvim
+        plenary-nvim
+        ;
+    }
+    ++ [
       (pkgs.vimPlugins.nvim-treesitter.withPlugins (
-        plugins: builtins.attrValues {
+        plugins:
+        builtins.attrValues {
           inherit (plugins)
-          c
-          c-sharp
-          css
-          dockerfile
-          elixir
-          erlang
-          go
-          html
-          javascript
-          jsdoc
-          json
-          jsonc
-          just
-          ledger
-          lua
-          nix
-          python
-          razor
-          terraform
-          toml
-          tsx
-          typescript
-          yaml;
+            c
+            c-sharp
+            css
+            dockerfile
+            elixir
+            erlang
+            go
+            html
+            javascript
+            jsdoc
+            json
+            jsonc
+            just
+            ledger
+            lua
+            nix
+            python
+            razor
+            terraform
+            toml
+            tsx
+            typescript
+            yaml
+            ;
         }
       ))
     ];
@@ -196,6 +217,8 @@
 
     shellAliases = {
       j = "just";
+      n = "nix";
+      t = "tmux";
       vi = "nvim";
       vim = "nvim";
       zource = "source ~/.zshrc";

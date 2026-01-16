@@ -42,12 +42,12 @@
 
   outputs =
     {
-    darwin,
-    home-manager,
-    nixpkgs,
-    self,
-    systems,
-    ...
+      darwin,
+      home-manager,
+      nixpkgs,
+      self,
+      systems,
+      ...
     }@inputs:
     let
       overlays = [
@@ -55,14 +55,18 @@
         inputs.neovim-nightly-overlay.overlays.default
         inputs.zig.overlays.default
 
-        (final: prev: let
-          system = prev.stdenv.hostPlatform.system;
-          unstable = import inputs.nixpkgs-unstable {
-            inherit system;
-          };
-        in {
-          inherit (unstable) gh direnv nil;
-        })
+        (
+          final: prev:
+          let
+            system = prev.stdenv.hostPlatform.system;
+            unstable = import inputs.nixpkgs-unstable {
+              inherit system;
+            };
+          in
+          {
+            inherit (unstable) gh direnv nil;
+          }
+        )
       ];
 
       mkSystem = import ./lib/mksystem.nix {
