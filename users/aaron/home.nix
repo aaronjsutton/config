@@ -6,6 +6,7 @@
   config,
   lib,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 {
@@ -164,6 +165,7 @@
 
   programs.neovim.enable = true;
   programs.neovim.plugins =
+    # Base Plugins
     builtins.attrValues {
       inherit (pkgs.vimPlugins)
         hunk-nvim
@@ -173,6 +175,15 @@
         plenary-nvim
         ;
     }
+    # Custom Grammars
+    ++ [
+      (pkgs-unstable.vimPlugins.nvim-treesitter.withPlugins (
+        plugins:
+        builtins.attrValues {
+        }
+      ))
+    ]
+    # Stable Grammars
     ++ [
       (pkgs.vimPlugins.nvim-treesitter.withPlugins (
         plugins:

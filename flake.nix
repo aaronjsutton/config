@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:aaronjsutton/nixpkgs/nixpkgs-unstable";
 
     systems.url = "github:nix-systems/default";
 
@@ -45,6 +45,7 @@
       darwin,
       home-manager,
       nixpkgs,
+    nixpkgs-unstable,
       self,
       systems,
       ...
@@ -73,6 +74,7 @@
         inherit
           overlays
           nixpkgs
+          nixpkgs-unstable
           inputs
           ;
       };
