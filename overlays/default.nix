@@ -7,5 +7,11 @@ let
   };
 in
 {
-  inherit (pkgs) jujutsu gh direnv nil;
+  inherit (pkgs)
+    btop
+    direnv
+    gh
+    jujutsu
+    nil
+    ;
 }

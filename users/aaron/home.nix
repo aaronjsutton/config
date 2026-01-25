@@ -175,16 +175,6 @@
         plenary-nvim
         ;
     }
-    # Custom Grammars
-    ++ [
-      (pkgs-unstable.vimPlugins.nvim-treesitter.withPlugins (
-        plugins:
-        builtins.attrValues {
-          inherit (plugins)
-          jjdescription;
-        }
-      ))
-    ]
     # Stable Grammars
     ++ [
       (pkgs.vimPlugins.nvim-treesitter.withPlugins (

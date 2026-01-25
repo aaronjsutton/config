@@ -9,24 +9,28 @@ machine:
   system,
   user,
   darwin ? false,
-  wsl ? false,
 }:
 let
-  config = ../users/${user}/${if darwin then "darwin" else "nixos"}.nix;
-  systemFunc = if darwin then inputs.darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
-  hm-modules = if darwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
+  mkSystem' = if darwin then inputs.darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
   pkgs-unstable = import nixpkgs-unstable { inherit system; };
+
+  machine-module = ../machines/${machine}.nix;
+  os-module = ../users/${user}/${if darwin then "darwin" else "nixos"}.nix;
+  nix-module = ../users/${user}/nix.nix;
+  home-manager-module =
+    if darwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
 in
-systemFunc {
+mkSystem' {
   modules = [
     {
+      _module.args = { inherit pkgs-unstable; };
       nixpkgs.hostPlatform.system = system;
       nixpkgs.overlays = overlays;
     }
-    ../machines/${machine}.nix
-    ../users/${user}/nix.nix
-    config
-    hm-modules.home-manager
+    machine-module
+    nix-module
+    os-module
+    home-manager-module.home-manager
     {
       home-manager.extraSpecialArgs = { inherit pkgs-unstable; };
       home-manager.useGlobalPkgs = true;

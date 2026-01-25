@@ -1,8 +1,9 @@
 vim.g.neobones = { 
 	transparent_background = true ,
-	italic_comments = false,
+	italic_comments = true,
 	italic_strings = false,
 }
+
 vim.cmd("syntax off")
 vim.cmd("colorscheme neobones")
 
