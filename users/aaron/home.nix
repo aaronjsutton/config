@@ -180,6 +180,8 @@
       (pkgs-unstable.vimPlugins.nvim-treesitter.withPlugins (
         plugins:
         builtins.attrValues {
+          inherit (plugins)
+          jjdescription;
         }
       ))
     ]

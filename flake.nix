@@ -45,29 +45,16 @@
       darwin,
       home-manager,
       nixpkgs,
-    nixpkgs-unstable,
+      nixpkgs-unstable,
       self,
       systems,
       ...
     }@inputs:
     let
       overlays = [
-        inputs.jujutsu.overlays.default
         inputs.neovim-nightly-overlay.overlays.default
-        inputs.zig.overlays.default
 
-        (
-          final: prev:
-          let
-            system = prev.stdenv.hostPlatform.system;
-            unstable = import inputs.nixpkgs-unstable {
-              inherit system;
-            };
-          in
-          {
-            inherit (unstable) gh direnv nil;
-          }
-        )
+        (import ./overlays { nixpkgs = nixpkgs-unstable; })
       ];
 
       mkSystem = import ./lib/mksystem.nix {
