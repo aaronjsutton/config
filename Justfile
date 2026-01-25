@@ -1,5 +1,3 @@
-export MACHINE_NAME := "lovelace"
-
 set quiet
 
 default: switch
