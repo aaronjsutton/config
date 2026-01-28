@@ -1,11 +1,19 @@
-vim.g.neobones = { 
+vim.g.zenbones = { 
 	transparent_background = true ,
 	italic_comments = true,
 	italic_strings = false,
 }
+require 'tokyonight'.setup {
+	style = "night",
+	transparent = true,
+	styles = {
+		comments = { italic = true },
+		keywords = { italic = false },
+	}
+}
 
 vim.cmd("syntax off")
-vim.cmd("colorscheme neobones")
+vim.cmd("colorscheme tokyonight")
 
 vim.opt.list = false
 vim.opt.listchars = {
