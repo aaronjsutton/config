@@ -81,7 +81,6 @@
         "-o"
         "$output"
       ];
-      pager = "delta";
     };
 
     templates = {
@@ -152,7 +151,7 @@
   ];
 
   programs.delta.enable = true;
-  programs.delta.enableGitIntegration = true;
+  programs.delta.enableJujutsuIntegration = true;
 
   programs.zoxide.enable = true;
   programs.zoxide.enableZshIntegration = true;
@@ -169,10 +168,8 @@
     builtins.attrValues {
       inherit (pkgs.vimPlugins)
         hunk-nvim
-        zenbones-nvim
         nvim-lspconfig
-        lush-nvim
-        plenary-nvim
+        tokyonight-nvim
         ;
     }
     # Stable Grammars
