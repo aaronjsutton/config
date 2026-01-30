@@ -2,7 +2,6 @@ background-blur = true
 background-opacity = 0.95
 cursor-style = bar
 
-# Font:
 font-family = "Berkeley Mono"
 font-family-italic = "Cartograph CF"
 font-family-bold-italic = "Cartograph CF"
@@ -12,13 +11,18 @@ font-style = "Regular"
 
 macos-icon = "retro"
 mouse-hide-while-typing = true
+
 shell-integration = zsh
 shell-integration-features = cursor,title,sudo,ssh-env,ssh-terminfo
+
 theme = dark:tokyonight_night,light:tokyonight_day
+
 unfocused-split-opacity = 1
+
 window-inherit-font-size = true
 window-padding-balance = true
 window-padding-x = 8
+
 working-directory = inherit
 
 keybind = global:cmd+shift+grave_accent=toggle_quick_terminal

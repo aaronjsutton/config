@@ -91,6 +91,14 @@ vim.lsp.config('biome', {
 	cmd = { 'bunx', '--bun', 'biome', 'lsp-proxy' },
 })
 
+vim.lsp.config('nil_ls', {
+	settings = {
+		['nil'] = {
+			autoArchive = true
+		}
+	}
+})
+
 vim.filetype.add {
 	[vim.fn.expand("~/.config/ghostty/config")] = "dosini",
 

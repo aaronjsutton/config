@@ -1,8 +1,6 @@
 {
-  nixpkgs,
-  nixpkgs-unstable,
   overlays,
-  inputs,
+  inputs
 }:
 machine:
 {
@@ -11,8 +9,8 @@ machine:
   darwin ? false,
 }:
 let
-  mkSystem' = if darwin then inputs.darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
-  pkgs-unstable = import nixpkgs-unstable { inherit system; };
+  mkSystem' = if darwin then inputs.nix-darwin.lib.darwinSystem else inputs.nixpkgs.lib.nixosSystem;
+  pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; };
 
   machine-module = ../machines/${machine}.nix;
   os-module = ../users/${user}/${if darwin then "darwin" else "nixos"}.nix;

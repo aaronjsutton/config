@@ -16,6 +16,7 @@
     "loom"
     "slack"
     "steam"
+    "zoom"
   ];
 
   # Legacy: Needed by some parts of the configuration

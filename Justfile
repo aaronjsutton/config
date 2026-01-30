@@ -2,18 +2,28 @@ set quiet
 
 default: switch
 
+machine := env('MACHINE_NAME', 'lovelace')
+
 [linux]
 build:
-	nix build ".#nixosConfigurations.${MACHINE_NAME}.system"
+	nix build ".#nixosConfigurations.{{machine}}.system"
 
 [macos]
 build:
-	nix build ".#darwinConfigurations.${MACHINE_NAME}.system"
+	nix build ".#darwinConfigurations.{{machine}}.system"
 
 [linux]
 switch: build
-	sudo nixos-rebuild switch --flake ".#${MACHINE_NAME}"
+	sudo nixos-rebuild switch --flake ".#{{machine}}"
 
 [macos]
 switch: build
-	sudo ./result/sw/bin/darwin-rebuild switch --flake ".#${MACHINE_NAME}"
+	sudo ./result/sw/bin/darwin-rebuild switch --flake ".#{{machine}}"
+
+[unix]
+gc: build
+	sudo ./result/sw/bin/nix-collect-garbage -d
+
+[macos]
+list: build
+	sudo ./result/sw/bin/darwin-rebuild --list-generations
