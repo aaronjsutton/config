@@ -24,6 +24,8 @@
   ];
 
   home.sessionVariables = {
+    HOMEBREW_NO_AUTO_UPDATE=1;
+    HOMEBREW_NO_ENV_HINTS=1;
     EDITOR = "nvim";
     GOPATH = "${config.xdg.cacheHome}/go";
     EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";

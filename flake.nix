@@ -12,10 +12,8 @@
       inputs.systems.follows = "systems";
     };
 
-    darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -42,7 +40,7 @@
 
   outputs =
     {
-      darwin,
+      nix-darwin,
       home-manager,
       nixpkgs,
       nixpkgs-unstable,
@@ -59,10 +57,8 @@
 
       mkSystem = import ./lib/mksystem.nix {
         inherit
-          overlays
-          nixpkgs
-          nixpkgs-unstable
           inputs
+          overlays
           ;
       };
 
