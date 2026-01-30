@@ -12,6 +12,11 @@ build:
 build:
 	nix build ".#darwinConfigurations.{{machine}}.system"
 
+[macos]
+update:
+	brew update
+	brew upgrade --cask
+
 [linux]
 switch: build
 	sudo nixos-rebuild switch --flake ".#{{machine}}"
