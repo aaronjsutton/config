@@ -1,7 +1,4 @@
-{
-  inputs,
-  ...
-}:
+{ ... }:
 {
   config,
   lib,
@@ -13,7 +10,6 @@
   programs.home-manager.enable = true;
 
   home.stateVersion = "25.05";
-
   home.packages = with pkgs; [
     hut
     just
@@ -24,11 +20,12 @@
   ];
 
   home.sessionVariables = {
+    EDITOR = "nvim";
+    EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";
+    GOPATH = "${config.xdg.cacheHome}/go";
+
     HOMEBREW_NO_AUTO_UPDATE=1;
     HOMEBREW_NO_ENV_HINTS=1;
-    EDITOR = "nvim";
-    GOPATH = "${config.xdg.cacheHome}/go";
-    EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";
   };
 
   xdg.enable = true;
@@ -219,7 +216,6 @@
 
     shellAliases = {
       j = "just";
-      n = "nix";
       t = "tmux";
       vi = "nvim";
       vim = "nvim";
