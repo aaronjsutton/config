@@ -9,7 +9,6 @@ font-feature = +calt
 font-size = "16"
 font-style = "Regular"
 
-macos-icon = "glass"
 mouse-hide-while-typing = true
 
 shell-integration = zsh

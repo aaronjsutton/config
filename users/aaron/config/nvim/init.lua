@@ -87,18 +87,6 @@ vim.diagnostic.config({
 	}
 })
 
-vim.lsp.config('biome', {
-	cmd = { 'bunx', '--bun', 'biome', 'lsp-proxy' },
-})
-
-vim.lsp.config('nil_ls', {
-	settings = {
-		['nil'] = {
-			autoArchive = true
-		}
-	}
-})
-
 vim.filetype.add {
 	[vim.fn.expand("~/.config/ghostty/config")] = "dosini",
 
@@ -114,7 +102,3 @@ vim.filetype.add {
 }
 
 vim.lsp.enable('typescript-go')
-vim.lsp.enable('tofu_ls')
-vim.lsp.enable('biome')
-vim.lsp.enable('nil_ls')
-vim.lsp.enable('gopls')
