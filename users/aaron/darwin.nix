@@ -15,6 +15,7 @@
     "ghostty"
     "loom"
     "slack"
+    "spotify"
     "steam"
     "zoom"
   ];
