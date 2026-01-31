@@ -42,6 +42,10 @@
       source = ./config/eza;
       recursive = true;
     };
+    "btop" = {
+      source = ./config/btop;
+      recursive = true;
+    };
   };
 
   programs.eza.enable = true;
