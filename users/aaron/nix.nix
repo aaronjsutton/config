@@ -1,7 +1,7 @@
 { pkgs-unstable, ... }:
 {
   nix.enable = true;
-  nix.package = pkgs-unstable.nixVersions.latest;
+  nix.package = pkgs-unstable.nixVersions.git;
 
   nix.settings = {
     download-buffer-size = 524288000 # 500 MiB

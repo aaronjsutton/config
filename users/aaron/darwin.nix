@@ -39,4 +39,21 @@
 
     whitelist.prefix = [ "~/Code" ];
   };
+
+  programs.zsh = {
+    enable = true;
+    enableAutosuggestions = true;
+    enableCompletion = true;
+    enableFastSyntaxHighlighting = true;
+    enableFzfCompletion = true;
+    enableFzfGit = true;
+    enableFzfHistory = true;
+    histSize = 9000;
+    interactiveShellInit = builtins.readFile ./init.zsh;
+    promptInit = builtins.readFile ./prompt.zsh;
+
+    variables = {
+      FZF_DEFAULT_OPTS="--height=40% --layout=reverse --border";
+    };
+  };
 }

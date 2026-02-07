@@ -1,0 +1,6 @@
+window-inherit-font-size = true
+window-padding-balance = true
+window-padding-x = 12
+window-padding-y = 12
+window-vsync = false
+# vim: set ft=ini:

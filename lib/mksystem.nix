@@ -1,6 +1,6 @@
 {
   overlays,
-  inputs
+  inputs,
 }:
 machine:
 {
