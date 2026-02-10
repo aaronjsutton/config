@@ -46,8 +46,6 @@
   programs.eza.enable = true;
   programs.eza.git = true;
   programs.eza.extraOptions = [
-    "--git-ignore"
-    "--group-directories-first"
     "--sort=ext"
   ];
 
@@ -79,7 +77,6 @@
         "$left"
         "$base"
         "$right"
-        "-o"
         "$output"
       ];
     };
@@ -204,6 +201,8 @@
     '';
   };
 
+  programs.zsh.enable = true;
+
   programs.neovim.enable = true;
   programs.neovim.plugins =
     # Base Plugins
@@ -220,17 +219,16 @@
         plugins:
         builtins.attrValues {
           inherit (plugins)
-            bash
-            zsh
             c
             c-sharp
             css
+            csv
             dockerfile
-            ini
             elixir
             erlang
             go
             html
+            ini
             javascript
             jsdoc
             json
