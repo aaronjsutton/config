@@ -42,8 +42,8 @@
 
   programs.zsh = {
     enable = true;
-    enableAutosuggestions = true;
-    enableCompletion = true;
+    enableAutosuggestions = false;
+    enableCompletion = false;
     enableFastSyntaxHighlighting = true;
     enableFzfCompletion = true;
     enableFzfGit = true;
@@ -53,7 +53,7 @@
     promptInit = builtins.readFile ./prompt.zsh;
 
     variables = {
-      FZF_DEFAULT_OPTS="--height=40% --layout=reverse --border";
+      FZF_DEFAULT_OPTS="--height=10% --layout=reverse";
     };
   };
 }

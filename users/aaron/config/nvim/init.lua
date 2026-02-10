@@ -1,8 +1,24 @@
-vim.g.zenbones = { 
-	transparent_background = true ,
-	italic_comments = true,
-	italic_strings = false,
+require'nvim-treesitter.configs'.setup {
+	highlight = {
+		enable = true,
+		additional_vim_regex_highlighting = false,
+	},
+
+	indent = {
+		enable = true
+	},
 }
+
+require'hunk'.setup {
+  ui = {
+    tree = {
+      mode = "nested",
+      width = 35,
+    },
+    layout = "vertical",
+  },
+}
+
 require 'tokyonight'.setup {
 	style = "night",
 	transparent = true,
@@ -60,22 +76,17 @@ vim.keymap.set('', '<Up>', '<Nop>', { noremap = true })
 vim.keymap.set('', '<Left>', '<Nop>', { noremap = true })
 vim.keymap.set('', '<Right>', '<Nop>', { noremap = true })
 vim.keymap.set('', '<Down>', '<Nop>', { noremap = true })
+
 vim.keymap.set("n", "]g", vim.diagnostic.goto_next)
-vim.keymap.set("n", "[g", vim.diagnostic.goto_prev)
-vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float)
+vim.keymap.set('n', "[g", vim.diagnostic.goto_prev)
+vim.keymap.set('n', 'gd', vim.diagnostic.open_float)
+vim.keymap.set('n', 'gK', function()
+	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+
+end, { desc = 'Toggle diagnostic virtual_lines' })
 vim.keymap.set("v", "<leader>s", ":'<,'>sort<CR>")
 vim.keymap.set("n", "<Leader>a", ":set list!<CR>")
 
-require'nvim-treesitter.configs'.setup {
-	highlight = {
-		enable = true,
-		additional_vim_regex_highlighting = false,
-	},
-
-	indent = {
-		enable = true
-	},
-}
 
 vim.diagnostic.config({ 
 	virtual_lines = true,
