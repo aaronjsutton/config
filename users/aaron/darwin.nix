@@ -42,12 +42,11 @@
 
   programs.zsh = {
     enable = true;
-    enableAutosuggestions = false;
+    enableAutosuggestions = true;
     enableCompletion = false;
     enableFastSyntaxHighlighting = true;
-    enableFzfCompletion = true;
-    enableFzfGit = true;
-    enableFzfHistory = true;
+    enableFzfGit = false;
+    enableFzfHistory = false;
     histSize = 9000;
     interactiveShellInit = builtins.readFile ./init.zsh;
     promptInit = builtins.readFile ./prompt.zsh;
