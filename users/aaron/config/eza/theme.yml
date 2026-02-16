@@ -101,6 +101,12 @@ control_char: { foreground: "#ff9e64" }
 broken_symlink: { foreground: "#ff007c" }
 broken_path_overlay: { foreground: "#ff007c" }
 
+filenames:
+  "_build":
+    filename:
+      foreground: Gray
+      is_dimmed: true
+
 extensions:
   "tsx": 
     filename:

@@ -1,14 +1,3 @@
-require'nvim-treesitter.configs'.setup {
-	highlight = {
-		enable = true,
-		additional_vim_regex_highlighting = false,
-	},
-
-	indent = {
-		enable = true
-	},
-}
-
 require'hunk'.setup {
   ui = {
     tree = {
@@ -82,11 +71,9 @@ vim.keymap.set('n', "[g", vim.diagnostic.goto_prev)
 vim.keymap.set('n', 'gd', vim.diagnostic.open_float)
 vim.keymap.set('n', 'gK', function()
 	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
-
-end, { desc = 'Toggle diagnostic virtual_lines' })
+end)
 vim.keymap.set("v", "<leader>s", ":'<,'>sort<CR>")
 vim.keymap.set("n", "<Leader>a", ":set list!<CR>")
-
 
 vim.diagnostic.config({ 
 	virtual_lines = true,
@@ -107,9 +94,4 @@ vim.filetype.add {
 		cshtml = 'razor',
 	},
 
-	pattern = {
-    [".*%.env%.example"] = "sh",
-	}
 }
-
-vim.lsp.enable('typescript-go')

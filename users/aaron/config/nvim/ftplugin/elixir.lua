@@ -5,3 +5,4 @@ vim.lsp.config('expert', {
 })
 
 vim.lsp.enable('expert')
+vim.treesitter.start()
