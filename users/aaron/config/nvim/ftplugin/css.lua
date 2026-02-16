@@ -3,3 +3,4 @@ vim.lsp.config('biome', {
 })
 
 vim.lsp.enable('biome')
+vim.treesitter.start()

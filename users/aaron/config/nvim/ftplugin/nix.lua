@@ -1,3 +1,5 @@
+vim.treesitter.start()
+
 vim.lsp.config('nil_ls', {
 	settings = {
 		autoArchive = true
@@ -5,3 +7,4 @@ vim.lsp.config('nil_ls', {
 })
 
 vim.lsp.enable('nil_ls')
+vim.treesitter.start()

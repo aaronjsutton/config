@@ -134,14 +134,12 @@
     enable = true;
     lfs.enable = true;
   };
-
   programs.git.settings = {
     user = {
       name = "Aaron Sutton";
       email = "hey@aaron.as";
     };
   };
-
   programs.git.ignores = [
     ".DS_Store"
     ".direnv/"
@@ -205,17 +203,17 @@
 
   programs.neovim.enable = true;
   programs.neovim.plugins =
-    # Base Plugins
+    # Plugins
     builtins.attrValues {
-      inherit (pkgs.vimPlugins)
+      inherit (pkgs-unstable.vimPlugins)
         hunk-nvim
         nvim-lspconfig
         tokyonight-nvim
         ;
     }
-    # Stable Grammars
+    # Grammars
     ++ [
-      (pkgs.vimPlugins.nvim-treesitter.withPlugins (
+      (pkgs-unstable.vimPlugins.nvim-treesitter.withPlugins (
         plugins:
         builtins.attrValues {
           inherit (plugins)
@@ -224,6 +222,7 @@
             css
             csv
             dockerfile
+            editorconfig
             elixir
             erlang
             go
@@ -232,7 +231,6 @@
             javascript
             jsdoc
             json
-            jsonc
             just
             ledger
             lua
