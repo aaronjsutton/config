@@ -86,12 +86,8 @@ vim.diagnostic.config({
 })
 
 vim.filetype.add {
-	[vim.fn.expand("~/.config/ghostty/config")] = "dosini",
-
 	extension = {
-		jjdescription = 'jjdescription',
 		razor = 'razor',
 		cshtml = 'razor',
 	},
-
 }
