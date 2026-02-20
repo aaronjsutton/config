@@ -1,7 +1,7 @@
 font-family = "Berkeley Mono"
-font-family-italic = "Cartograph CF"
 font-family-bold-italic = "Cartograph CF"
+font-family-italic = "Cartograph CF"
 font-feature = +calt
-font-size = "16"
+font-size = "14"
 font-style = "Regular"
 # vim: set ft=ini:
