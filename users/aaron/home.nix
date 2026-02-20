@@ -134,6 +134,7 @@
     enable = true;
     lfs.enable = true;
   };
+
   programs.git.settings = {
     user = {
       name = "Aaron Sutton";

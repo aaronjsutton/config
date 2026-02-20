@@ -9,18 +9,26 @@
   };
 
   homebrew.enable = true;
-  homebrew.casks = [
-    "blender"
-    "finch"
-    "ghostty"
-    "loom"
-    "slack"
-    "spotify"
-    "steam"
-    "zoom"
-  ];
+  homebrew = {
+    brews = [
+      "tart"
+    ];
+    taps = [
+      "cirruslabs/cli"
+    ];
+    casks = [
+      "blender"
+      "finch"
+      "ghostty"
+      "loom"
+      "slack"
+      "spotify"
+      "steam"
+      "zoom"
+    ];
+  };
 
-  # Legacy: Needed by some parts of the configuration
+  # Legacy: Needed by `hombrew.enable` and `services.lorri.enable`
   # https://nix-darwin.github.io/nix-darwin/manual/#opt-system.primaryUser
   system.primaryUser = "aaron";
 
@@ -52,7 +60,8 @@
     promptInit = builtins.readFile ./prompt.zsh;
 
     variables = {
-      FZF_DEFAULT_OPTS="--height=10% --layout=reverse";
+      FZF_DEFAULT_COMMAND = "ag -l '.'";
+      FZF_DEFAULT_OPTS = "--height=10% --layout=reverse";
     };
   };
 }
