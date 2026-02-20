@@ -88,7 +88,7 @@ file_type:
   build: { foreground: "#1abc9c" }
   source: { foreground: "#bb9af7" }
 
-punctuation: { foreground: "#292e42" }
+punctuation: { foreground: "#414868" }
 date: { foreground: "#e0af68" }
 inode: { foreground: "#737aa2" }
 blocks: { foreground: "#737aa2" }
@@ -99,13 +99,4 @@ flags: { foreground: "#9d7cd8" }
 symlink_path: { foreground: "#89ddff" }
 control_char: { foreground: "#ff9e64" }
 broken_symlink: { foreground: "#ff007c" }
-
-filenames:
-  "dist":
-    filename:
-      foreground: Gray
-      is_dimmed: true
-  "_build":
-    filename:
-      foreground: Gray
-      is_dimmed: true
+broken_path_overlay: { foreground: "#ff007c" }

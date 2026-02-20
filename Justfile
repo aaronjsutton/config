@@ -1,34 +1,24 @@
-set quiet
+set quiet := true
+set no-exit-message := true
 
 default: switch
 
-machine := env('MACHINE_NAME', 'lovelace')
+brew  := require('brew')
+nh    := require('nh')
+nix   := require('nix')
 
-[linux]
-build:
-	nix build ".#nixosConfigurations.{{machine}}.system"
+machine := env('MACHINE_NAME', 'lovelace')
 
 [macos]
 build:
-	nix build ".#darwinConfigurations.{{machine}}.system"
+  {{ nh }} darwin build
 
 [macos]
 update:
-	brew update
-	brew upgrade --cask
-
-[linux]
-switch: build
-	sudo nixos-rebuild switch --flake ".#{{machine}}"
+  {{ nix }} flake update
+  {{ brew }} update
+  {{ brew }} upgrade --cask
 
 [macos]
-switch: build
-	sudo ./result/sw/bin/darwin-rebuild switch --flake ".#{{machine}}"
-
-[unix]
-gc: build
-	sudo ./result/sw/bin/nix-collect-garbage -d
-
-[macos]
-list: build
-	sudo ./result/sw/bin/darwin-rebuild --list-generations
+switch:
+  {{ nh }} darwin switch .# -H {{ machine }}

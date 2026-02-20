@@ -1,4 +1,4 @@
-require'hunk'.setup {
+require 'hunk'.setup {
   ui = {
     tree = {
       mode = "nested",
@@ -8,17 +8,13 @@ require'hunk'.setup {
   },
 }
 
-require 'tokyonight'.setup {
-	style = "night",
-	transparent = true,
-	styles = {
-		comments = { italic = true },
-		keywords = { italic = false },
-	}
+vim.g.neobones = { 
+	transparent_background = true, 
+	italic_strings = false,
 }
 
-vim.cmd("syntax off")
-vim.cmd("colorscheme tokyonight")
+vim.cmd.syntax "off" 
+vim.cmd.colorscheme "neobones"
 
 vim.opt.list = false
 vim.opt.listchars = {
@@ -73,14 +69,30 @@ vim.keymap.set('n', 'gK', function()
 	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end)
 vim.keymap.set("v", "<leader>s", ":'<,'>sort<CR>")
-vim.keymap.set("n", "<Leader>a", ":set list!<CR>")
+
+vim.keymap.set("n", "<leader>L", function()
+  vim.opt.list = not vim.opt.list:get()
+end, { noremap = true, silent = true })
 
 vim.diagnostic.config({ 
 	virtual_lines = true,
+	float = {
+		border = 
+		{
+			{ "┌", "FloatBorder" },
+			{ "─", "FloatBorder" },
+			{ "┐", "FloatBorder" },
+			{ "│", "FloatBorder" },
+			{ "┘", "FloatBorder" },
+			{ "─", "FloatBorder" },
+			{ "└", "FloatBorder" },
+			{ "│", "FloatBorder" },
+		}
+	},
 	signs = {
 		text = {
-			[vim.diagnostic.severity.ERROR] = ' ⬤',
-			[vim.diagnostic.severity.WARN]  = ' ◎',
+			[vim.diagnostic.severity.ERROR] = '!!',
+			[vim.diagnostic.severity.WARN]  = '!!',
 		}
 	}
 })

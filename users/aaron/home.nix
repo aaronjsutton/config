@@ -9,15 +9,22 @@
 {
   programs.home-manager.enable = true;
 
+  programs.nh = {
+    enable = true;
+    package = pkgs-unstable.nh;
+    flake = "$HOME/@config";
+  };
+
   home.stateVersion = "25.05";
-  home.packages = with pkgs; [
-    hut
-    just
-    nil
-    rsync
-    silver-searcher
-    shadowenv
-  ];
+  home.packages = builtins.attrValues {
+    inherit (pkgs-unstable)
+      hut
+      just
+      nil
+      rsync
+      silver-searcher
+      shadowenv;
+  };
 
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -95,7 +102,7 @@
     };
 
     revet-aliases = {
-      "private()" = "subject('private:*')";
+      "immutable_heads()" = "builtin_immutable_heads() | (trunk().. & ~mine())";
     };
 
     template-aliases = {
@@ -104,20 +111,6 @@
   };
 
   programs.fzf = {
-    colors = {
-      bg = "-1";
-      "bg+" = "#2a2a37";
-      fg = "-1";
-      "fg+" = "#dcd7ba";
-      hl = "#938aa9";
-      "hl+" = "#c4746e";
-      header = "#b6927b";
-      info = "#658594";
-      pointer = "#7aa89f";
-      marker = "#7aa89f";
-      prompt = "#c4746e";
-      spinner = "#8ea49e";
-    };
     enable = true;
     enableZshIntegration = true;
     enableFishIntegration = true;
@@ -155,9 +148,11 @@
 
   programs.btop.enable = true;
   programs.btop.settings = {
-    color_theme = "Default";
+    color_theme = "TTY";
+    presets = "cpu:0:default,proc:0:default, net:0:default";
+    shown_boxes = "cpu mem net proc";
     theme_background = false;
-    truecolor = true;
+    vim_keys = true;
   };
   programs.btop.themes = {
     tokyonight-night = ''
@@ -209,7 +204,8 @@
       inherit (pkgs-unstable.vimPlugins)
         hunk-nvim
         nvim-lspconfig
-        tokyonight-nvim
+        zenbones-nvim
+        lush-nvim
         ;
     }
     # Grammars
@@ -243,6 +239,7 @@
             tsx
             typescript
             yaml
+            zsh 
             ;
         }
       ))

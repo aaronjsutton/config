@@ -1,14 +1,14 @@
 background-blur = true
-background-opacity = 0.95
-cursor-style = bar
+background-opacity = 0.85
 mouse-hide-while-typing = true
-shell-integration = zsh
-shell-integration-features = cursor,title,sudo,ssh-env,ssh-terminfo
-theme = dark:tokyonight_night,light:tokyonight_day
-unfocused-split-opacity = 1
+theme = Neobones Dark
+unfocused-split-opacity = 0.85
 working-directory = inherit
 
+config-file = cursor
 config-file = font
 config-file = keybind
+config-file = macos
+config-file = shell
 config-file = window
 # vim: set ft=ini:

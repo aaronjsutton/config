@@ -3,6 +3,8 @@
   networking.computerName = "Aaron’s MacBook Pro";
   networking.hostName = "lovelace";
 
+  system.defaults.loginwindow.GuestEnabled = false;
+
   users.users.aaron = {
     home = "/Users/aaron";
     shell = pkgs.zsh;
@@ -18,7 +20,6 @@
     ];
     casks = [
       "blender"
-      "finch"
       "ghostty"
       "loom"
       "slack"

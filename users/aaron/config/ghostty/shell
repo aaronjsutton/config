@@ -1,0 +1,3 @@
+shell-integration = zsh
+shell-integration-features = cursor,title,sudo,ssh-env,ssh-terminfo
+# vim: set ft=ini:

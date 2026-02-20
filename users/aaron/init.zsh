@@ -11,6 +11,7 @@ alias ls='eza'
 alias lt='eza --tree'
 alias nq='networkquality'
 alias ns='networksetup'
+alias top='btop'
 alias vi='nvim'
 alias vim='nvim'
 
