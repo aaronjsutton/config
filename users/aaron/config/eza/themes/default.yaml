@@ -1,0 +1,107 @@
+colourful: true
+filekinds:
+  block_device: { foreground: Yellow, is_bold: true }
+  char_device: { foreground: Yellow, is_bold: true }
+  directory: { foreground: Blue, is_bold: true }
+  executable: { foreground: Green, is_bold: true }
+  mount_point: { foreground: Blue, is_bold: true, is_underline: true }
+  normal: { foreground: Default }
+  pipe: { foreground: Yellow }
+  socket: { foreground: Red, is_bold: true }
+  special: { foreground: Yellow }
+  symlink: { foreground: Cyan }
+
+perms:
+  attribute: { foreground: Default }
+  group_execute: { foreground: Green }
+  group_read: { foreground: Yellow }
+  group_write: { foreground: Red }
+  other_execute: { foreground: Green }
+  other_read: { foreground: Yellow }
+  other_write: { foreground: Red }
+  special_other: { foreground: Purple }
+  special_user_file: { foreground: Purple }
+  user_execute_file: { foreground: Green, is_bold: true, is_underline: true }
+  user_execute_other: { foreground: Green, is_bold: true }
+  user_read: { foreground: Yellow, is_bold: true }
+  user_write: { foreground: Red, is_bold: true }
+
+size:
+  major: { foreground: Green, is_bold: true }
+  minor: { foreground: Green }
+  number_byte: { foreground: Green, is_bold: true }
+  number_giga: { foreground: Green, is_bold: true }
+  number_huge: { foreground: Green, is_bold: true }
+  number_kilo: { foreground: Green, is_bold: true }
+  number_mega: { foreground: Green, is_bold: true }
+  unit_byte: { foreground: Green }
+  unit_giga: { foreground: Green }
+  unit_huge: { foreground: Green }
+  unit_kilo: { foreground: Green }
+  unit_mega: { foreground: Green }
+
+users:
+  group_other: { foreground: Default }
+  group_root: { foreground: Default }
+  group_yours: { foreground: Yellow, is_bold: true }
+  user_other: { foreground: Default }
+  user_root: { foreground: Default }
+  user_you: { foreground: Yellow, is_bold: true }
+
+links:
+  multi_link_file: { foreground: Red, background: Yellow }
+  normal: { foreground: Red, is_bold: true }
+
+git:
+  conflicted: { foreground: Red }
+  deleted: { foreground: Red }
+  ignored: { foreground: Default, is_dimmed: true }
+  modified: { foreground: Blue }
+  new: { foreground: Green }
+  renamed: { foreground: Yellow }
+  typechange: { foreground: Purple }
+
+git_repo:
+  branch_main: { foreground: Green }
+  branch_other: { foreground: Yellow }
+  git_clean: { foreground: Green }
+  git_dirty: { foreground: Yellow }
+
+security_context:
+  colon: { foreground: Default, is_dimmed: true }
+  range: { foreground: Cyan }
+  role: { foreground: Green }
+  typ: { foreground: Yellow }
+  user: { foreground: Blue }
+
+file_type:
+  build: { foreground: Yellow, is_bold: true, is_underline: true }
+  compiled: { foreground: Yellow }
+  compressed: { foreground: Red }
+  crypto: { foreground: Green, is_bold: true }
+  document: { foreground: Green }
+  image: { foreground: Purple }
+  lossless: { foreground: Cyan, is_bold: true }
+  music: { foreground: Cyan }
+  source: { foreground: Cyan, is_bold: false }
+  temp: { foreground: White }
+  video: { foreground: Purple, is_bold: true }
+
+blocks: { foreground: Cyan }
+broken_path_overlay: { foreground: Default, is_underline: true }
+broken_symlink: { foreground: Red }
+control_char: { foreground: Red }
+date: { foreground: Blue }
+flags: { foreground: Default }
+header: { foreground: Default, is_underline: true }
+inode: { foreground: Purple }
+octal: { foreground: Purple }
+punctuation: { foreground: DarkGray, is_bold: true }
+symlink_path: { foreground: Cyan }
+
+extensions:
+  tsx: { filename: { foreground: Cyan } }
+
+filenames:
+  dist: { filename: { foreground: Gray, is_dimmed: true } }
+  _build: { filename: { foreground: Gray, is_dimmed: true } }
