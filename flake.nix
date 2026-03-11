@@ -1,4 +1,5 @@
 {
+  # comment
   description = "Aaron’s NixOS configurations";
 
   inputs = {
