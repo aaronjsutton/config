@@ -6,7 +6,8 @@
   environment.shells = builtins.attrValues {
     inherit (pkgs)
       bashInteractive
-      zsh;
+      zsh
+      ;
   };
   nixpkgs.config.allowUnfree = true;
   programs.zsh.enable = true;

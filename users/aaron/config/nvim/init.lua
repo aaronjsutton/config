@@ -1,20 +1,6 @@
-require 'hunk'.setup {
-  ui = {
-    tree = {
-      mode = "nested",
-      width = 35,
-    },
-    layout = "vertical",
-  },
-}
-
-vim.g.neobones = { 
-	transparent_background = true, 
-	italic_strings = false,
-}
 
 vim.cmd.syntax "off" 
-vim.cmd.colorscheme "neobones"
+vim.cmd.colorscheme "miasma"
 
 vim.opt.list = false
 vim.opt.listchars = {
@@ -68,8 +54,8 @@ vim.keymap.set('n', 'gd', vim.diagnostic.open_float)
 vim.keymap.set('n', 'gK', function()
 	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end)
+vim.keymap.set('n', 'gF', ':!jj fix<CR>')
 vim.keymap.set("v", "<leader>s", ":'<,'>sort<CR>")
-
 vim.keymap.set("n", "<leader>L", function()
   vim.opt.list = not vim.opt.list:get()
 end, { noremap = true, silent = true })
@@ -97,9 +83,28 @@ vim.diagnostic.config({
 	}
 })
 
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    if vim.wo.diff then
+      vim.lsp.buf_detach_client(args.buf, args.data.client_id)
+    end
+  end,
+})
+
 vim.filetype.add {
 	extension = {
-		razor = 'razor',
 		cshtml = 'razor',
+		just = 'just',
+		razor = 'razor',
 	},
+}
+
+require 'hunk'.setup {
+  ui = {
+    tree = {
+      mode = "nested",
+      width = 35,
+    },
+    layout = "vertical",
+  },
 }

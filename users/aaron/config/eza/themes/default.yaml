@@ -10,7 +10,6 @@ filekinds:
   socket: { foreground: Red, is_bold: true }
   special: { foreground: Yellow }
   symlink: { foreground: Cyan }
-
 perms:
   attribute: { foreground: Default }
   group_execute: { foreground: Green }
@@ -25,7 +24,6 @@ perms:
   user_execute_other: { foreground: Green, is_bold: true }
   user_read: { foreground: Yellow, is_bold: true }
   user_write: { foreground: Red, is_bold: true }
-
 size:
   major: { foreground: Green, is_bold: true }
   minor: { foreground: Green }
@@ -39,7 +37,6 @@ size:
   unit_huge: { foreground: Green }
   unit_kilo: { foreground: Green }
   unit_mega: { foreground: Green }
-
 users:
   group_other: { foreground: Default }
   group_root: { foreground: Default }
@@ -47,11 +44,9 @@ users:
   user_other: { foreground: Default }
   user_root: { foreground: Default }
   user_you: { foreground: Yellow, is_bold: true }
-
 links:
   multi_link_file: { foreground: Red, background: Yellow }
   normal: { foreground: Red, is_bold: true }
-
 git:
   conflicted: { foreground: Red }
   deleted: { foreground: Red }
@@ -60,20 +55,17 @@ git:
   new: { foreground: Green }
   renamed: { foreground: Yellow }
   typechange: { foreground: Purple }
-
 git_repo:
   branch_main: { foreground: Green }
   branch_other: { foreground: Yellow }
   git_clean: { foreground: Green }
   git_dirty: { foreground: Yellow }
-
 security_context:
   colon: { foreground: Default, is_dimmed: true }
   range: { foreground: Cyan }
   role: { foreground: Green }
   typ: { foreground: Yellow }
   user: { foreground: Blue }
-
 file_type:
   build: { foreground: Yellow, is_bold: true, is_underline: true }
   compiled: { foreground: Yellow }
@@ -86,7 +78,6 @@ file_type:
   source: { foreground: Cyan, is_bold: false }
   temp: { foreground: White }
   video: { foreground: Purple, is_bold: true }
-
 blocks: { foreground: Cyan }
 broken_path_overlay: { foreground: Default, is_underline: true }
 broken_symlink: { foreground: Red }
@@ -98,10 +89,10 @@ inode: { foreground: Purple }
 octal: { foreground: Purple }
 punctuation: { foreground: DarkGray, is_bold: true }
 symlink_path: { foreground: Cyan }
-
 extensions:
   tsx: { filename: { foreground: Cyan } }
-
+  just: { filename: { foreground: Gray } }
 filenames:
+  Justfile: { filename: { foreground: Gray } }
   dist: { filename: { foreground: Gray, is_dimmed: true } }
   _build: { filename: { foreground: Gray, is_dimmed: true } }
