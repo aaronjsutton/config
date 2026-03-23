@@ -1,102 +1,73 @@
 {
+  config,
+  lib,
   pkgs,
   ...
 }:
-let
-  authorizedKeys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAxpIWQv9lBTM4jHlhbv1ufrBBPmmv4TzzPLPVKlQajO aaronsutton@aarons-mbp.lan"
-  ];
-in
+
 {
+  imports = [ ./hardware/dell-precision-3430.nix ];
 
-  imports = [
-    ./hardware/dell-precision-3430.nix
-  ];
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  nix = {
-    enable = true;
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
+  fileSystems = {
+    "/".options = [ "compress=zstd" ];
+    "/home".options = [ "compress=zstd" ];
+    "/nix".options = [
+      "noatime"
+      "compress=zstd"
     ];
   };
 
-  boot.loader = {
-    systemd-boot = {
-      enable = true;
-    };
-    efi = {
-      canTouchEfiVariables = false;
-    };
-    grub = {
-      efiSupport = true;
-      device = "nodev";
-    };
-  };
+  networking.hostName = "ritchie";
+  networking.networkmanager.enable = true;
 
-  boot.supportedFilesystems = [ "ntfs" ];
+  time.timeZone = "America/New_York";
+
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  users.users.aaron = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    packages = with pkgs; [ ];
+  };
 
   environment.systemPackages = with pkgs; [
     vim
-    btop
+    curl
   ];
 
   networking = {
-    hostName = "hammond";
-    useDHCP = false;
-    defaultGateway = "192.168.2.1";
-    nameservers = [ "192.168.2.1" ];
-    interfaces = {
-      eno2.ipv4.addresses = [
+    interfaces.eno1 = {
+      ipv4.addresses = [
         {
-          address = "192.168.2.2";
+          address = "192.168.2.3";
           prefixLength = 24;
         }
       ];
     };
+    defaultGateway = {
+      address = "192.168.2.1";
+      interface = "eno1";
+    };
+
   };
 
-  time.timeZone = "America/New_York";
-
-  users.users."aaron" = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = authorizedKeys;
-  };
-
-  users.groups.git = { };
-
-  systemd.tmpfiles.rules = [
-    "d /srv/git 0770 git git -"
+  networking.nameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
   ];
 
-  users.users."git" = {
-    group = "git";
-    isSystemUser = true;
-    home = "/srv/git";
-    shell = "${pkgs.git}/bin/git-shell";
-    openssh.authorizedKeys.keys = authorizedKeys;
+  services.openssh.enable = true;
+  services.openssh.settings = {
+    PasswordAuthentication = false;
+    KbdInteractiveAuthentication = false;
+    PermitRootLogin = "no";
+    AllowUsers = [ "aaron" ];
   };
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      PubkeyAuthentication = true;
-      AllowAgentForwarding = true;
-    };
-  };
+  networking.firewall.enable = false;
 
-  services.xserver = {
-    autorun = false;
-    enable = true;
-    desktopManager = {
-      xterm.enable = false;
-      xfce.enable = true;
-    };
-  };
-
-  services.displayManager.defaultSession = "xfce";
-
-  system.stateVersion = "23.05";
+  system.stateVersion = "25.05";
 }

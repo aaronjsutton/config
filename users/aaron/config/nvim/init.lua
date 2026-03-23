@@ -1,6 +1,18 @@
+require'kanagawa'.setup({
+	compile = false,
+	transparent = true,
+	keywordStyle = { italic = false },
+	overrides = function(colors)
+		local theme = colors.theme
+		return {
+			["@variable.builtin"] = { italic = false },
+			["@keyword.return"] = { fg = theme.syn.special3, italic = false }
+		}
+	end
+})
 
 vim.cmd.syntax "off" 
-vim.cmd.colorscheme "miasma"
+vim.cmd.colorscheme "kanagawa"
 
 vim.opt.list = false
 vim.opt.listchars = {

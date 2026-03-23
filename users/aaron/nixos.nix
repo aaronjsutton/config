@@ -1,19 +1,28 @@
 { pkgs, ... }:
 {
-  programs.zsh.enable = true;
-
-  services.lorri.enable = true;
-
-  virtualisation = {
-    containers.enable = true;
-    podman.enable = true;
-  };
-
   users.users.aaron = {
     home = "/home/aaron";
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAxpIWQv9lBTM4jHlhbv1ufrBBPmmv4TzzPLPVKlQajO"
-    ];
+  };
+
+  programs.direnv.enable = true;
+  programs.direnv.package = pkgs.direnv;
+  programs.direnv.settings = {
+    global = {
+      hide_env_diff = true;
+      log_filter = "^$";
+      log_format = "-";
+      strict_env = true;
+      warn_timeout = "300ms";
+    };
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = false;
+    syntaxHighlighting.enable = true;
+    histSize = 9000;
+    interactiveShellInit = builtins.readFile ./init.zsh;
+    promptInit = builtins.readFile ./prompt.zsh;
   };
 }
