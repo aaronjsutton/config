@@ -10,6 +10,20 @@
     shell = pkgs.zsh;
   };
 
+  programs.direnv.enable = true;
+  programs.direnv.package = pkgs.direnv;
+  programs.direnv.settings = {
+    global = {
+      hide_env_diff = true;
+      log_filter = "^$";
+      log_format = "-";
+      strict_env = true;
+      warn_timeout = "300ms";
+    };
+
+    whitelist.prefix = [ "~/Code" ];
+  };
+
   homebrew.enable = true;
   homebrew = {
     brews = [
@@ -36,17 +50,20 @@
   # Experimental: Faster build for direnv enabled projects
   services.lorri.enable = true;
 
-  programs.direnv.enable = true;
-  programs.direnv.settings = {
-    global = {
-      hide_env_diff = true;
-      log_filter = "^$";
-      log_format = "-";
-      strict_env = true;
-      warn_timeout = "300ms";
+  # Experimental: Linux builder
+  nix.linux-builder = {
+    enable = true;
+    ephemeral = true;
+    maxJobs = 4;
+    config = {
+      virtualisation = {
+        darwin-builder = {
+          diskSize = 40 * 1024;
+          memorySize = 8 * 1024;
+        };
+        cores = 6;
+      };
     };
-
-    whitelist.prefix = [ "~/Code" ];
   };
 
   programs.zsh = {

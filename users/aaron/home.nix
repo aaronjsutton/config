@@ -1,4 +1,4 @@
-{  ... }:
+{ ... }:
 {
   config,
   lib,
@@ -10,11 +10,10 @@
 let
   theme = builtins.fetchTree {
     type = "github";
-    owner = "xero";
-    repo = "miasma.nvim";
-    rev = "627f2e1cac91de0d1d4dd7472b506a30f41b2b7d";
+    owner = "rebelot";
+    repo = "kanagawa.nvim";
+    rev = "2d9ae006b3b20a156e5eda23aaa65dc49deba10f";
   };
-
 in
 {
   programs.home-manager.enable = true;
@@ -52,8 +51,9 @@ in
       source = ./config/ghostty;
       recursive = true;
     };
-    "ghostty/themes/miasma" = {
-      source = "${theme}/extras/miasma.ghostty";
+    "ghostty/themes" = {
+      source = "${theme}/extras/ghostty";
+      recursive = true;
     };
     "nvim" = {
       source = ./config/nvim;
@@ -172,21 +172,13 @@ in
 
   programs.neovim.enable = true;
   programs.neovim.plugins =
-    # Plugins
     builtins.attrValues {
       inherit (pkgs-unstable.vimPlugins)
         hunk-nvim
+        kanagawa-nvim
         nvim-lspconfig
-        zenbones-nvim
-        lush-nvim
         ;
     }
-    ++ [
-      (pkgs-unstable.vimPlugins.miasma-nvim.overrideAttrs (prev: {
-        postPatch = builtins.readFile ./patch.sh;
-      }))
-    ]
-    # Grammars
     ++ [
       (pkgs-unstable.vimPlugins.nvim-treesitter.withPlugins (
         plugins:

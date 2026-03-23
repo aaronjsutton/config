@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   modulesPath,
   ...
 }:
@@ -13,8 +14,9 @@
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"
-    "usb_storage"
+    "nvme"
     "usbhid"
+    "uas"
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
@@ -22,20 +24,34 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/ac4c5924-c4bd-447e-a9f5-08f17df6de95";
-    fsType = "ext4";
+    device = "/dev/disk/by-uuid/b6ba441f-01d2-46ba-9f63-fd2a06b8036c";
+    fsType = "btrfs";
+    options = [ "subvol=@" ];
+  };
+
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/b6ba441f-01d2-46ba-9f63-fd2a06b8036c";
+    fsType = "btrfs";
+    options = [ "subvol=@home" ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/b6ba441f-01d2-46ba-9f63-fd2a06b8036c";
+    fsType = "btrfs";
+    options = [ "subvol=@nix" ];
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/8DCF-1214";
+    device = "/dev/disk/by-uuid/DED8-B0F1";
     fsType = "vfat";
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   swapDevices = [ ];
 
-  networking.useDHCP = lib.mkDefault true;
-
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

@@ -27,7 +27,7 @@
     };
 
     jujutsu = {
-      url = "github:aaronjsutton/jj?ref=aaron/flake-warning";
+      url = "github:jj-vcs/jj";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
@@ -45,6 +45,7 @@
       home-manager,
       nixpkgs,
       nixpkgs-unstable,
+      jujutsu,
       self,
       systems,
       ...
@@ -52,8 +53,7 @@
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
-
-        (import ./overlays { nixpkgs = nixpkgs-unstable; })
+        inputs.jujutsu.overlays.default
       ];
 
       mkSystem = import ./lib/mksystem.nix {
@@ -72,10 +72,28 @@
         darwin = true;
       };
 
-      nixosConfigurations.hammond = mkSystem "dell-precision-3430" {
+      nixosConfigurations.ritchie = mkSystem "dell-precision-3430" {
         system = "x86_64-linux";
         user = "aaron";
       };
+
+      devShells = eachSystem (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+
+          default = pkgs.mkShell {
+            packages = builtins.attrValues {
+              inherit (pkgs)
+                nix-output-monitor
+                ;
+            };
+          };
+
+        }
+      );
 
       formatter = eachSystem (system: (import nixpkgs { inherit system; }).nixfmt-tree);
     };
