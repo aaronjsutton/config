@@ -3,7 +3,7 @@ vim.lsp.config('biome', {
 })
 
 vim.lsp.enable('biome')
-vim.lsp.enable('typescript-go')
+vim.lsp.enable('tsgo')
 
 vim.treesitter.start()
 vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"

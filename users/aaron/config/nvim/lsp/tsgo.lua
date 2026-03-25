@@ -1,5 +1,4 @@
 return {
-	-- HACK: Hardcoded path.
   cmd = { '/Users/aaron/Code/as.aaron/typescript-go/built/local/tsgo', '--lsp', '--stdio' },
 	filetypes = {
 		'javascript',
