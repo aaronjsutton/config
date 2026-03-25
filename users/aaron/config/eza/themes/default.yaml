@@ -90,6 +90,7 @@ octal: { foreground: Purple }
 punctuation: { foreground: DarkGray, is_bold: true }
 symlink_path: { foreground: Cyan }
 extensions:
+  ex: { filename: { foreground: Purple } }
   tsx: { filename: { foreground: Cyan } }
   just: { filename: { foreground: Gray } }
 filenames:

@@ -26,6 +26,7 @@
 
   homebrew.enable = true;
   homebrew = {
+    onActivation.cleanup = "zap";
     brews = [
       "tart"
     ];
@@ -33,11 +34,9 @@
       "cirruslabs/cli"
     ];
     casks = [
-      "blender"
       "ghostty"
       "loom"
       "slack"
-      "spotify"
       "steam"
       "zoom"
     ];

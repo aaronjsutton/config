@@ -6,7 +6,8 @@ require'kanagawa'.setup({
 		local theme = colors.theme
 		return {
 			["@variable.builtin"] = { italic = false },
-			["@keyword.return"] = { fg = theme.syn.special3, italic = false }
+			["@keyword.return"] = { fg = theme.syn.special3, italic = false },
+			["LineNr"] = { bg = "NONE" }
 		}
 	end
 })
