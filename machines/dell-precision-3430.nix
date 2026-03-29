@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
@@ -9,7 +7,11 @@
   imports = [ ./hardware/dell-precision-3430.nix ];
 
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 20;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  services.pcscd.enable = true;
+  services.lorri.enable = true;
 
   fileSystems = {
     "/".options = [ "compress=zstd" ];
@@ -24,13 +26,13 @@
   networking.networkmanager.enable = true;
 
   time.timeZone = "America/New_York";
-
   i18n.defaultLocale = "en_US.UTF-8";
+
+  programs.sway.enable = true;
 
   users.users.aaron = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    packages = with pkgs; [ ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -38,26 +40,7 @@
     curl
   ];
 
-  networking = {
-    interfaces.eno1 = {
-      ipv4.addresses = [
-        {
-          address = "192.168.2.3";
-          prefixLength = 24;
-        }
-      ];
-    };
-    defaultGateway = {
-      address = "192.168.2.1";
-      interface = "eno1";
-    };
-
-  };
-
-  networking.nameservers = [
-    "1.1.1.1"
-    "8.8.8.8"
-  ];
+  networking.interfaces.eno1.useDHCP = true;
 
   services.openssh.enable = true;
   services.openssh.settings = {

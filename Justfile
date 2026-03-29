@@ -33,3 +33,7 @@ switch:
 [linux]
 switch:
   {{ nh }} os switch .# -H {{ machine }}
+
+[linux]
+boot:
+  {{ nh }} os boot .# -H {{ machine }}

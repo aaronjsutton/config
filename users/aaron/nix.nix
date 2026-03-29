@@ -1,12 +1,12 @@
 { pkgs-unstable, ... }:
 {
   nix.enable = true;
-  nix.package = pkgs-unstable.nixVersions.git;
+  nix.package = pkgs-unstable.nixVersions.latest;
 
   nix.settings = {
     download-buffer-size = 524288000 # 500 MiB
     ;
-    warn-dirty = false;
+    warn-dirty = true;
     experimental-features = [
       "nix-command"
       "flakes"

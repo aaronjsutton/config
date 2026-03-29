@@ -27,12 +27,11 @@ in
   home.stateVersion = "25.05";
   home.packages = builtins.attrValues {
     inherit (pkgs-unstable)
-      entr
+      firefox
       hut
       just
       nil
       rsync
-      shadowenv
       silver-searcher
       ;
   };
