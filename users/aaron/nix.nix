@@ -4,25 +4,9 @@
   nix.package = pkgs-unstable.nixVersions.latest;
 
   nix.settings = {
-    download-buffer-size = 524288000 # 500 MiB
-    ;
-    warn-dirty = true;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-
-    trusted-users = [
-      "root"
-      "aaron"
-      "@admin"
-    ];
+   download-buffer-size = 524288000; # 500 MiB
+    warn-dirty = false;
+    experimental-features = [ "nix-command" "flakes" ];
+    trusted-users = [ "root" "aaron" ];
   };
-
-  nix.buildMachines = [ ];
-  nix.distributedBuilds = true;
-
-  nix.extraOptions = ''
-    builders-use-substitutes = true
-  '';
 }

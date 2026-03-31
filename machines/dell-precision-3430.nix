@@ -10,8 +10,7 @@
   boot.loader.systemd-boot.configurationLimit = 20;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  services.pcscd.enable = true;
-  services.lorri.enable = true;
+
 
   fileSystems = {
     "/".options = [ "compress=zstd" ];

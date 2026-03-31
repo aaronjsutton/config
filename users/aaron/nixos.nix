@@ -1,14 +1,34 @@
 { pkgs, ... }:
 {
+
+  fonts.packages = builtins.attrValues {
+    inherit (pkgs)
+      font-awesome;
+  };
+
   users.users.aaron = {
     home = "/home/aaron";
     shell = pkgs.zsh;
-    packages = [
-      pkgs.ghostty
-    ];
+    packages = builtins.attrValues {
+      inherit (pkgs)
+        ghostty
+        openscad
+        bambu-studio
+        wl-clipboard
+        swaylock
+        swayidle
+        swaybg;
+    };
   };
 
-  fonts.packages = [];
+  services.lorri.enable = true;
+
+  programs.waybar.enable = true;
+
+  services = {
+    udev.packages = [ pkgs.yubikey-personalization ];
+    pcscd.enable = true;
+  };
 
   programs.direnv.enable = true;
   programs.direnv.package = pkgs.direnv;
@@ -21,21 +41,6 @@
       warn_timeout = "300ms";
     };
   };
-
-  secuirty.polkit.extraConfig = ''
-polkit.addRule(function(action, subject) {
-    if (action.id == "org.debian.pcsc-lite.access_card" &&
-        subject.isInGroup("wheel")) {
-        return polkit.Result.YES;
-    }
-});
-polkit.addRule(function(action, subject) {
-    if (action.id == "org.debian.pcsc-lite.access_pcsc" &&
-        subject.isInGroup("wheel")) {
-        return polkit.Result.YES;
-    }
-});
-  '';
 
   programs.zsh = {
     enable = true;

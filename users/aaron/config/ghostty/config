@@ -1,5 +1,5 @@
 background-blur = true
-background-opacity = 0.85
+background-opacity = 0.95
 mouse-hide-while-typing = true
 theme = kanagawa-wave
 unfocused-split-opacity = 1.0

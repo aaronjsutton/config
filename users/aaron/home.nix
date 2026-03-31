@@ -18,6 +18,39 @@ in
 {
   programs.home-manager.enable = true;
 
+  wayland.windowManager.sway = {
+    enable = true;
+    config = {
+      modifier = "Mod4";
+      terminal = "ghostty";
+      workspaceOutputAssign = [
+        {
+          workspace = "1"; 
+          output = "DP-1";
+        }
+        {
+          workspace = "2"; 
+          output = "DP-2";
+        }
+      ];
+      output = {
+        "*" = {
+          bg = "${./wallpaper/nixos.png} fill";
+        };
+        # Left
+        "DP-1" = {
+          mode = "3840x2160@59.951Hz";
+          scale = "2";
+        };
+        # Right
+        "DP-2" = {
+          mode = "2560x1440@120Hz";
+          scale = "1";
+        };
+      };
+    };
+  };
+
   programs.nh = {
     enable = true;
     package = pkgs-unstable.nh;
@@ -184,32 +217,32 @@ in
         plugins:
         builtins.attrValues {
           inherit (plugins)
-            c
-            c-sharp
-            css
-            csv
-            dockerfile
-            editorconfig
-            elixir
-            erlang
-            go
-            html
-            ini
-            javascript
-            jsdoc
-            json
-            just
-            ledger
-            lua
-            nix
-            python
-            razor
-            terraform
-            toml
-            tsx
-            typescript
-            yaml
-            zsh
+          c
+          c-sharp
+          css
+          csv
+          dockerfile
+          editorconfig
+          elixir
+          erlang
+          go
+          html
+          ini
+          javascript
+          jsdoc
+          json
+          just
+          ledger
+          lua
+          nix
+          python
+          razor
+          terraform
+          toml
+          tsx
+          typescript
+          yaml
+          zsh
             ;
         }
       ))
