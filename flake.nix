@@ -53,7 +53,7 @@
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
-        inputs.jujutsu.overlays.default
+        # inputs.jujutsu.overlays.default
       ];
 
       mkSystem = import ./lib/mksystem.nix {

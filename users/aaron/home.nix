@@ -77,6 +77,7 @@ in
   programs.tmux.extraConfig = builtins.readFile ./config/tmux/tmux.conf;
 
   programs.jujutsu.enable = true;
+  programs.jujutsu.package = pkgs-unstable.jujutsu;
   programs.jujutsu.settings = {
     user.name = "Aaron Sutton";
     user.email = "aaron@aaron.as";
