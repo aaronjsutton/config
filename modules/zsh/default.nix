@@ -1,25 +1,23 @@
-{ pkgs, lib, ... }:
-
+{ config, lib, ... }:
+with lib;
 let
-
-  inherit (pkgs) writeTextDir;
-  config = writeTextDir "zsh/.zshrc" ''
-    			if [[ -o interactive ]]; then
-    				source ${./interactive.zsh}
-    			fi
-    		'';
+  cfg = config.modules.zsh;
 in
 {
+  options.modules.zsh = {
+    enable = mkEnableOption "Aaron’s ZSH configuration";
+  };
 
-  wrappers.zsh-user = {
-    basePackage = pkgs.zsh;
+  config = mkIf cfg.enable {
     programs.zsh = {
-      wrapFlags = [
-        "--set"
-        "ZDOTDIR"
-        (lib.makeSearchPathOutput "out" "zsh" [ config ])
-      ];
+      enable = true;
+      enableAutosuggestions = true;
+      enableCompletion = true;
+      enableFastSyntaxHighlighting = true;
+      enableFzfHistory = false;
+      histSize = 16384;
+      interactiveShellInit = builtins.readFile ./interactive.zsh;
+      promptInit = builtins.readFile ./prompt.zsh;
     };
-
   };
 }

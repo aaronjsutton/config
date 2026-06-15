@@ -1,42 +1,42 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 {
   networking.computerName = "Aaron’s MacBook Pro";
   networking.hostName = "lovelace";
 
   system.defaults.loginwindow.GuestEnabled = false;
 
+  modules.zsh.enable = true;
+
   users.users.aaron = {
     home = "/Users/aaron";
     shell = pkgs.zsh;
   };
 
-  programs.direnv.enable = true;
-  programs.direnv.package = pkgs.direnv;
-  programs.direnv.settings = {
-    global = {
-      hide_env_diff = true;
-      log_filter = "^$";
-      log_format = "-";
-      strict_env = true;
-      warn_timeout = "300ms";
-    };
+  programs.direnv = {
+    enable = true;
+    package = pkgs-unstable.direnv;
+    settings = {
+      global = {
+        hide_env_diff = true;
+        log_filter = "^$";
+        log_format = "-";
+        strict_env = true;
+        warn_timeout = "300ms";
+      };
 
-    whitelist.prefix = [ "~/Code" ];
+      whitelist.prefix = [ "~/Code" ];
+    };
   };
 
-  homebrew.enable = true;
   homebrew = {
-    onActivation.cleanup = "zap";
-    brews = [
-      "tart"
-    ];
-    taps = [
-      "cirruslabs/cli"
-    ];
+    enable = true;
     casks = [
       "ghostty"
+      "google-chrome@canary"
       "loom"
+      "openscad"
       "slack"
+      "spotify"
       "steam"
       "zoom"
     ];
@@ -62,23 +62,6 @@
         };
         cores = 6;
       };
-    };
-  };
-
-  programs.zsh = {
-    enable = true;
-    enableAutosuggestions = true;
-    enableCompletion = false;
-    enableFastSyntaxHighlighting = true;
-    enableFzfGit = false;
-    enableFzfHistory = false;
-    histSize = 9000;
-    interactiveShellInit = builtins.readFile ./init.zsh;
-    promptInit = builtins.readFile ./prompt.zsh;
-
-    variables = {
-      FZF_DEFAULT_COMMAND = "ag -l '.'";
-      FZF_DEFAULT_OPTS = "--height=10% --layout=reverse";
     };
   };
 }

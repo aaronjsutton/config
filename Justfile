@@ -20,6 +20,7 @@ build:
 update:
   {{ nix }} flake update
   brew update
+  brew upgrade
   brew upgrade --cask
 
 [linux]

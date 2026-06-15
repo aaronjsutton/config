@@ -10,6 +10,5 @@
       ;
   };
   nixpkgs.config.allowUnfree = true;
-  programs.zsh.enable = true;
   system.stateVersion = 6;
 }

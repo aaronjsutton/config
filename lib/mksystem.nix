@@ -29,6 +29,7 @@ mkSystem' {
     nix-module
     os-module
     home-manager-module.home-manager
+    ../modules/zsh
     {
       home-manager.extraSpecialArgs = { inherit pkgs-unstable; };
       home-manager.useGlobalPkgs = true;
