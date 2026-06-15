@@ -1,7 +1,7 @@
 background-blur = true
-background-opacity = 0.85
+background-opacity = 0.90
 mouse-hide-while-typing = true
-theme = kanagawa-wave
+theme = light:light,dark:dark
 unfocused-split-opacity = 1.0
 working-directory = inherit
 

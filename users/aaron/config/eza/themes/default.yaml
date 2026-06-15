@@ -91,9 +91,15 @@ punctuation: { foreground: DarkGray, is_bold: true }
 symlink_path: { foreground: Cyan }
 extensions:
   ex: { filename: { foreground: Purple } }
+  eex: { filename: { foreground: Purple } }
+  nix: { filename: { foreground: Purple } }
+  lock: { filename: { foreground: Gray, is_dimmed: true } }
   tsx: { filename: { foreground: Cyan } }
   just: { filename: { foreground: Gray } }
+  json: { filename: { foreground: Yellow } }
+  jsonl: { filename: { foreground: Yellow } }
 filenames:
-  Justfile: { filename: { foreground: Gray } }
-  dist: { filename: { foreground: Gray, is_dimmed: true } }
+  CLAUDE.md: { filename: { foreground: Gray, is_dimmed: true } }
+  Justfile: { filename: { foreground: Yellow } }
   _build: { filename: { foreground: Gray, is_dimmed: true } }
+  dist: { filename: { foreground: Gray, is_dimmed: true } }

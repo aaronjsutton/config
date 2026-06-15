@@ -1,28 +1,29 @@
 { pkgs-unstable, ... }:
 {
-  nix.enable = true;
-  nix.package = pkgs-unstable.nixVersions.git;
+  nix = {
+    enable = true;
+    package = pkgs-unstable.nixVersions.git;
 
-  nix.settings = {
-    download-buffer-size = 524288000 # 500 MiB
-    ;
-    warn-dirty = false;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    settings = {
+      download-buffer-size = 524288000 # 500 MiB
+      ;
+      warn-dirty = false;
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
 
-    trusted-users = [
-      "root"
-      "aaron"
-      "@admin"
-    ];
+      trusted-users = [
+        "root"
+        "aaron"
+        "@admin"
+      ];
+    };
+
+    buildMachines = [ ];
+    distributedBuilds = true;
+    extraOptions = ''
+      builders-use-substitutes = true
+    '';
   };
-
-  nix.buildMachines = [ ];
-  nix.distributedBuilds = true;
-
-  nix.extraOptions = ''
-    builders-use-substitutes = true
-  '';
 }
