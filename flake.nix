@@ -16,7 +16,7 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  
+
     # Bleeding Edge
 
     neovim-nightly-overlay = {
@@ -44,46 +44,43 @@
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
-        inputs.jujutsu.overlays.default
+        # inputs.jujutsu.overlays.default
       ];
 
-      eachSystem = import ./lib/eachsystem.nix {
-        inherit nixpkgs systems;
-      };
-
-      mkSystem = import ./lib/mksystem.nix {
+      lib = import ./lib {
         inherit
           inputs
           overlays
+          nixpkgs
+          systems
           ;
       };
 
     in
     {
-      darwinConfigurations.lovelace = mkSystem "macbook-pro-mx" {
+      darwinConfigurations.lovelace = lib.mkSystem "macbook-pro-mx" {
         system = "aarch64-darwin";
         user = "aaron";
         darwin = true;
       };
 
-      nixosConfigurations.ritchie = mkSystem "dell-precision-3430" {
+      nixosConfigurations.ritchie = lib.mkSystem "dell-precision-3430" {
         system = "x86_64-linux";
         user = "aaron";
       };
 
-      devShells = eachSystem (
-        system: pkgs:
-        {
+      devShells = lib.eachSystem (
+        system: pkgs: {
           default = pkgs.mkShell {
             packages = builtins.attrValues {
               inherit (pkgs)
-              nix-output-monitor
-              ;
+                nix-output-monitor
+                ;
             };
           };
         }
       );
 
-      formatter = eachSystem (_: pkgs: pkgs.nixfmt-tree);
+      formatter = lib.eachSystem (_: pkgs: pkgs.nixfmt-tree);
     };
 }

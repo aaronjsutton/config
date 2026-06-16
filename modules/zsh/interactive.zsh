@@ -29,3 +29,4 @@ vz() {
 	fzf -q "${*:-}" --bind 'enter:become(nvim {})'
 }
 
+eval "$(shadowenv init zsh)"

@@ -22,26 +22,27 @@ in
     stateVersion = "25.05";
     packages = builtins.attrValues {
       inherit (pkgs-unstable)
-      hut
-      just
-      nil
-      nodejs
-      openssh
-      ripgrep
-      rsync
-      zoxide
-      ;
+        claude-code
+        hut
+        just
+        nil
+        nodejs
+        openssh
+        ripgrep
+        rsync
+        shadowenv
+        zoxide
+        ;
     };
     sessionVariables = {
       EDITOR = "nvim";
       EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";
-      FZF_DEFAULT_COMMAND = "rg -l .";
-      FZF_DEFAULT_OPTS = "--height=10% --layout=reverse";
       GOPATH = "${config.xdg.cacheHome}/go";
       HOMEBREW_NO_AUTO_UPDATE = "1";
       HOMEBREW_NO_ENV_HINTS = "1";
     };
   };
+
 
   xdg = {
     enable = true;
@@ -91,6 +92,7 @@ in
 
   programs.jujutsu = {
     enable = true;
+    package = pkgs-unstable.jujutsu;
     settings = {
       aliases = {
         a = [
@@ -99,7 +101,11 @@ in
           "all()"
         ];
         g = [ "git" ];
-        sync = [ "git" "fetch" "--all-remotes" ];
+        sync = [
+          "git"
+          "fetch"
+          "--all-remotes"
+        ];
       };
 
       user.name = "Aaron Sutton";
@@ -151,6 +157,11 @@ in
 
   programs.fzf = {
     enable = true;
+    defaultCommand = "rg -l .";
+    defaultOptions = [
+      "--height=10%"
+      "--layout=reverse"
+    ];
   };
 
   programs.git = {
@@ -194,5 +205,10 @@ in
       nvim-lspconfig
       nvim-treesitter.withAllGrammars
     ];
+  };
+  programs.zsh = {
+    enable = true;
+    enableCompletion = false;
+    dotDir = "${config.xdg.configHome}/zsh";
   };
 }
