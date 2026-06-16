@@ -104,13 +104,3 @@ vim.filetype.add {
 		jsonl = 'json',
 	},
 }
-
-require 'hunk'.setup {
-  ui = {
-    tree = {
-      mode = "nested",
-      width = 35,
-    },
-    layout = "vertical",
-  },
-}
