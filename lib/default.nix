@@ -12,24 +12,11 @@ let
     allowUnfreePredicate =
       pkg:
       builtins.elem (lib.getName pkg) [
-        "claude-code"
+        "codex"
       ];
   };
 in
 {
-  eachSystem =
-    f:
-    nixpkgs.lib.genAttrs (import systems) (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit config system;
-
-        };
-      in
-      f system pkgs
-    );
-
   mkSystem =
     machine:
     {
@@ -63,9 +50,7 @@ in
           home-manager.extraSpecialArgs = { inherit pkgs-unstable; };
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.${user} = (import ../users/${user}/home.nix) {
-            inputs = inputs;
-          };
+          home-manager.users.${user} = ../users/${user}/home.nix;
         }
       ];
     };

@@ -5,19 +5,10 @@ let
 in
 {
   options.modules.zsh = {
-    enable = mkEnableOption "Aaron’s ZSH configuration";
+    enable = mkEnableOption "System-wide ZSH";
   };
 
   config = mkIf cfg.enable {
-    programs.zsh = {
-      enable = true;
-      enableAutosuggestions = true;
-      enableCompletion = true;
-      enableFastSyntaxHighlighting = true;
-      enableFzfHistory = false;
-      histSize = 16384;
-      interactiveShellInit = builtins.readFile ./interactive.zsh;
-      promptInit = builtins.readFile ./prompt.zsh;
-    };
+    programs.zsh.enable = true;
   };
 }
