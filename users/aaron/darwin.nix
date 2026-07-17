@@ -17,6 +17,8 @@
 
   homebrew = {
     enable = true;
+    user = "aaron";
+    enableZshIntegration = true;
     casks = [
       "ghostty"
       "google-chrome@canary"
@@ -27,8 +29,4 @@
       "zoom"
     ];
   };
-
-  # Legacy: Needed by `hombrew.enable`.
-  # https://nix-darwin.github.io/nix-darwin/manual/#opt-system.primaryUser
-  system.primaryUser = "aaron";
 }

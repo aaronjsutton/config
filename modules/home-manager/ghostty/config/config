@@ -1,0 +1,14 @@
+background-blur = true
+background-opacity = 0.90
+mouse-hide-while-typing = true
+theme = light:light,dark:dark
+unfocused-split-opacity = 0.9
+working-directory = inherit
+
+config-file = cursor
+config-file = font
+config-file = keybind
+config-file = macos
+config-file = shell
+config-file = window
+# vim: set ft=ini:
