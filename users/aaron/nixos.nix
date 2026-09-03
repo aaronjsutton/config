@@ -55,43 +55,4 @@
     "net.ipv6.conf.all.accept_redirects" = 0;
     "net.ipv6.conf.all.send_redirects" = 0;
   };
-
-  services.strongswan = {
-    enable = false;
-    secrets = [ "/etc/ipsec.d/ipsec.secrets" ];
-
-    setup = {
-      charondebug = "ike 1, knl 1, cfg 0";
-      uniqueids = "no";
-    };
-
-    connections = {
-      internal = {
-        auto = "add";
-        compress = "no";
-        type = "tunnel";
-        keyexchange = "ikev2";
-        fragmentation = "yes";
-        forceencaps = "yes";
-        dpdaction = "clear";
-        dpddelay = "300s";
-        send_cert = "always";
-        rekey = "no";
-        left = "%any";
-        leftid = "192.168.2.3";
-        leftcert = "server-cert.pem";
-        leftsendcert = "always";
-        leftsubnet = "0.0.0.0/0";
-        right = "%any";
-        rightid = "%any";
-        rightauth = "eap-mschapv2";
-        rightsourceip = "10.0.0.0/24";
-        rightdns = "192.168.2.1";
-        rightsendcert = "never";
-        eap_identity = "%identity";
-        esp = "aes256-sha256-modp2048";
-        ike = "aes256-sha256-modp2048-modpnone";
-      };
-    };
-  };
 }

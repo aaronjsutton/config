@@ -6,7 +6,7 @@ default: switch
 nh    := require('nh')
 nix   := require('nix')
 
-machine := env('MACHINE_NAME', 'lovelace')
+machine := env('MACHINE_NAME')
 
 [macos]
 build:

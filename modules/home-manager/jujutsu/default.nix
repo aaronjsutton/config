@@ -5,6 +5,9 @@
     enable = true;
     package = pkgs-unstable.jujutsu;
     settings = {
+
+      inherit (import ../common) user;
+
       aliases = {
         a = [
           "log"
@@ -18,9 +21,6 @@
           "--all-remotes"
         ];
       };
-
-      user.name = "Aaron Sutton";
-      user.email = "aaron@aaron.as";
 
       git.private-commits = "description(glob:'private:*')";
 

@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   programs.zsh = {
     enable = true;
@@ -19,10 +24,12 @@
     ll = "eza --long";
     ls = "eza";
     lt = "eza --tree";
-    nq = "networkquality";
-    ns = "networksetup";
     top = "btop";
     vi = "nvim";
     vim = "nvim";
+  }
+  // lib.optionalAttrs pkgs.stdenv.isDarwin {
+    nq = "networkquality";
+    ns = "networksetup";
   };
 }

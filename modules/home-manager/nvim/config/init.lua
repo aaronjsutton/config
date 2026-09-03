@@ -15,7 +15,9 @@ vim.pack.add({
 	},
 })
 
-vim.cmd('colorscheme zenwritten')
+vim.g.neobones = { italic_strings = false, transparent_background = true }
+
+vim.cmd('colorscheme neobones')
 
 require 'settings'
 require 'keymaps'

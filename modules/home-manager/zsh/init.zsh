@@ -9,10 +9,6 @@ zle -N edit-command-line
 bindkey -v
 bindkey -M vicmd v edit-command-line
 
-# if [[ -f "/opt/homebrew/bin/brew" ]]; then
-# 	eval "$(/opt/homebrew/bin/brew shellenv)"
-# fi;
-
 if (( $+commands[shadowenv] )); then
   eval "$(shadowenv init zsh)"
 fi

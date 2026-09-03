@@ -5,7 +5,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    systems.url = "sourcehut:~heyaaron/nix-systems";
+    systems = {
+      url = "sourcehut:~heyaaron/nix-systems";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
@@ -55,9 +58,17 @@
         darwin = true;
       };
 
-      nixosConfigurations.ritchie = lib.mkSystem "dell-precision-3430" {
+      darwinConfigurations.strange-quark = lib.mkSystem "macbook-pro-mx" {
+        system = "aarch64-darwin";
+        user = "aaron";
+        username = "aaronsutton";
+        darwin = true;
+      };
+
+      homeConfigurations."coder" = lib.mkHome {
         system = "x86_64-linux";
         user = "aaron";
+        username = "coder";
       };
 
       formatter = systems.lib.eachSystem (_: pkgs: pkgs.nixfmt-tree);
