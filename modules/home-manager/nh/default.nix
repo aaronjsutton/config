@@ -3,6 +3,6 @@
   programs.nh = {
     enable = true;
     package = pkgs-unstable.nh;
-    flake = "$HOME/@config";
+    flake = "$HOME/Code/config";
   };
 }

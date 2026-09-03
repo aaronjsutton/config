@@ -1,32 +1,25 @@
 { pkgs, ... }:
 {
 
-  modules.zsh.enable = true;
+  modules = {
+    nix.enable = true;
+    zsh.enable = true;
+  };
 
   users.users = {
-    aaron = {
-      home = "/Users/aaron";
+    aaronsutton = {
+      home = "/Users/aaronsutton";
       shell = pkgs.zsh;
     };
   };
 
-  networking = {
-    computerName = "Aaron’s MacBook Pro";
-    hostName = "lovelace";
-  };
-
   homebrew = {
     enable = true;
-    user = "aaron";
+    user = "aaronsutton";
     enableZshIntegration = true;
     casks = [
       "ghostty"
-      "google-chrome@canary"
-      "loom"
-      "slack"
-      "spotify"
-      "steam"
-      "zoom"
+      "macfuse"
     ];
   };
 }
