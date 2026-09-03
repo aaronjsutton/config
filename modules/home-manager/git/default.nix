@@ -4,10 +4,7 @@
     enable = true;
     lfs.enable = true;
     settings = {
-      user = {
-        name = "Aaron Sutton";
-        email = "aaron@aaron.as";
-      };
+      inherit (import ../common) user;
     };
     ignores = [
       ".DS_Store"

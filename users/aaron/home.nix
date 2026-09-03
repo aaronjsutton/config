@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 
@@ -29,22 +30,29 @@
         tree-sitter-cli
         ;
       inherit (pkgs)
-        codex
+        awscli2
         gh
         hut
         jq
         just
         nil
         openssh
+        rclone
         ripgrep
         rsync
         shadowenv
+        tmux
+        ;
+      inherit (pkgs-unstable)
+        coder
+        claude-code
         ;
     };
 
     sessionVariables = {
       EDITOR = "nvim";
-    } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+    }
+    // lib.optionalAttrs pkgs.stdenv.isDarwin {
       HOMEBREW_NO_AUTO_UPDATE = "1";
       HOMEBREW_NO_ENV_HINTS = "1";
     };
