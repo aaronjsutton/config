@@ -1,6 +1,5 @@
 {
   nixpkgs,
-  systems,
   overlays,
   inputs,
   ...

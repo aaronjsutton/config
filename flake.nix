@@ -5,11 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    systems = {
-      url = "sourcehut:~heyaaron/nix-systems";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,7 +28,6 @@
       nixpkgs,
       nixpkgs-unstable,
       self,
-      systems,
       ...
     }@inputs:
     let
@@ -46,7 +40,6 @@
           inputs
           overlays
           nixpkgs
-          systems
           ;
       };
 
@@ -71,6 +64,6 @@
         username = "coder";
       };
 
-      formatter = systems.lib.eachSystem (_: pkgs: pkgs.nixfmt-tree);
+      formatter = builtins.mapAttrs (_: pkgs: pkgs.nixfmt-tree) inputs.nixpkgs.legacyPackages;
     };
 }

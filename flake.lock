@@ -139,28 +139,7 @@
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable",
-        "systems": "systems"
-      }
-    },
-    "systems": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1783365196,
-        "narHash": "sha256-wdfp1Tb0PQLVkVhBQ8ZAZSRfvGjcQ5s62WcvKJm7JP4=",
-        "owner": "~heyaaron",
-        "repo": "nix-systems",
-        "rev": "04f19ccec5b84f814236b13ea0ee532c5b3682c7",
-        "type": "sourcehut"
-      },
-      "original": {
-        "owner": "~heyaaron",
-        "repo": "nix-systems",
-        "type": "sourcehut"
+        "nixpkgs-unstable": "nixpkgs-unstable"
       }
     }
   },
