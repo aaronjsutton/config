@@ -10,11 +10,11 @@ machine := env('MACHINE_NAME')
 
 [macos]
 build:
-  {{ nh }} darwin build
+  {{ nh }} darwin build .# -H {{ machine }}
 
 [linux]
 build:
-  {{ nh }} os build
+  {{ nh }} os build .# -H {{ machine }}
 
 [macos]
 update:
