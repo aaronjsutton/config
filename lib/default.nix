@@ -25,12 +25,13 @@ in
       homeDirectory ? "/home/${username}",
     }:
     let
+      mkHome' = inputs.home-manager.lib.homeManagerConfiguration;
       pkgs-unstable = import inputs.nixpkgs-unstable { inherit config system; };
       pkgs = import nixpkgs {
         inherit config system overlays;
       };
     in
-    inputs.home-manager.lib.homeManagerConfiguration {
+    mkHome' {
       inherit pkgs;
       extraSpecialArgs = { inherit pkgs-unstable; };
       modules = [
@@ -70,14 +71,16 @@ in
         }
         machine-module
         os-module
-        home-manager-module.home-manager
         ../modules/nix
         ../modules/zsh
+        home-manager-module.home-manager
         {
-          home-manager.extraSpecialArgs = { inherit pkgs-unstable; };
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.${username} = ../users/${user}/home.nix;
+          home-manager = {
+            extraSpecialArgs = { inherit pkgs-unstable; };
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.${username} = ../users/${user}/home.nix;
+          };
         }
       ];
     };
