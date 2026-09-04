@@ -60,8 +60,7 @@
 
       homeConfigurations."coder" = lib.mkHome {
         system = "x86_64-linux";
-        user = "aaron";
-        username = "coder";
+        user = "coder";
       };
 
       formatter = builtins.mapAttrs (_: pkgs: pkgs.nixfmt-tree) inputs.nixpkgs.legacyPackages;
