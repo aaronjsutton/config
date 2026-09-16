@@ -31,6 +31,7 @@
         ;
       inherit (pkgs)
         awscli2
+        coder
         gh
         hut
         jq
@@ -44,7 +45,6 @@
         tmux
         ;
       inherit (pkgs-unstable)
-        coder
         claude-code
         ;
     };

@@ -15,12 +15,12 @@ let
 
   channels = {
     stable = {
-      version = "2.33.11";
+      version = "2.34.9";
       hash = {
-        x86_64-linux = "sha256-NY9xyLc6Pr1wWPnr4fLo6t+7B7Gin/BlTH3tdxQk30k=";
-        x86_64-darwin = "sha256-yEHu+ekyZSUd66L9sR8ihVLFnDe9N/kFKLGHOFfx9es=";
-        aarch64-linux = "sha256-Wc9hhotJKcb1fdjfh9pWxVs/e4YpBua1PyAhMRJbUAY=";
-        aarch64-darwin = "sha256-7A6BxOg4A3Ua5SXjnh5gtG/LE94iGuRQPe/S9UjX/oc=";
+        x86_64-linux = "sha256-KFKNWUboajdPEn2baY13slGiZCjvSedzlfZqSCkhMls=";
+        x86_64-darwin = "sha256-Y7B/nIQLMv/aEtjQ0tkJN6Fgh+2wwnCnp5+iLm1h2mc=";
+        aarch64-linux = "sha256-CFGX2j7SkK0/u7mcm+bmyS4uaqTIJ+dj0tLQ6JLeIJk=";
+        aarch64-darwin = "sha256-VvShvv9jrbyPkc8MhDgOlayit2OplCSriLBSSpk1wes=";
       };
     };
     mainline = {

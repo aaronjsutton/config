@@ -33,6 +33,9 @@
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
+        (final: prev: {
+          coder = final.callPackage ./pkgs/coder { };
+        })
       ];
 
       lib = import ./lib {
