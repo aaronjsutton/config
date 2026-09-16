@@ -1,6 +1,6 @@
 {
   user = {
     name = "Aaron Sutton";
-    email = "aaron@roadrunnerwm.com";
+    email = "asutton@roadrunnerwm.com";
   };
 }
