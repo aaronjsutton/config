@@ -1,3 +1,4 @@
+macos-icon = xray
 macos-titlebar-style = transparent
 macos-window-shadow = true
 # vim: set ft=ini:
