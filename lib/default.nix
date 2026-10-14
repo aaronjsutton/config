@@ -60,14 +60,16 @@ in
       os-module = ../users/${user}/${if darwin then "darwin" else "nixos"}.nix;
       home-manager-module =
         if darwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
+      homeDirectory = if darwin then "/Users/${username}" else "/home/${username}";
     in
     mkSystem' {
       modules = [
         {
-          _module.args = { inherit pkgs-unstable; };
+          _module.args = { inherit pkgs-unstable username; };
           nixpkgs.hostPlatform.system = system;
           nixpkgs.overlays = overlays;
           nixpkgs.config = config;
+          users.users.${username}.home = lib.mkDefault homeDirectory;
         }
         machine-module
         os-module
