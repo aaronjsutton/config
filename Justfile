@@ -29,8 +29,10 @@ update:
 
 [macos]
 switch:
+  sudo -v
   {{ nh }} darwin switch .# -H {{ machine }}
 
 [linux]
 switch:
+  sudo -v
   {{ nh }} os switch .# -H {{ machine }}

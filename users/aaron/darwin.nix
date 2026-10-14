@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 {
 
   modules = {
@@ -6,16 +6,14 @@
     zsh.enable = true;
   };
 
-  users.users = {
-    aaronsutton = {
-      home = "/Users/aaronsutton";
-      shell = pkgs.zsh;
-    };
+  users.users.${username} = {
+    home = "/Users/${username}";
+    shell = pkgs.zsh;
   };
 
   homebrew = {
     enable = true;
-    user = "aaronsutton";
+    user = username;
     enableZshIntegration = true;
     casks = [
       "ghostty"

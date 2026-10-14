@@ -1,3 +1,4 @@
+.claude/
 .env*
-result
 .shadowenv.d/
+result
