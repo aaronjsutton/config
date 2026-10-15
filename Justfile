@@ -1,36 +1,29 @@
 set quiet := true
 set no-exit-message := true
 
+nh  := require('nh')
+nix := require('nix')
+
+machine := env('MACHINE_NAME', `hostname -s`)
+flavor  := if os() == "macos" { "darwin" } else { "os" }
+
 default: switch
 
-nh    := require('nh')
-nix   := require('nix')
-
-machine := env('MACHINE_NAME')
-
-[macos]
 build:
-  {{ nh }} darwin build --no-nom .# -H {{ machine }}
+  {{ nh }} {{ flavor }} build --no-nom .# -H {{ machine }}
 
-[linux]
-build:
-  {{ nh }} os build --no-nom .# -H {{ machine }}
+switch:
+  {{ nh }} {{ flavor }} switch --no-nom .# -H {{ machine }}
 
-[macos]
 update:
   {{ nix }} flake update
+  {{ if os() == "macos" { just_executable() + " brew" } else { "" } }}
+
+[macos]
+brew:
   brew update
-  brew upgrade
-  brew upgrade --cask
+  brew upgrade --greedy
 
-[linux]
-update:
-  {{ nix }} flake update
-
-[macos]
-switch:
-  {{ nh }} darwin switch --no-nom .# -H {{ machine }}
-
-[linux]
-switch:
-  {{ nh }} os switch --no-nom .# -H {{ machine }}
+clean:
+  {{ nix }} store gc -v
+  {{ nix }} store optimise -v

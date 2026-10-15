@@ -17,7 +17,7 @@
     enableZshIntegration = true;
     casks = [
       "ghostty"
-      "macfuse"
+      "openscad@snapshot"
     ];
   };
 }
