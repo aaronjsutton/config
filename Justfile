@@ -10,11 +10,11 @@ machine := env('MACHINE_NAME')
 
 [macos]
 build:
-  {{ nh }} darwin build .# -H {{ machine }}
+  {{ nh }} darwin build --no-nom .# -H {{ machine }}
 
 [linux]
 build:
-  {{ nh }} os build .# -H {{ machine }}
+  {{ nh }} os build --no-nom .# -H {{ machine }}
 
 [macos]
 update:
@@ -29,10 +29,8 @@ update:
 
 [macos]
 switch:
-  sudo -v
-  {{ nh }} darwin switch .# -H {{ machine }}
+  {{ nh }} darwin switch --no-nom .# -H {{ machine }}
 
 [linux]
 switch:
-  sudo -v
-  {{ nh }} os switch .# -H {{ machine }}
+  {{ nh }} os switch --no-nom .# -H {{ machine }}
