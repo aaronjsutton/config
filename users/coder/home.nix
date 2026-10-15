@@ -25,7 +25,6 @@
 
   home = {
     stateVersion = "25.05";
-    homeDirectory = "/Users/aaron";
     packages = builtins.attrValues {
       inherit (pkgs.luaPackages)
         tree-sitter-cli
