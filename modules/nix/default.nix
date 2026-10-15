@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs-unstable,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.nix;
@@ -11,6 +16,7 @@ in
   config = mkIf cfg.enable {
     nix = {
       enable = true;
+      package = pkgs-unstable.nixVersions.latest;
 
       settings = {
         download-buffer-size = 524288000 # 500 MiB
