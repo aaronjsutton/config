@@ -9,6 +9,7 @@
 {
   imports = [
     ../../modules/home-manager/btop
+    ../../modules/home-manager/claude-code
     ../../modules/home-manager/delta
     ../../modules/home-manager/eza
     ../../modules/home-manager/fzf
@@ -43,9 +44,6 @@
         rsync
         shadowenv
         tmux
-        ;
-      inherit (pkgs-unstable)
-        claude-code
         ;
     };
 
