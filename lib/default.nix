@@ -71,6 +71,8 @@ in
           nixpkgs.overlays = overlays;
           nixpkgs.config = config;
           users.users.${username}.home = lib.mkDefault homeDirectory;
+          modules.nix.enable = lib.mkDefault true;
+          modules.zsh.enable = lib.mkDefault true;
         }
         machine-module
         os-module
