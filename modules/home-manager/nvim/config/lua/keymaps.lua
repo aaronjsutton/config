@@ -16,6 +16,7 @@ end)
 vim.keymap.set('n', 'gF', ':silent !jj fix<CR>')
 
 vim.keymap.set("v", "<leader>s", ":'<,'>sort<CR>")
+vim.keymap.set("n", "<leader>d", ":diffoff!<CR>")
 vim.keymap.set("n", "<leader>L", function()
   vim.opt.list = not vim.opt.list:get()
 end, { noremap = true, silent = true })

@@ -139,7 +139,24 @@
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "zenbones": "zenbones"
+      }
+    },
+    "zenbones": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782458849,
+        "narHash": "sha256-VfbVDXYhHhYWo+KTvfAScJ7Qm0CDnZd0k9c6B72UCpg=",
+        "owner": "zenbones-theme",
+        "repo": "zenbones.nvim",
+        "rev": "8304d8df9b823ff11e103afa62f38c39f534abe6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zenbones-theme",
+        "repo": "zenbones.nvim",
+        "type": "github"
       }
     }
   },

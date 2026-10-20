@@ -1,14 +1,13 @@
 { config, lib, ... }:
-with lib;
 let
   cfg = config.modules.zsh;
 in
 {
   options.modules.zsh = {
-    enable = mkEnableOption "System-wide ZSH";
+    enable = lib.mkEnableOption "System-wide ZSH";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.zsh.enable = true;
   };
 }

@@ -19,14 +19,16 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    zenbones = {
+      url = "github:zenbones-theme/zenbones.nvim";
+      flake = false;
+    };
   };
 
   outputs =
     {
-      nix-darwin,
-      home-manager,
       nixpkgs,
-      nixpkgs-unstable,
       self,
       ...
     }@inputs:
@@ -61,9 +63,22 @@
         darwin = true;
       };
 
+      nixosConfigurations.ritchie = lib.mkSystem "dell-precision-3430" {
+        system = "x86_64-linux";
+        user = "aaron";
+      };
+
       homeConfigurations."coder" = lib.mkHome {
         system = "x86_64-linux";
         user = "coder";
+      };
+
+      checks = {
+        aarch64-darwin = builtins.mapAttrs (_: c: c.system) self.darwinConfigurations;
+        x86_64-linux = {
+          ritchie = self.nixosConfigurations.ritchie.config.system.build.toplevel;
+          coder = self.homeConfigurations.coder.activationPackage;
+        };
       };
 
       formatter = builtins.mapAttrs (_: pkgs: pkgs.nixfmt-tree) inputs.nixpkgs.legacyPackages;

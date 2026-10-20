@@ -15,6 +15,10 @@ vim.pack.add({
 	},
 })
 
+vim.pack.add({
+  { src = "https://github.com/ibhagwan/fzf-lua" },
+})
+
 vim.g.neobones = { italic_strings = false, transparent_background = true }
 
 vim.cmd('colorscheme neobones')

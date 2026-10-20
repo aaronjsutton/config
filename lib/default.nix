@@ -11,8 +11,9 @@ let
     allowUnfreePredicate =
       pkg:
       builtins.elem (lib.getName pkg) [
-        "terraform"
+        "bambu-studio"
         "claude-code"
+        "terraform"
       ];
   };
 in
@@ -33,7 +34,7 @@ in
     in
     mkHome' {
       inherit pkgs;
-      extraSpecialArgs = { inherit pkgs-unstable; };
+      extraSpecialArgs = { inherit inputs pkgs-unstable; };
       modules = [
         ../users/${user}/home.nix
         {
@@ -53,7 +54,7 @@ in
       darwin ? false,
     }:
     let
-      mkSystem' = if darwin then inputs.nix-darwin.lib.darwinSystem else inputs.nixpkgs.lib.nixosSystem;
+      mkSystem' = if darwin then inputs.nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
       pkgs-unstable = import inputs.nixpkgs-unstable { inherit config system; };
 
       machine-module = ../machines/${machine}.nix;
@@ -78,7 +79,7 @@ in
         home-manager-module.home-manager
         {
           home-manager = {
-            extraSpecialArgs = { inherit pkgs-unstable; };
+            extraSpecialArgs = { inherit inputs pkgs-unstable; };
             useGlobalPkgs = true;
             useUserPackages = true;
             users.${username} = ../users/${user}/home.nix;

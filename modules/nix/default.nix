@@ -2,37 +2,40 @@
   lib,
   config,
   pkgs-unstable,
+  username,
   ...
 }:
-with lib;
 let
   cfg = config.modules.nix;
 in
 {
   options.modules.nix = {
-    enable = mkEnableOption "System-wide Nix";
+    enable = lib.mkEnableOption "System-wide Nix";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     nix = {
       enable = true;
       package = pkgs-unstable.nixVersions.latest;
 
       settings = {
-        download-buffer-size = 524288000 # 500 MiB
-        ;
+        download-buffer-size = 524288000; # 500 MiB
         warn-dirty = false;
         experimental-features = [
           "nix-command"
           "flakes"
         ];
+        trusted-users = [
+          "root"
+          username
+        ];
       };
 
-      buildMachines = [ ];
-      distributedBuilds = true;
-      extraOptions = ''
-        builders-use-substitutes = true
-      '';
+      gc = {
+        automatic = true;
+        options = "--delete-older-than 30d";
+      };
+      optimise.automatic = true;
     };
   };
 }
