@@ -1,6 +1,5 @@
 { pkgs, username, ... }:
 {
-
   modules = {
     nix.enable = true;
     zsh.enable = true;
@@ -10,6 +9,8 @@
     home = "/Users/${username}";
     shell = pkgs.zsh;
   };
+
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   homebrew = {
     enable = true;

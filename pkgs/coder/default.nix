@@ -1,44 +1,29 @@
 {
   lib,
-  channel ? "stable",
   fetchurl,
   installShellFiles,
   makeBinaryWrapper,
   terraform,
   stdenvNoCC,
   unzip,
-  nixosTests,
 }:
 
 let
   inherit (stdenvNoCC.hostPlatform) system;
 
-  channels = {
-    stable = {
-      version = "2.35.7";
-      hash = {
-        x86_64-linux = "sha256-w3MnVWTWuMk9FomSPs++e1oXkaKu7eEMEpy4f+hTLJo=";
-        x86_64-darwin = "sha256-aoTJXBSGqJU+YAxiuosMFKfwZGjwndNG4lsqtHNIBwE=";
-        aarch64-linux = "sha256-ZN7mEDVmd+QYXU2Y6e1HN2Prg5MG89jpOhtzRdkPYgs=";
-        aarch64-darwin = "sha256-GeaLUwUd4xIsZ2Ry6FRud3MzvNwovumT7tkTehgy9+c=";
-      };
-    };
-    mainline = {
-      version = "2.29.1";
-      hash = {
-        x86_64-linux = "sha256-LxYADRdkiIsvHBaMy+MtJuUo8p5MLDKDL6pMtHaqokw=";
-        x86_64-darwin = "sha256-OwZpCTjEVzTu4M9jf0vOuTuiyn66qRc/pEO/DLD8pvg=";
-        aarch64-linux = "sha256-hNPimwzopC2Hj8i0I6KJAtvKXANACpmcN+onGvAaMvc=";
-        aarch64-darwin = "sha256-AuNFtvnG40Toll/hmEXeGuV6ZcxfuVuUTFqdtTLXRn8=";
-      };
-    };
+  version = "2.35.7";
+  hash = {
+    x86_64-linux = "sha256-w3MnVWTWuMk9FomSPs++e1oXkaKu7eEMEpy4f+hTLJo=";
+    x86_64-darwin = "sha256-aoTJXBSGqJU+YAxiuosMFKfwZGjwndNG4lsqtHNIBwE=";
+    aarch64-linux = "sha256-ZN7mEDVmd+QYXU2Y6e1HN2Prg5MG89jpOhtzRdkPYgs=";
+    aarch64-darwin = "sha256-GeaLUwUd4xIsZ2Ry6FRud3MzvNwovumT7tkTehgy9+c=";
   };
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "coder";
-  version = channels.${channel}.version;
+  inherit version;
   src = fetchurl {
-    hash = (channels.${channel}.hash).${system};
+    hash = hash.${system};
 
     url =
       let
@@ -101,16 +86,5 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     homepage = "https://coder.com";
     license = lib.licenses.agpl3Only;
     mainProgram = "coder";
-    maintainers = with lib.maintainers; [
-      ghuntley
-      kylecarbs
-    ];
-  };
-
-  passthru = {
-    updateScript = ./update.sh;
-    tests = {
-      inherit (nixosTests) coder;
-    };
   };
 })

@@ -15,6 +15,10 @@ build:
 switch:
   {{ nh }} {{ flavor }} switch --no-nom .# -H {{ machine }}
 
+[linux]
+boot:
+  {{ nh }} os boot --no-nom .# -H {{ machine }}
+
 update:
   {{ nix }} flake update
   {{ if os() == "macos" { just_executable() + " brew" } else { "" } }}
@@ -23,6 +27,12 @@ update:
 brew:
   brew update
   brew upgrade --greedy
+
+check:
+  {{ nix }} flake check
+
+fmt:
+  {{ nix }} fmt
 
 clean:
   {{ nix }} store gc -v

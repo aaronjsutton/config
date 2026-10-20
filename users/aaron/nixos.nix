@@ -1,49 +1,36 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 {
-  users.users.aaron = {
-    home = "/home/aaron";
-    shell = pkgs.zsh;
-    packages = [
-      pkgs.ghostty
-    ];
+  modules = {
+    nix.enable = true;
+    zsh.enable = true;
   };
 
-  fonts.packages = [ ];
+  fonts.packages = [ pkgs.font-awesome ];
 
-  programs.direnv.enable = true;
-  programs.direnv.package = pkgs.direnv;
-  programs.direnv.settings = {
-    global = {
-      hide_env_diff = true;
-      log_filter = "^$";
-      log_format = "-";
-      strict_env = true;
-      warn_timeout = "300ms";
+  users.users.${username} = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    shell = pkgs.zsh;
+    packages = builtins.attrValues {
+      inherit (pkgs)
+        bambu-studio
+        firefox
+        ghostty
+        openscad
+        swaybg
+        swayidle
+        swaylock
+        wl-clipboard
+        ;
     };
   };
 
-  secuirty.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-        if (action.id == "org.debian.pcsc-lite.access_card" &&
-            subject.isInGroup("wheel")) {
-            return polkit.Result.YES;
-        }
-    });
-    polkit.addRule(function(action, subject) {
-        if (action.id == "org.debian.pcsc-lite.access_pcsc" &&
-            subject.isInGroup("wheel")) {
-            return polkit.Result.YES;
-        }
-    });
-  '';
+  programs.sway.enable = true;
+  programs.waybar.enable = true;
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = false;
-    syntaxHighlighting.enable = true;
-    histSize = 9000;
-    interactiveShellInit = builtins.readFile ./init.zsh;
-    promptInit = builtins.readFile ./prompt.zsh;
+  services = {
+    udev.packages = [ pkgs.yubikey-personalization ];
+    pcscd.enable = true;
   };
 
   boot.kernel.sysctl = {
