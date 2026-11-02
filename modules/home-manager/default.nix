@@ -1,12 +1,12 @@
 {
   lib,
   pkgs,
-  pkgs-unstable,
   ...
 }:
 {
   imports = [
     ./btop
+    ./claude
     ./delta
     ./direnv
     ./eza
@@ -37,9 +37,6 @@
         rsync
         shadowenv
         tmux
-        ;
-      inherit (pkgs-unstable)
-        claude-code
         ;
     };
 
