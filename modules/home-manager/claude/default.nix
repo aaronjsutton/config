@@ -14,9 +14,10 @@ in
     enable = true;
     package = pkgs-unstable.claude-code;
 
-    # Non-empty so the module always manages settings.json (it skips writing it for { }).
     settings = {
-      "$schema" = "https://json.schemastore.org/claude-code-settings.json";
+      theme = "auto";
+      awaySummaryEnabled = false;
+      spinnerTipsEnabled = false;
     };
 
     context = ./CLAUDE.md;
