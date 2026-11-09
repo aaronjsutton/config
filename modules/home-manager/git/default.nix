@@ -10,6 +10,7 @@
       ".DS_Store"
       ".direnv/"
       "*.sw?"
+      ".claude/"
     ];
   };
 
