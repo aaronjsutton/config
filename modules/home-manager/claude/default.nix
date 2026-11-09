@@ -6,7 +6,6 @@
 }:
 let
   cfg = config.programs.claude-code;
-  # agents/, commands/, skills/ and keybindings.json are picked up once they exist here.
   ifExists = path: default: if builtins.pathExists path then path else default;
 in
 {
@@ -18,12 +17,15 @@ in
       theme = "auto";
       awaySummaryEnabled = false;
       spinnerTipsEnabled = false;
+      attribution = {
+        commit = "";
+        pr = "";
+      };
     };
 
     context = ./CLAUDE.md;
     agentsDir = ifExists ./agents null;
     commandsDir = ifExists ./commands null;
-    # Linked file by file, so org-synced skills in ~/.claude/skills are left alone.
     skills = ifExists ./skills { };
   };
 
