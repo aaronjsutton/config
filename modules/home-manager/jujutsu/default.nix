@@ -14,6 +14,7 @@
           "-r"
           "all()"
         ];
+        rm = [ "abandon" ];
         g = [ "git" ];
         sync = [
           "git"
