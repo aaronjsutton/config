@@ -75,20 +75,20 @@
         };
       };
 
+      homeConfigurations = builtins.mapAttrs lib.mkHome {
+        kaon = {
+          system = "x86_64-linux";
+          user = "coder";
+          homeModules = [ inputs.private.homeManagerModules.default ];
+        };
+      };
+
       nixosConfigurations = builtins.mapAttrs lib.mkSystem {
         gluon = {
           machine = "dell-precision-3430";
           system = "x86_64-linux";
           user = "aaron";
           setHostName = true;
-        };
-      };
-
-      homeConfigurations = builtins.mapAttrs lib.mkHome {
-        kaon = {
-          system = "x86_64-linux";
-          user = "coder";
-          homeModules = [ inputs.private.homeManagerModules.default ];
         };
       };
 
