@@ -51,10 +51,12 @@
 
     in
     {
-      darwinConfigurations.lovelace = lib.mkSystem "macbook-pro-mx" {
+      darwinConfigurations.charm-quark = lib.mkSystem "macbook-pro-mx" {
         system = "aarch64-darwin";
         user = "aaron";
         darwin = true;
+        name = "charm-quark";
+        setHostName = true;
       };
 
       darwinConfigurations.strange-quark = lib.mkSystem "macbook-pro-mx" {
@@ -64,10 +66,10 @@
         darwin = true;
       };
 
-      nixosConfigurations.ritchie = lib.mkSystem "dell-precision-3430" {
+      nixosConfigurations.gluon = lib.mkSystem "dell-precision-3430" {
         system = "x86_64-linux";
         user = "aaron";
-        name = "ritchie";
+        name = "gluon";
         setHostName = true;
       };
 
@@ -79,7 +81,7 @@
       checks = {
         aarch64-darwin = builtins.mapAttrs (_: c: c.system) self.darwinConfigurations;
         x86_64-linux = {
-          ritchie = self.nixosConfigurations.ritchie.config.system.build.toplevel;
+          gluon = self.nixosConfigurations.gluon.config.system.build.toplevel;
           coder = self.homeConfigurations.coder.activationPackage;
         };
       };
