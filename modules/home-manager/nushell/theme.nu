@@ -1,5 +1,5 @@
 # zenwritten-style colours (matches the Ghostty theme): mostly the terminal
-# foreground, emphasis from bold/italic, few accents. Only ANSI palette names,
+# foreground, emphasis from bold, few accents. Only ANSI palette names,
 # so it follows Ghostty's light/dark switch. `light_gray` is palette 15, a
 # readable dim grey in both variants; zenwritten's dark_gray (palette 8) is
 # nearly invisible on the dark background.
@@ -38,11 +38,11 @@ $env.config.color_config = ($env.config.color_config | merge {
     shape_flag: blue
     shape_variable: magenta
     shape_vardecl: magenta
-    shape_string: {attr: i}
-    shape_string_interpolation: {attr: i}
-    shape_raw_string: {attr: i}
-    shape_rawstring: {attr: i}
-    shape_glob_interpolation: {attr: i}
+    shape_string: default
+    shape_string_interpolation: default
+    shape_raw_string: default
+    shape_rawstring: default
+    shape_glob_interpolation: default
     shape_globpattern: cyan
     shape_filepath: cyan
     shape_directory: cyan
