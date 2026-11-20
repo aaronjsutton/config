@@ -7,7 +7,11 @@
 }:
 let
   cfg = config.programs.claude-code;
-  ifExists = path: default: if builtins.pathExists path then path else default;
+  entries =
+    dir: f:
+    lib.optionalAttrs (builtins.pathExists dir) (
+      lib.mapAttrs' (name: _: f name) (builtins.readDir dir)
+    );
 in
 {
   programs.claude-code = {
@@ -25,9 +29,10 @@ in
     };
 
     context = ./CLAUDE.md;
-    agentsDir = ifExists ./agents null;
-    commandsDir = ifExists ./commands null;
-    skills = ifExists ./skills { };
+    agents = entries ./agents (
+      name: lib.nameValuePair (lib.removeSuffix ".md" name) (./agents + "/${name}")
+    );
+    skills = entries ./skills (name: lib.nameValuePair name (./skills + "/${name}"));
   };
 
   # Pre-accept the folder trust dialog for ~/workspace. Trust lives in
