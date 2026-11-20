@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# Load Nix's profile first: a non-login shell may not have Nix on PATH even
-# when it is installed, and re-running the installer fails.
 load_nix() {
   set +u
   for p in /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh \
