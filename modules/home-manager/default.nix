@@ -6,6 +6,7 @@
 {
   imports = [
     ./btop
+    ./carapace
     ./claude
     ./delta
     ./direnv
