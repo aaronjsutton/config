@@ -11,12 +11,12 @@
 let
   inherit (stdenvNoCC.hostPlatform) system;
 
-  version = "2.35.7";
+  version = "2.36.12";
   hash = {
-    x86_64-linux = "sha256-w3MnVWTWuMk9FomSPs++e1oXkaKu7eEMEpy4f+hTLJo=";
-    x86_64-darwin = "sha256-aoTJXBSGqJU+YAxiuosMFKfwZGjwndNG4lsqtHNIBwE=";
-    aarch64-linux = "sha256-ZN7mEDVmd+QYXU2Y6e1HN2Prg5MG89jpOhtzRdkPYgs=";
-    aarch64-darwin = "sha256-GeaLUwUd4xIsZ2Ry6FRud3MzvNwovumT7tkTehgy9+c=";
+    x86_64-linux = "sha256-F4nE2fGIKjMA/fz7uuLtM975kSjlzXCKP5nAPDT+ymg=";
+    x86_64-darwin = "sha256-FwzoDDHsWkD7OkaUK8cFKTIaDuikyBq4sQEl2UWRx9U=";
+    aarch64-linux = "sha256-fo3vLwwWCPX0bhlH2svrl3g4P0b2UQvifLtl67cdGW4=";
+    aarch64-darwin = "sha256-Jg2uJuPK+8fxy1lnmMREKCVLz39nIM9D6Fkzpax4ESw=";
   };
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
