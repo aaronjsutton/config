@@ -20,6 +20,13 @@ let
   );
 in
 {
+  coder = nuTest "coder" [
+    ./runner.nu
+    ../modules/home-manager/nushell/completion.nu
+    ../modules/home-manager/coder/coder.nu
+    ./coder.nu
+  ];
+
   coder-until = nuTest "coder-until" [
     ./runner.nu
     coderUntil

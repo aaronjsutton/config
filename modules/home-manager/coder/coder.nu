@@ -134,20 +134,24 @@ def coder-defaults [] {
     }
 }
 
-# Default coder output to JSON, parsed into nushell data.
-@complete complete-coder
-def --wrapped coder [...args] {
-    let args = $args | coder-expand
+# Longest leading run of words that names a JSON-capable command.
+def coder-json-command [args: list<string>]: nothing -> any {
     let words = $args | take while {|a| not ($a | str starts-with '-') }
-    let explicit = $args | any {|a|
-        $a in ['-o' '--output' '-h' '--help'] or ($a =~ '^(-o|--output)=')
-    }
-    # Longest leading run of words that names a JSON-capable command.
-    let command = $words
+    $words
     | enumerate
     | each {|w| $words | first ($w.index + 1) | str join ' ' }
     | where $it in $coder_json_commands
     | last
+}
+
+# Default coder output to JSON, parsed into nushell data.
+@complete complete-coder
+def --wrapped coder [...args] {
+    let args = $args | coder-expand
+    let explicit = $args | any {|a|
+        $a in ['-o' '--output' '-h' '--help'] or ($a =~ '^(-o|--output)=')
+    }
+    let command = coder-json-command $args
     # External calls must be the tail expression of each branch: wrapping one
     # in `return (...)` captures its output, so coder loses the terminal and
     # drops prompts and progress (e.g. `coder create`).
