@@ -16,11 +16,13 @@
     ./nh
     ./nushell
     ./nvim
+    ./shadowenv
     ./zoxide
     ./zsh
   ];
 
   programs.home-manager.enable = true;
+  programs.shadowenv.enable = true;
 
   home = {
     stateVersion = "25.05";
@@ -36,7 +38,6 @@
         nil
         ripgrep
         rsync
-        shadowenv
         tmux
         ;
     };
