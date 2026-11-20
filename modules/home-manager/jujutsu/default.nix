@@ -66,4 +66,6 @@
       };
     };
   };
+
+  programs.nushell.extraConfig = builtins.readFile ./jj.nu;
 }
