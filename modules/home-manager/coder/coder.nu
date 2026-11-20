@@ -146,13 +146,17 @@ def coder-defaults [] {
                 let running = $w.latest_build.status == 'running'
                 let deadline = $w.latest_build.deadline? | default ''
                 {
-                    (char --unicode '23fb'): ($w.latest_build.status | coder-status ($w.health.healthy? | default true) $w.outdated)
+                    status: ($w.latest_build.status | coder-status ($w.health.healthy? | default true) $w.outdated)
                     workspace: $"($w.owner_name)/($w.name)"
                     stops_at: (if $running and not ($deadline | str starts-with '0001') { $deadline | coder-et --color })
                     last_used: ($w.last_used_at | into datetime)
                 }
             }
-            $rows | coder-strip-owner | sort-by workspace | update workspace { coder-color-workspace }
+            $rows
+            | coder-strip-owner
+            | sort-by workspace
+            | update workspace { coder-color-workspace }
+            | metadata set {|m| $m | merge {headers: {status: (char --unicode '23fb')}} }
         }
     }
 }

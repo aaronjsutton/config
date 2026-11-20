@@ -82,6 +82,23 @@ run-tests {
         assert equal (do $look starting true) [○ green]
         assert equal ('running' | coder-status true) ('running' | coder-status true false)
     }
+    "list keeps a status column but displays it as the power icon": {||
+        let icon = char --unicode '23fb'
+        let w = {
+            name: dev
+            owner_name: me
+            outdated: false
+            last_used_at: '2030-01-02T15:00:00Z'
+            health: {healthy: true}
+            latest_build: {status: stopped, deadline: ''}
+        }
+        let list = {|| [$w] | do ((coder-defaults) | get list) }
+        assert equal (do $list | columns) [status workspace stops_at last_used]
+        assert equal (do $list | display-headers | columns) [$icon workspace stops_at last_used]
+        assert equal (do $list | select status | display-headers | columns) [$icon]
+        assert equal (do $list | first | display-headers | columns) [$icon workspace stops_at last_used]
+        assert equal (do $list | get workspace | display-headers) (do $list | get workspace)
+    }
     "untagged output keeps its headers": {||
         assert equal ([{status: x}] | display-headers | columns) [status]
         assert equal ('text' | display-headers) 'text'
