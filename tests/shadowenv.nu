@@ -17,6 +17,7 @@ let visits = do --env {
     mut seen = []
     for dir in [$outside $project ($project | path join sub) $outside $untrusted] {
         cd $dir
+        let before = $env.__shadowenv_data? | default ''
         let error = try { do --env $hook; null } catch {|e| $e.msg }
         $seen = $seen | append {
             dir: ($dir | path relative-to $root)
@@ -25,6 +26,7 @@ let visits = do --env {
             path: $env.PATH
             error: $error
             prompt: (do $env.PROMPT_COMMAND_RIGHT | ansi strip)
+            change: (shadowenv-change $before ($env.__shadowenv_data? | default ''))
         }
     }
     $seen
@@ -58,6 +60,26 @@ run-tests {
     }
     "the right prompt shows when a project is active": {||
         assert equal ($visits | get prompt) ['' ░ ░ '' '']
+    }
+    "entering, leaving and switching are told apart": {||
+        let off = '0000000000000000:{}'
+        assert equal (shadowenv-change '' 'aaaa:{}') '+'
+        assert equal (shadowenv-change $off 'aaaa:{}') '+'
+        assert equal (shadowenv-change 'aaaa:{}' $off) '-'
+        assert equal (shadowenv-change 'aaaa:{"x":1}' 'bbbb:{}') '+|-'
+        assert equal (shadowenv-change 'aaaa:{"x":1}' 'aaaa:{"x":2}') null
+        assert equal (shadowenv-change '' $off) null
+        assert equal (shadowenv-change '' '') null
+    }
+    "announcements match the zsh hook's text": {||
+        assert equal (shadowenv-announce '+' | ansi strip) '░shadowenv[+]'
+        assert equal (shadowenv-announce '-' | ansi strip) '░shadowenv[-]'
+        assert equal (shadowenv-announce '+|-' | ansi strip) '░shadowenv[+|-]'
+        assert ((shadowenv-announce '+') | str contains $"(ansi green)+")
+        assert ((shadowenv-announce '-') | str contains $"(ansi red)-")
+    }
+    "each visit announces the right change": {||
+        assert equal ($visits | get change) [null '+' null '-' null]
     }
     "untrusted projects are ignored": {||
         assert equal $visits.4.var null
