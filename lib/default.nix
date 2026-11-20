@@ -24,6 +24,7 @@ in
       user,
       username ? user,
       homeDirectory ? "/home/${username}",
+      homeModules ? [ ],
     }:
     let
       mkHome' = inputs.home-manager.lib.homeManagerConfiguration;
@@ -42,7 +43,8 @@ in
             inherit username homeDirectory;
           };
         }
-      ];
+      ]
+      ++ homeModules;
     };
 
   mkSystem =
@@ -52,6 +54,7 @@ in
       user,
       username ? user,
       darwin ? false,
+      homeModules ? [ ],
       name ? null,
       setHostName ? false,
     }:
@@ -88,7 +91,7 @@ in
             extraSpecialArgs = { inherit inputs pkgs-unstable; };
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.${username} = ../users/${user}/home.nix;
+            users.${username}.imports = [ ../users/${user}/home.nix ] ++ homeModules;
           };
         }
       ];
