@@ -8,7 +8,9 @@
 
 let
   script = writers.writeNu "coder-until.nu" (
-    builtins.replaceStrings [ "@coder@" ] [ "^${lib.getExe coder}" ] (builtins.readFile ./coder-until.nu)
+    builtins.replaceStrings [ "@coder@" ] [ "^${lib.getExe coder}" ] (
+      builtins.readFile ./coder-until.nu
+    )
   );
 in
 # nushell skips config.nu when running a script, so pass it explicitly to pick
