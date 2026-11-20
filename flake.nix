@@ -37,6 +37,7 @@
         inputs.neovim-nightly-overlay.overlays.default
         (final: prev: {
           coder = final.callPackage ./pkgs/coder { };
+          coder-until = final.callPackage ./pkgs/coder-until { };
         })
       ];
 

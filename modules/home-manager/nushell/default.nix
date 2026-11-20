@@ -2,11 +2,16 @@
 {
   programs.nushell = {
     enable = true;
-    extraConfig = builtins.readFile ./prompt.nu + builtins.readFile ./coder.nu;
+    extraConfig = lib.concatMapStrings builtins.readFile [
+      ./theme.nu
+      ./prompt.nu
+      ./coder.nu
+    ];
     settings = {
       show_banner = false;
       edit_mode = "vi";
       table.index_mode = "auto";
+      table.mode = "single";
     };
     # Shared aliases without eza; nushell's structured `ls` covers it.
     shellAliases = lib.mkForce (

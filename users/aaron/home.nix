@@ -9,6 +9,7 @@
   home.packages = builtins.attrValues {
     inherit (pkgs)
       coder
+      coder-until
       hut
       openssh
       rclone

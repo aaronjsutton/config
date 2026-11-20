@@ -12,10 +12,9 @@ const coder_json_commands = [
     "users oidc-claims" "users show" "version" "whoami"
 ]
 
-# Short names for subcommands, expanded before anything else. Includes coder's
-# built-in top-level aliases so they also get JSON output and defaults.
+# coder's built-in top-level aliases, expanded first so they also get JSON
+# output and defaults.
 const coder_aliases = {
-    s: schedule
     ls: list rm: delete fav: favorite favourite: favorite feature: features
     group: groups license: licenses notification: notifications
     organization: organizations org: organizations orgs: organizations
@@ -35,11 +34,23 @@ def coder-expand []: list<string> -> list<string> {
 def complete-coder [spans: list<string>] {
     let prev = $spans | skip 1 | drop 1 | coder-expand
     let current = $spans | last
-    with-env {COMPLETION_MODE: '1'} { ^coder ...$prev $current | complete }
-    | get stdout
-    | lines
-    | where {|c| $c != '' and ($c | str starts-with $current) }
-    | uniq
+    let candidates = if ($prev | get 0?) == 'until' {
+        if ($current | str starts-with '-') {
+            [--start -s --tz --dry-run -n --help]
+        } else {
+            # Workspace names, borrowed from `coder ssh`'s completions.
+            coder-complete [ssh ''] | each { split row '.' | first }
+        }
+    } else if ($prev | is-empty) {
+        coder-complete [$current] | append until
+    } else {
+        coder-complete [...$prev $current]
+    }
+    $candidates | where {|c| $c != '' and ($c | str starts-with $current) } | uniq
+}
+
+def coder-complete [words: list<string>] {
+    with-env {COMPLETION_MODE: '1'} { ^coder ...$words | complete } | get stdout | lines
 }
 
 # Format a coder timestamp as Eastern time: "17:00 ET", or "Sat 17:00 ET"
@@ -85,7 +96,7 @@ def coder-status [healthy: bool]: string -> string {
     let status = if $in == 'running' and not $healthy { 'unhealthy' } else { $in }
     let shade = match $status {
         'running' => 'green'
-        'stopped' | 'deleted' => 'dark_gray'
+        'stopped' | 'deleted' => 'light_gray'
         'failed' | 'canceled' | 'unhealthy' => 'red'
         _ => 'yellow'
     }
@@ -125,6 +136,10 @@ def coder-defaults [] {
 @complete complete-coder
 def --wrapped coder [...args] {
     let args = $args | coder-expand
+    # `coder until` is our own command (pkgs/coder-until).
+    if ($args | get 0?) == 'until' {
+        return (^coder-until ...($args | skip 1))
+    }
     let words = $args | take while {|a| not ($a | str starts-with '-') }
     let explicit = $args | any {|a|
         $a in ['-o' '--output' '-h' '--help'] or ($a =~ '^(-o|--output)=')
