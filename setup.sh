@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-if ! command -v nix >/dev/null 2>&1; then
-  curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install | sh -s -- --daemon
-
+# Load Nix's profile first: a non-login shell may not have Nix on PATH even
+# when it is installed, and re-running the installer fails.
+load_nix() {
   set +u
   for p in /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh \
            /nix/var/nix/profiles/default/etc/profile.d/nix.sh \
@@ -11,6 +11,12 @@ if ! command -v nix >/dev/null 2>&1; then
     [[ -e "$p" ]] && . "$p" && break
   done
   set -u
+}
+
+load_nix
+if ! command -v nix >/dev/null 2>&1; then
+  curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install | sh -s -- --daemon
+  load_nix
 fi
 
 mkdir -p ~/.config/nix
