@@ -6,8 +6,7 @@ nix := require('nix')
 
 machine := env('MACHINE_NAME', `hostname -s`)
 flavor  := if os() == "macos" { "darwin" } else if path_exists("/etc/NIXOS") == "true" { "os" } else { "home" }
-# nh os/darwin select by hostname; nh home picks `$USER@host` or `$USER` itself.
-target  := if flavor == "home" { "" } else { "-H " + machine }
+target  := if flavor == "home" { "-c " + machine } else { "-H " + machine }
 
 default: switch
 

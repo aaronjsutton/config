@@ -79,7 +79,7 @@
         setHostName = true;
       };
 
-      homeConfigurations."coder" = lib.mkHome {
+      homeConfigurations.kaon = lib.mkHome {
         system = "x86_64-linux";
         user = "coder";
         homeModules = [ inputs.private.homeManagerModules.default ];
@@ -89,7 +89,7 @@
         aarch64-darwin = builtins.mapAttrs (_: c: c.system) self.darwinConfigurations;
         x86_64-linux = {
           gluon = self.nixosConfigurations.gluon.config.system.build.toplevel;
-          coder = self.homeConfigurations.coder.activationPackage;
+          kaon = self.homeConfigurations.kaon.activationPackage;
         };
       };
 

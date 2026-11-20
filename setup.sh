@@ -22,4 +22,4 @@ grep -q '^experimental-features' ~/.config/nix/nix.conf 2>/dev/null \
   || echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
 cd "$(dirname "$0")"
-nix run --inputs-from . nixpkgs-unstable#nh -- home switch . -c coder
+nix run --inputs-from . nixpkgs-unstable#nh -- home switch . -c kaon
