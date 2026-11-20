@@ -4,14 +4,24 @@ let
   nu = lib.getExe pkgs-unstable.nushell;
 
   nuTest =
-    name: sources:
-    pkgs.runCommand "test-${name}" { } ''
+    name:
+    {
+      sources,
+      path ? [ ],
+    }:
+    pkgs.runCommand "test-${name}" { nativeBuildInputs = path; } ''
       export HOME="$TMPDIR"
       ${nu} --no-config-file ${
         pkgs.writeText "${name}.nu" (lib.concatMapStrings (f: "source ${f}\n") sources)
       }
       touch "$out"
     '';
+
+  shadowenvHook = pkgs.writeText "shadowenv.nu" (
+    builtins.replaceStrings [ "@shadowenv@" ] [ (lib.getExe pkgs.shadowenv) ] (
+      builtins.readFile ../modules/home-manager/shadowenv/shadowenv.nu
+    )
+  );
 
   coderUntil = pkgs.writeText "coder-until.nu" (
     builtins.replaceStrings [ "def main [" "@coder@" ] [ "def coder-until [" "^coder" ] (
@@ -20,16 +30,29 @@ let
   );
 in
 {
-  coder = nuTest "coder" [
-    ./runner.nu
-    ../modules/home-manager/nushell/completion.nu
-    ../modules/home-manager/coder/coder.nu
-    ./coder.nu
-  ];
+  coder = nuTest "coder" {
+    sources = [
+      ./runner.nu
+      ../modules/home-manager/nushell/completion.nu
+      ../modules/home-manager/coder/coder.nu
+      ./coder.nu
+    ];
+  };
 
-  coder-until = nuTest "coder-until" [
-    ./runner.nu
-    coderUntil
-    ./coder-until.nu
-  ];
+  shadowenv = nuTest "shadowenv" {
+    path = [ pkgs.shadowenv ];
+    sources = [
+      ./runner.nu
+      shadowenvHook
+      ./shadowenv.nu
+    ];
+  };
+
+  coder-until = nuTest "coder-until" {
+    sources = [
+      ./runner.nu
+      coderUntil
+      ./coder-until.nu
+    ];
+  };
 }
