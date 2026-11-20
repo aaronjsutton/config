@@ -133,6 +133,21 @@
         "type": "github"
       }
     },
+    "private": {
+      "locked": {
+        "lastModified": 1795206540,
+        "narHash": "sha256-FLjfu3IvC4jriUMnMrSwJfAZlheKtGAjx0aQsD3Ktv4=",
+        "ref": "refs/heads/main",
+        "rev": "07a248d0d954629841917348d840c5e8ebee6c70",
+        "revCount": 2,
+        "type": "git",
+        "url": "ssh://git@github.com/aaronjsutton/config-private"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/aaronjsutton/config-private"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
@@ -140,6 +155,7 @@
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "private": "private",
         "zenbones": "zenbones"
       }
     },

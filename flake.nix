@@ -20,6 +20,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    private.url = "git+ssh://git@github.com/aaronjsutton/config-private";
+
     zenbones = {
       url = "github:zenbones-theme/zenbones.nvim";
       flake = false;
@@ -40,6 +42,8 @@
           coder-until = final.callPackage ./pkgs/coder-until { };
         })
       ];
+
+      workModules = [ inputs.private.homeManagerModules.default ];
 
       lib = import ./lib {
         inherit
@@ -64,6 +68,7 @@
         user = "aaron";
         username = "aaronsutton";
         darwin = true;
+        homeModules = workModules;
       };
 
       nixosConfigurations.gluon = lib.mkSystem "dell-precision-3430" {
@@ -76,6 +81,7 @@
       homeConfigurations."coder" = lib.mkHome {
         system = "x86_64-linux";
         user = "coder";
+        homeModules = workModules;
       };
 
       checks = {
