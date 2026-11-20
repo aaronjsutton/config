@@ -1,4 +1,9 @@
-{ pkgs, pkgs-unstable }:
+{
+  pkgs,
+  pkgs-unstable,
+  self,
+  inputs,
+}:
 let
   inherit (pkgs) lib;
   nu = lib.getExe pkgs-unstable.nushell;
@@ -55,4 +60,6 @@ in
       ./coder-until.nu
     ];
   };
+
+  hosts = import ./hosts.nix { inherit pkgs self inputs; };
 }

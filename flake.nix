@@ -50,6 +50,7 @@
         import ./tests {
           pkgs = nixpkgs.legacyPackages.${system};
           pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${system};
+          inherit self inputs;
         };
 
       lib = import ./lib {
