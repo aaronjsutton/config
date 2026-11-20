@@ -5,7 +5,6 @@
     extraConfig = lib.concatMapStrings builtins.readFile [
       ./theme.nu
       ./prompt.nu
-      ./coder.nu
     ];
     settings = {
       show_banner = false;

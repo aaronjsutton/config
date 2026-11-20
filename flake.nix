@@ -43,8 +43,6 @@
         })
       ];
 
-      workModules = [ inputs.private.homeManagerModules.default ];
-
       lib = import ./lib {
         inherit
           inputs
@@ -68,7 +66,10 @@
         user = "aaron";
         username = "aaronsutton";
         darwin = true;
-        homeModules = workModules;
+        homeModules = [
+          ./modules/home-manager/coder
+          inputs.private.homeManagerModules.default
+        ];
       };
 
       nixosConfigurations.gluon = lib.mkSystem "dell-precision-3430" {
@@ -81,7 +82,7 @@
       homeConfigurations."coder" = lib.mkHome {
         system = "x86_64-linux";
         user = "coder";
-        homeModules = workModules;
+        homeModules = [ inputs.private.homeManagerModules.default ];
       };
 
       checks = {
