@@ -5,15 +5,17 @@ nh  := require('nh')
 nix := require('nix')
 
 machine := env('MACHINE_NAME', `hostname -s`)
-flavor  := if os() == "macos" { "darwin" } else { "os" }
+flavor  := if os() == "macos" { "darwin" } else if path_exists("/etc/NIXOS") == "true" { "os" } else { "home" }
+# nh os/darwin select by hostname; nh home picks `$USER@host` or `$USER` itself.
+target  := if flavor == "home" { "" } else { "-H " + machine }
 
 default: switch
 
 build:
-  {{ nh }} {{ flavor }} build .# -H {{ machine }}
+  {{ nh }} {{ flavor }} build .# {{ target }}
 
 switch:
-  {{ nh }} {{ flavor }} switch .# -H {{ machine }}
+  {{ nh }} {{ flavor }} switch .# {{ target }}
 
 [linux]
 boot:

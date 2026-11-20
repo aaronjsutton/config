@@ -30,7 +30,7 @@ $env.config.color_config = ($env.config.color_config | merge {
 
     # Syntax highlighting while typing.
     shape_internalcall: {attr: b}
-    shape_external: {attr: b}
+    shape_external: {fg: red attr: b}  # not found on PATH
     shape_external_resolved: {attr: b}
     shape_keyword: {attr: b}
     shape_custom: {attr: b}

@@ -18,4 +18,4 @@ grep -q '^experimental-features' ~/.config/nix/nix.conf 2>/dev/null \
   || echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
 cd "$(dirname "$0")"
-nix run home-manager/release-26.05 -- switch --flake .#coder
+nix run --inputs-from . nixpkgs-unstable#nh -- home switch . -c coder

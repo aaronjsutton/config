@@ -10,6 +10,7 @@
     settings = {
       show_banner = false;
       edit_mode = "vi";
+      highlight_resolved_externals = true;
       table.index_mode = "auto";
       table.mode = "single";
     };

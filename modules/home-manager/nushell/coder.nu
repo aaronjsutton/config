@@ -136,10 +136,6 @@ def coder-defaults [] {
 @complete complete-coder
 def --wrapped coder [...args] {
     let args = $args | coder-expand
-    # `coder until` is our own command (pkgs/coder-until).
-    if ($args | get 0?) == 'until' {
-        return (^coder-until ...($args | skip 1))
-    }
     let words = $args | take while {|a| not ($a | str starts-with '-') }
     let explicit = $args | any {|a|
         $a in ['-o' '--output' '-h' '--help'] or ($a =~ '^(-o|--output)=')
@@ -150,14 +146,21 @@ def --wrapped coder [...args] {
     | each {|w| $words | first ($w.index + 1) | str join ' ' }
     | where $it in $coder_json_commands
     | last
-    if $command == null or $explicit {
-        return (^coder ...$args)
-    }
-    let output = ^coder ...$args --output json | from json
-    let defaults = coder-defaults
-    if $command in ($defaults | columns) {
-        $output | do ($defaults | get $command)
+    # External calls must be the tail expression of each branch: wrapping one
+    # in `return (...)` captures its output, so coder loses the terminal and
+    # drops prompts and progress (e.g. `coder create`).
+    if ($args | get 0?) == 'until' {
+        # Our own command (pkgs/coder-until).
+        ^coder-until ...($args | skip 1)
+    } else if $command == null or $explicit {
+        ^coder ...$args
     } else {
-        $output
+        let output = ^coder ...$args --output json | from json
+        let defaults = coder-defaults
+        if $command in ($defaults | columns) {
+            $output | do ($defaults | get $command)
+        } else {
+            $output
+        }
     }
 }
