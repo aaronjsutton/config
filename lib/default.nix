@@ -52,7 +52,10 @@ in
       user,
       username ? user,
       darwin ? false,
+      name ? null,
+      setHostName ? false,
     }:
+    assert setHostName -> name != null;
     let
       mkSystem' = if darwin then inputs.nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
       pkgs-unstable = import inputs.nixpkgs-unstable { inherit config system; };
@@ -74,6 +77,7 @@ in
           modules.nix.enable = lib.mkDefault true;
           modules.zsh.enable = lib.mkDefault true;
         }
+        (lib.mkIf setHostName { networking.hostName = name; })
         machine-module
         os-module
         ../modules/nix

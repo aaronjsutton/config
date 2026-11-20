@@ -67,6 +67,8 @@
       nixosConfigurations.ritchie = lib.mkSystem "dell-precision-3430" {
         system = "x86_64-linux";
         user = "aaron";
+        name = "ritchie";
+        setHostName = true;
       };
 
       homeConfigurations."coder" = lib.mkHome {
