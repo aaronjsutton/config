@@ -39,7 +39,9 @@
         inputs.neovim-nightly-overlay.overlays.default
         (final: prev: {
           coder = final.callPackage ./pkgs/coder { };
-          coder-until = final.callPackage ./pkgs/coder-until { };
+          coder-until = final.callPackage ./pkgs/coder-until {
+            inherit (inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}) nushell;
+          };
         })
       ];
 

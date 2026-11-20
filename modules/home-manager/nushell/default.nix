@@ -1,7 +1,13 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs-unstable,
+  ...
+}:
 {
   programs.nushell = {
     enable = true;
+    package = pkgs-unstable.nushell;
     extraConfig = lib.concatMapStrings builtins.readFile [
       ./theme.nu
       ./prompt.nu

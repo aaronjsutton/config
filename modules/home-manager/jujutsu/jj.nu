@@ -1,5 +1,5 @@
-def complete-jj [spans: list<string>] {
-    with-env {COMPLETE: fish} { ^jj -- ...$spans | complete }
+def complete-jj [place: record] {
+    with-env {COMPLETE: fish} { ^jj -- ...$place.command | complete }
     | get stdout
     | lines
     | parse --regex '^(?<value>[^\t]*)(?:\t(?<description>.*))?$'

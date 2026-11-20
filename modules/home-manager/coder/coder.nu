@@ -31,9 +31,9 @@ def coder-expand []: list<string> -> list<string> {
 
 # Complete via coder's own protocol (what its fish script does): run the
 # words so far with COMPLETION_MODE=1. Covers flags, unlike an arg completer.
-def complete-coder [spans: list<string>] {
-    let prev = $spans | skip 1 | drop 1 | coder-expand
-    let current = $spans | last
+def complete-coder [place: record] {
+    let prev = $place.command | skip 1 | drop 1 | coder-expand
+    let current = $place.command | last
     let candidates = if ($prev | get 0?) == 'until' {
         if ($current | str starts-with '-') {
             [--start -s --tz --dry-run -n --help]
