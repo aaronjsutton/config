@@ -45,6 +45,13 @@
         })
       ];
 
+      tests =
+        system:
+        import ./tests {
+          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${system};
+        };
+
       lib = import ./lib {
         inherit
           inputs
@@ -95,11 +102,13 @@
       };
 
       checks = {
-        aarch64-darwin = builtins.mapAttrs (_: c: c.system) self.darwinConfigurations;
+        aarch64-darwin =
+          builtins.mapAttrs (_: c: c.system) self.darwinConfigurations // tests "aarch64-darwin";
         x86_64-linux = {
           gluon = self.nixosConfigurations.gluon.config.system.build.toplevel;
           kaon = self.homeConfigurations.kaon.activationPackage;
-        };
+        }
+        // tests "x86_64-linux";
       };
 
       formatter = builtins.mapAttrs (_: pkgs: pkgs.nixfmt-tree) inputs.nixpkgs.legacyPackages;

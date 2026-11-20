@@ -13,7 +13,7 @@ def main [
     --dry-run (-n)                       # show what would change, touch nothing
 ] {
     # Let `coder-until abc-123` mean the default time for abc-123.
-    let looks_like_time = $time =~ '^\d{1,2}:\d{2}(:\d{2})?$' or $time =~ '^\d{4}-\d{2}-\d{2}T'
+    let looks_like_time = looks-like-time $time
     let names = if $looks_like_time { $workspaces } else { $workspaces | prepend $time }
     let target = if $looks_like_time { resolve $time $tz } else { resolve "17:30:00" $tz }
 
@@ -71,6 +71,10 @@ def main [
     }
     print ($report | table --index false)
     if ($results | any { not $in.ok }) { exit 1 }
+}
+
+def looks-like-time [s: string]: nothing -> bool {
+    $s =~ '^\d{1,2}:\d{2}(:\d{2})?$' or $s =~ '^\d{4}-\d{2}-\d{2}T'
 }
 
 # Start (if needed) and extend one workspace; returns {name was ok note}.
