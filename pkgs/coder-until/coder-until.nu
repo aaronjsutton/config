@@ -114,8 +114,9 @@ def resolve [time: string, tz: string]: nothing -> datetime {
         let hms = if ($hms =~ '^\d:') { $"0($hms)" } else { $hms }
         $"(date now | date to-timezone $tz | format date '%F')T($hms)"
     }
-    # The zone's UTC offset on that date (DST-aware except within an hour of a switch).
-    let offset = $"($naive)Z" | into datetime | date to-timezone $tz | format date '%:z'
+    # The zone's UTC offset at that time.
+    let guess = $"($naive)Z" | into datetime | date to-timezone $tz | format date '%:z'
+    let offset = $"($naive)($guess)" | into datetime | date to-timezone $tz | format date '%:z'
     $"($naive)($offset)" | into datetime
 }
 

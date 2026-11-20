@@ -25,6 +25,17 @@ run-tests {
         assert equal (ny (resolve '2026-11-21T09:00:00' America/New_York)) '2026-11-21T09:00:00-05:00'
         assert equal (ny (resolve '2026-07-01T09:00:00' America/New_York)) '2026-07-01T09:00:00-04:00'
     }
+    "times after the spring switch get the new offset": {||
+        assert equal (ny (resolve '2026-03-08T01:30:00' America/New_York)) '2026-03-08T01:30:00-05:00'
+        assert equal (ny (resolve '2026-03-08T03:30:00' America/New_York)) '2026-03-08T03:30:00-04:00'
+        assert equal (ny (resolve '2026-03-08T06:30:00' America/New_York)) '2026-03-08T06:30:00-04:00'
+        assert equal (ny (resolve '2026-03-08T12:00:00' America/New_York)) '2026-03-08T12:00:00-04:00'
+    }
+    "times after the autumn switch get the new offset": {||
+        assert equal (ny (resolve '2026-11-01T00:30:00' America/New_York)) '2026-11-01T00:30:00-04:00'
+        assert equal (ny (resolve '2026-11-01T03:00:00' America/New_York)) '2026-11-01T03:00:00-05:00'
+        assert equal (ny (resolve '2026-11-01T05:00:00' America/New_York)) '2026-11-01T05:00:00-05:00'
+    }
     "clock times are today in the zone": {||
         assert equal (resolve '17:30' America/New_York | date to-timezone America/New_York | format date '%F %T') $"($today) 17:30:00"
         assert equal (resolve '9:05' America/New_York | date to-timezone America/New_York | format date '%F %T') $"($today) 09:05:00"
