@@ -114,6 +114,23 @@ def coder-status [healthy: bool, outdated: bool = false]: string -> string {
     $"(ansi $'($style.1)_bold')($style.0)(ansi reset)"
 }
 
+# Rename columns for display only, as listed in the input's "headers"
+# metadata, so the data keeps names that are easy to select.
+def display-headers []: any -> any {
+    metadata access {|m|
+        let out = $in
+        let headers = $m.headers? | default {}
+        if ($headers | is-empty) or (($out | describe) !~ '^(table|record)') { return $out }
+        let present = $headers | transpose old new | where old in ($out | columns)
+        if ($present | is-empty) { return $out }
+        $out | rename --column ($present | reduce --fold {} {|h acc| $acc | insert $h.old $h.new })
+    }
+}
+
+$env.config.hooks.display_output = {||
+    display-headers | if (term size).columns >= 100 { table -e } else { table }
+}
+
 # Post-processing applied to a command's parsed JSON output.
 def coder-defaults [] {
     {

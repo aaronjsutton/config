@@ -82,4 +82,9 @@ run-tests {
         assert equal (do $look starting true) [○ green]
         assert equal ('running' | coder-status true) ('running' | coder-status true false)
     }
+    "untagged output keeps its headers": {||
+        assert equal ([{status: x}] | display-headers | columns) [status]
+        assert equal ('text' | display-headers) 'text'
+        assert equal ([{a: 1}] | metadata set {|m| $m | merge {headers: {status: state}} } | display-headers | columns) [a]
+    }
 }
