@@ -12,7 +12,7 @@ def main [
     --tz: string = "America/New_York"    # zone for TIME and the report
     --dry-run (-n)                       # show what would change, touch nothing
 ] {
-    # Let `coder-until abc-1002` mean the default time for abc-1002.
+    # Let `coder-until abc-123` mean the default time for abc-123.
     let looks_like_time = $time =~ '^\d{1,2}:\d{2}(:\d{2})?$' or $time =~ '^\d{4}-\d{2}-\d{2}T'
     let names = if $looks_like_time { $workspaces } else { $workspaces | prepend $time }
     let target = if $looks_like_time { resolve $time $tz } else { resolve "17:30:00" $tz }

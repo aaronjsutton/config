@@ -78,11 +78,12 @@ def coder-strip-owner []: table -> table {
     $rows | update workspace { str replace -r '^[^/]+/' '' }
 }
 
-# Colour a workspace name: orange for abc-* workspaces, cyan otherwise.
+# Colour a workspace name: orange for ticket-named workspaces (abc-123),
+# cyan otherwise.
 # Matches after any "owner/" prefix.
 def coder-color-workspace []: string -> string {
     let name = $in
-    let shade = if ($name | split row '/' | last | str starts-with 'abc-') {
+    let shade = if (($name | split row '/' | last) =~ '^[a-z]+-\d+$') {
         'xterm_darkorange3b'
     } else {
         'cyan'

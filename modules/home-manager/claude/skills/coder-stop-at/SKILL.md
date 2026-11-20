@@ -26,7 +26,7 @@ coder-until [TIME] [WORKSPACE...] [--start] [--tz ZONE] [--dry-run]
 1. If the request is ambiguous (which workspaces, whether to start stopped
    ones), run with `--dry-run` first and show the user the table.
 2. Run it with the user's time and workspaces, e.g. `coder-until 17:00` or
-   `coder-until 18:15 abc-1002`.
+   `coder-until 18:15 abc-123`.
 3. Relay the table it prints (workspace, previous stop, new stop, note).
 
 ## Limits
