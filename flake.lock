@@ -135,11 +135,11 @@
     },
     "private": {
       "locked": {
-        "lastModified": 1795206540,
-        "narHash": "sha256-FLjfu3IvC4jriUMnMrSwJfAZlheKtGAjx0aQsD3Ktv4=",
+        "lastModified": 1795207232,
+        "narHash": "sha256-Rx5PsLvKSY1aiH9OdBn+xMYdCsD7YWwGjbO6jp1XUQQ=",
         "ref": "refs/heads/main",
-        "rev": "07a248d0d954629841917348d840c5e8ebee6c70",
-        "revCount": 2,
+        "rev": "b910dc364beeac6f18f08314ac6723c0c243bf6c",
+        "revCount": 6,
         "type": "git",
         "url": "ssh://git@github.com/aaronjsutton/config-private"
       },
