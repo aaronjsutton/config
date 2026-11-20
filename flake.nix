@@ -84,10 +84,12 @@
         };
       };
 
-      homeConfigurations.kaon = lib.mkHome {
-        system = "x86_64-linux";
-        user = "coder";
-        homeModules = [ inputs.private.homeManagerModules.default ];
+      homeConfigurations = builtins.mapAttrs lib.mkHome {
+        kaon = {
+          system = "x86_64-linux";
+          user = "coder";
+          homeModules = [ inputs.private.homeManagerModules.default ];
+        };
       };
 
       checks = {

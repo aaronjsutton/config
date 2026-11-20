@@ -19,6 +19,7 @@ let
 in
 {
   mkHome =
+    _name:
     {
       system,
       user,
