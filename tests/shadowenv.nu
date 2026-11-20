@@ -24,6 +24,7 @@ let visits = do --env {
             path_type: ($env.PATH | describe)
             path: $env.PATH
             error: $error
+            prompt: (do $env.PROMPT_COMMAND_RIGHT | ansi strip)
         }
     }
     $seen
@@ -54,6 +55,9 @@ run-tests {
     }
     "the hook never raises an error": {||
         assert equal ($visits | where error != null | get dir) []
+    }
+    "the right prompt shows when a project is active": {||
+        assert equal ($visits | get prompt) ['' ░ ░ '' '']
     }
     "untrusted projects are ignored": {||
         assert equal $visits.4.var null

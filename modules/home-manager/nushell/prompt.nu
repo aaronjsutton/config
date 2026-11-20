@@ -10,7 +10,7 @@ $env.PROMPT_COMMAND = {||
     let color = if $env.LAST_EXIT_CODE == 0 { 'green' } else { 'red' }
     $"(ansi attr_bold)($env.USER)(ansi reset)@($host) ($dir) (ansi $color)❯(ansi reset) "
 }
-$env.PROMPT_COMMAND_RIGHT = ''
+$env.PROMPT_COMMAND_RIGHT = {|| '' }
 $env.PROMPT_INDICATOR = ''
 $env.PROMPT_INDICATOR_VI_INSERT = ''
 $env.PROMPT_INDICATOR_VI_NORMAL = ''

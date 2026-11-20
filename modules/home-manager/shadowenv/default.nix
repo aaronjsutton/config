@@ -24,7 +24,7 @@ in
     '';
 
     programs.nushell.extraConfig = lib.mkIf cfg.enableNushellIntegration (
-      builtins.replaceStrings [ "@shadowenv@" ] [ exe ] (builtins.readFile ./shadowenv.nu)
+      lib.mkAfter (builtins.replaceStrings [ "@shadowenv@" ] [ exe ] (builtins.readFile ./shadowenv.nu))
     );
   };
 }

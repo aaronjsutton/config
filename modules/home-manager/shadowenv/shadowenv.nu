@@ -13,3 +13,11 @@ $env.config.hooks.pre_prompt ++= [{||
     if ($unset | is-not-empty) { hide-env --ignore-errors ...$unset }
     if ($set | is-not-empty) { load-env ($set | transpose -rd) }
 }]
+
+def shadowenv-active [data: string]: nothing -> bool {
+    ($data | is-not-empty) and not ($data | str starts-with '0000000000000000')
+}
+
+$env.PROMPT_COMMAND_RIGHT = {||
+    if (shadowenv-active ($env.__shadowenv_data? | default '')) { $"(ansi light_gray)░(ansi reset)" } else { '' }
+}
