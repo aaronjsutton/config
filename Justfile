@@ -10,14 +10,14 @@ flavor  := if os() == "macos" { "darwin" } else { "os" }
 default: switch
 
 build:
-  {{ nh }} {{ flavor }} build --no-nom .# -H {{ machine }}
+  {{ nh }} {{ flavor }} build .# -H {{ machine }}
 
 switch:
-  {{ nh }} {{ flavor }} switch --no-nom .# -H {{ machine }}
+  {{ nh }} {{ flavor }} switch .# -H {{ machine }}
 
 [linux]
 boot:
-  {{ nh }} os boot --no-nom .# -H {{ machine }}
+  {{ nh }} os boot .# -H {{ machine }}
 
 update:
   {{ nix }} flake update
