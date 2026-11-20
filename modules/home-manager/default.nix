@@ -14,6 +14,7 @@
     ./git
     ./jujutsu
     ./nh
+    ./nushell
     ./nvim
     ./zoxide
     ./zsh
