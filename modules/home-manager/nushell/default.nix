@@ -13,6 +13,7 @@
       ./prompt.nu
     ];
     settings = {
+      completions.algorithm = "fuzzy";
       show_banner = false;
       edit_mode = "vi";
       highlight_resolved_externals = true;
