@@ -1,7 +1,7 @@
 use std/assert
 
 def shade [s: string]: nothing -> string {
-    [green red yellow cyan light_gray xterm_darkorange3b] | where {|c| $s | str starts-with (ansi $c) } | first
+    [green red yellow cyan light_blue light_gray dark_gray xterm_darkorange3b] | where {|c| ($s | str starts-with (ansi $c)) or ($s | str starts-with (ansi $"($c)_bold")) } | first
 }
 
 run-tests {
@@ -59,12 +59,27 @@ run-tests {
         assert equal (shade ('abc-123x' | coder-color-workspace)) cyan
         assert equal ('me/dev' | coder-color-workspace | ansi strip) 'me/dev'
     }
-    "statuses map to colours": {||
-        assert equal (shade ('running' | coder-status true)) green
-        assert equal (shade ('running' | coder-status false)) red
-        assert equal (shade ('stopped' | coder-status true)) light_gray
-        assert equal (shade ('deleted' | coder-status true)) light_gray
-        assert equal (shade ('failed' | coder-status true)) red
-        assert equal (shade ('starting' | coder-status true)) yellow
+    "statuses map to glyphs and colours": {||
+        let look = {|status healthy outdated| $status | coder-status $healthy $outdated | [($in | ansi strip) (shade $in)] }
+        assert equal (do $look running true false) [● green]
+        assert equal (do $look running false false) [◉ yellow]
+        assert equal (do $look starting true false) [○ green]
+        assert equal (do $look pending true false) [○ yellow]
+        assert equal (do $look stopping true false) [○ dark_gray]
+        assert equal (do $look stopped true false) [◌ dark_gray]
+        assert equal (do $look failed true false) [◉ red]
+        assert equal (do $look canceling true false) [○ red]
+        assert equal (do $look canceled true false) [◌ red]
+        assert equal (do $look deleting true false) [○ red]
+        assert equal (do $look deleted true false) [◌ dark_gray]
+        assert ('stopped' | coder-status true | str starts-with (ansi dark_gray_bold))
+    }
+    "outdated workspaces are light blue": {||
+        let look = {|status healthy| $status | coder-status $healthy true | [($in | ansi strip) (shade $in)] }
+        assert equal (do $look running true) [◐ light_blue]
+        assert equal (do $look stopped true) [◌ light_blue]
+        assert equal (do $look running false) [◉ yellow]
+        assert equal (do $look starting true) [○ green]
+        assert equal ('running' | coder-status true) ('running' | coder-status true false)
     }
 }

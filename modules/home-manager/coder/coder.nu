@@ -92,17 +92,26 @@ def coder-color-workspace []: string -> string {
     $"(ansi $shade)($name)(ansi reset)"
 }
 
-# Show a build status as a coloured bullet; a running workspace that fails
+# Show a build status as a coloured glyph; a running workspace that fails
 # health checks counts as "unhealthy".
-def coder-status [healthy: bool]: string -> string {
+def coder-status [healthy: bool, outdated: bool = false]: string -> string {
     let status = if $in == 'running' and not $healthy { 'unhealthy' } else { $in }
-    let shade = match $status {
-        'running' => 'green'
-        'stopped' | 'deleted' => 'light_gray'
-        'failed' | 'canceled' | 'unhealthy' => 'red'
-        _ => 'yellow'
+    let style = match [$status $outdated] {
+        ['running' true] => ['◐' 'light_blue']
+        ['stopped' true] => ['◌' 'light_blue']
+        ['running' _] => ['●' 'green']
+        ['starting' _] => ['○' 'green']
+        ['stopping' _] => ['○' 'dark_gray']
+        ['stopped' _] => ['◌' 'dark_gray']
+        ['canceling' _] => ['○' 'red']
+        ['canceled' _] => ['◌' 'red']
+        ['failed' _] => ['◉' 'red']
+        ['unhealthy' _] => ['◉' 'yellow']
+        ['deleting' _] => ['○' 'red']
+        ['deleted' _] => ['◌' 'dark_gray']
+        _ => ['○' 'yellow']
     }
-    $"(ansi $shade)●(ansi reset)"
+    $"(ansi $'($style.1)_bold')($style.0)(ansi reset)"
 }
 
 # Post-processing applied to a command's parsed JSON output.
@@ -120,16 +129,13 @@ def coder-defaults [] {
                 let running = $w.latest_build.status == 'running'
                 let deadline = $w.latest_build.deadline? | default ''
                 {
-                    "⏻": ($w.latest_build.status | coder-status ($w.health.healthy? | default true))
+                    (char --unicode '23fb'): ($w.latest_build.status | coder-status ($w.health.healthy? | default true) $w.outdated)
                     workspace: $"($w.owner_name)/($w.name)"
                     stops_at: (if $running and not ($deadline | str starts-with '0001') { $deadline | coder-et --color })
                     last_used: ($w.last_used_at | into datetime)
-                    outdated: $w.outdated
                 }
             }
-            let rows = $rows | coder-strip-owner | sort-by workspace
-            let rows = if ($rows | any { $in.outdated }) { $rows } else { $rows | reject --optional outdated }
-            $rows | update workspace { coder-color-workspace }
+            $rows | coder-strip-owner | sort-by workspace | update workspace { coder-color-workspace }
         }
     }
 }
