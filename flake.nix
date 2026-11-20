@@ -53,30 +53,35 @@
 
     in
     {
-      darwinConfigurations.charm-quark = lib.mkSystem "macbook-pro-mx" {
-        system = "aarch64-darwin";
-        user = "aaron";
-        darwin = true;
-        name = "charm-quark";
-        setHostName = true;
+      darwinConfigurations = builtins.mapAttrs lib.mkSystem {
+        charm-quark = {
+          machine = "macbook-pro-mx";
+          system = "aarch64-darwin";
+          user = "aaron";
+          darwin = true;
+          setHostName = true;
+        };
+
+        strange-quark = {
+          machine = "macbook-pro-mx";
+          system = "aarch64-darwin";
+          user = "aaron";
+          username = "aaronsutton";
+          darwin = true;
+          homeModules = [
+            ./modules/home-manager/coder
+            inputs.private.homeManagerModules.default
+          ];
+        };
       };
 
-      darwinConfigurations.strange-quark = lib.mkSystem "macbook-pro-mx" {
-        system = "aarch64-darwin";
-        user = "aaron";
-        username = "aaronsutton";
-        darwin = true;
-        homeModules = [
-          ./modules/home-manager/coder
-          inputs.private.homeManagerModules.default
-        ];
-      };
-
-      nixosConfigurations.gluon = lib.mkSystem "dell-precision-3430" {
-        system = "x86_64-linux";
-        user = "aaron";
-        name = "gluon";
-        setHostName = true;
+      nixosConfigurations = builtins.mapAttrs lib.mkSystem {
+        gluon = {
+          machine = "dell-precision-3430";
+          system = "x86_64-linux";
+          user = "aaron";
+          setHostName = true;
+        };
       };
 
       homeConfigurations.kaon = lib.mkHome {
