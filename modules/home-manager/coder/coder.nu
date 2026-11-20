@@ -34,6 +34,7 @@ def coder-expand []: list<string> -> list<string> {
 def complete-coder [place: record] {
     let prev = $place.command | skip 1 | drop 1 | coder-expand
     let current = $place.command | last
+    let probe = complete-probe $current
     let candidates = if ($prev | get 0?) == 'until' {
         if ($current | str starts-with '-') {
             [--start -s --tz --dry-run -n --help]
@@ -42,11 +43,11 @@ def complete-coder [place: record] {
             coder-complete [ssh ''] | each { split row '.' | first }
         }
     } else if ($prev | is-empty) {
-        coder-complete [$current] | append until
+        coder-complete [$probe] | append until
     } else {
-        coder-complete [...$prev $current]
+        coder-complete [...$prev $probe]
     }
-    $candidates | where {|c| $c != '' and ($c | str starts-with $current) } | uniq
+    $candidates | where $it != '' | uniq
 }
 
 def coder-complete [words: list<string>] {

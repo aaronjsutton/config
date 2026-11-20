@@ -11,6 +11,7 @@
     extraConfig = lib.concatMapStrings builtins.readFile [
       ./theme.nu
       ./prompt.nu
+      ./completion.nu
     ];
     settings = {
       completions.algorithm = "fuzzy";
