@@ -7,12 +7,10 @@
 {
   programs.zsh = {
     enable = true;
-    autosuggestion.enable = true;
     dotDir = "${config.xdg.configHome}/zsh";
     enableCompletion = true;
     history.size = 16384;
     initContent = builtins.readFile ./init.zsh;
-    syntaxHighlighting.enable = true;
   };
 
   home.shell.enableZshIntegration = true;
