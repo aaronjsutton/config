@@ -37,7 +37,7 @@ in
     substituteInPlace pkgs/coder-until/coder-until.nu \
       --replace-fail @coder@ ^coder
     ${nu} --no-config-file -c '
-      use ${nushell.src}/crates/nu-std/testing.nu
+      use ${nushell.source}/crates/nu-std/testing.nu
       testing run-tests --path tests
     '
     touch "$out"
