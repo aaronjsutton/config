@@ -122,10 +122,17 @@ export def display-headers []: any -> any {
     metadata access {|m|
         let out = $in
         let headers = $m.headers? | default {}
-        if ($headers | is-empty) or (($out | describe) !~ '^(table|record)') { return $out }
-        let present = $headers | transpose old new | where old in ($out | columns)
-        if ($present | is-empty) { return $out }
-        $out | rename --column ($present | reduce --fold {} {|h acc| $acc | insert $h.old $h.new })
+        let present = if ($headers | is-empty) or (($out | describe) !~ '^(table|record)') {
+            []
+        } else {
+            $headers | transpose old new | where old in ($out | columns)
+        }
+        if ($present | is-empty) {
+            $out
+        } else {
+            $out | rename --column ($present | reduce --fold {} {|h acc| $acc | insert $h.old $h.new })
+        }
+        | metadata set {|c| $c | merge ($m | reject --optional span) }
     }
 }
 

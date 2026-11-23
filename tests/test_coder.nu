@@ -132,3 +132,11 @@ def "untagged output keeps its headers" [] {
     assert equal ('text' | display-headers) 'text'
     assert equal ([{a: 1}] | metadata set {|m| $m | merge {headers: {status: state}} } | display-headers | columns) [a]
 }
+
+@test
+def "ls output keeps its path columns for display" [] {
+    let tag = {|m| $m | merge {path_columns: [name]} }
+    assert equal ([{name: x, type: file}] | metadata set $tag | display-headers | metadata | get path_columns?) [name]
+    assert equal ([{name: x, type: file}] | metadata set $tag | metadata set {|m| $m | merge {headers: {type: kind}} } | display-headers | metadata | get path_columns?) [name]
+    assert equal ([{name: x, type: file}] | metadata set $tag | metadata set {|m| $m | merge {headers: {type: kind}} } | display-headers | columns) [name kind]
+}
