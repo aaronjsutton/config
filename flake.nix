@@ -35,7 +35,7 @@
         inputs.neovim-nightly-overlay.overlays.default
         (final: prev: {
           # See: https://github.com/NixOS/nixpkgs/pull/569465
-          git = prev.git.override { pythonSupport = false; };
+          git = (prev.git.override { pythonSupport = false; }).overrideAttrs { doInstallCheck = false; };
           coder = final.callPackage ./pkgs/coder { };
           coder-until = final.callPackage ./pkgs/coder-until { };
           nushell =
