@@ -21,5 +21,9 @@ mkdir -p ~/.config/nix
 grep -q '^experimental-features' ~/.config/nix/nix.conf 2>/dev/null \
   || echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
+mkdir -p -m 700 ~/.ssh
+key='github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl'
+grep -qxF "$key" ~/.ssh/known_hosts 2>/dev/null || echo "$key" >> ~/.ssh/known_hosts
+
 cd "$(dirname "$0")"
 nix run --inputs-from . nixpkgs-unstable#nh -- home switch . -c kaon
