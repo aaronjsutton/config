@@ -141,3 +141,25 @@ def "commits without their id fall back to our own colours" [] {
     assert equal ($shown.0.change_id | ansi strip) abcdefgh
     assert equal ($shown.0.description) subject
 }
+
+@test
+def "operations display in jj colours" [] {
+    use ../modules/home-manager/jujutsu/jj.nu []
+    let line = [(ansi red)I (ansi red)T (ansi red)D ((operation abcdefghijklmnop) | to json --raw)] | str join "\t"
+    let shown = $line | jj-decode op | display
+    assert equal ($shown.0 | select id time description | values) [$"(ansi red)I" $"(ansi red)T" $"(ansi red)D"]
+}
+
+@test
+def "local and remote bookmarks display in jj colours" [] {
+    use ../modules/home-manager/jujutsu/jj.nu []
+    let lines = [
+        ([(ansi red)L '' (ansi red)LT ({name: main, target: ['0123456789abcdef']} | to json --raw)] | str join "\t")
+        ([(ansi red)R (ansi red)@origin (ansi red)RT ({name: main, remote: origin, target: ['0123456789abcdef'], tracking_target: ['0123456789abcdef']} | to json --raw)] | str join "\t")
+    ] | str join "\n"
+    let shown = $lines | jj-decode bookmark | display
+    assert equal ($shown | get name) [$"(ansi red)L" $"(ansi red)R"]
+    assert equal ($shown | get remote) ['' $"(ansi red)@origin"]
+    assert equal ($shown | get target) [$"(ansi red)LT" $"(ansi red)RT"]
+    assert equal ($shown | get tracking_target | ansi strip) ['' '01234567']
+}

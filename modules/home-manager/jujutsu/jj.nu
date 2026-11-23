@@ -20,11 +20,54 @@ def jj-commit-times []: record -> record {
     jj-times $.author.timestamp $.committer.timestamp
 }
 
-const jj_painted = [change_id commit_id description author committer]
+const jj_painted = {
+    commit: [change_id commit_id description author committer]
+    op: [id time description]
+    bookmark: [name remote target]
+}
 
-const jj_log_template = 'label(separate(" ", if(current_working_copy, "working_copy"), if(immutable, "immutable", "mutable"), if(conflict, "conflicted")), format_short_change_id_with_change_offset(self) ++ "\t" ++ format_short_commit_id(commit_id) ++ "\t" ++ if(description, description.first_line(), label(if(empty, "empty"), description_placeholder)) ++ "\t" ++ format_short_signature(author) ++ "\t" ++ format_timestamp(commit_timestamp(self))) ++ "\t" ++ json(self) ++ "\n"'
+const jj_tail = ') ++ "\t" ++ json(self) ++ "\n"'
 
-const jj_evolog_template = 'label(separate(" ", if(commit.current_working_copy(), "working_copy"), if(commit.immutable(), "immutable", "mutable"), if(commit.conflict(), "conflicted")), format_short_change_id_with_change_offset(commit) ++ "\t" ++ format_short_commit_id(commit.commit_id()) ++ "\t" ++ if(commit.description(), commit.description().first_line(), label(if(commit.empty(), "empty"), description_placeholder)) ++ "\t" ++ format_short_signature(commit.author()) ++ "\t" ++ format_timestamp(commit_timestamp(commit))) ++ "\t" ++ json(self) ++ "\n"'
+const jj_log_label = 'separate(" ", if(current_working_copy, "working_copy"), if(immutable, "immutable", "mutable"), if(conflict, "conflicted"))'
+const jj_log_fields = [
+    'format_short_change_id_with_change_offset(self)'
+    'format_short_commit_id(commit_id)'
+    'if(description, description.first_line(), label(if(empty, "empty"), description_placeholder))'
+    'format_short_signature(author)'
+    'format_timestamp(commit_timestamp(self))'
+]
+const jj_log_template = $"label\(($jj_log_label), " + ($jj_log_fields | str join $"\) ++ \"\\t\" ++ label\(($jj_log_label), ") + $jj_tail
+
+const jj_evolog_label = 'separate(" ", if(commit.current_working_copy(), "working_copy"), if(commit.immutable(), "immutable", "mutable"), if(commit.conflict(), "conflicted"))'
+const jj_evolog_fields = [
+    'format_short_change_id_with_change_offset(commit)'
+    'format_short_commit_id(commit.commit_id())'
+    'if(commit.description(), commit.description().first_line(), label(if(commit.empty(), "empty"), description_placeholder))'
+    'format_short_signature(commit.author())'
+    'format_timestamp(commit_timestamp(commit))'
+]
+const jj_evolog_template = $"label\(($jj_evolog_label), " + ($jj_evolog_fields | str join $"\) ++ \"\\t\" ++ label\(($jj_evolog_label), ") + $jj_tail
+
+const jj_op_label = 'if(current_operation, "current_operation")'
+const jj_op_fields = ['format_short_operation_id(id)' 'time.start().ago()' 'description.first_line()']
+const jj_op_template = $"label\(($jj_op_label), " + ($jj_op_fields | str join $"\) ++ \"\\t\" ++ label\(($jj_op_label), ") + $jj_tail
+
+const jj_bookmark_fields = [
+    'label("bookmark", name)'
+    'if(remote, label("bookmark", "@" ++ remote))'
+    'if(conflict, label("conflict", "(conflicted)"), if(normal_target, format_short_commit_id(normal_target.commit_id())))'
+]
+const jj_bookmark_template = 'concat(' + ($jj_bookmark_fields | str join ') ++ "\t" ++ concat(') + $jj_tail
+const jj_tag_template = ($jj_bookmark_template | str replace --all '"bookmark"' '"tag"')
+
+def jj-key [kind: string]: record -> string {
+    let row = $in
+    match $kind {
+        op => ($row.id? | default '')
+        bookmark => $"($row.name? | default '')@($row.remote? | default '')"
+        _ => ($row.commit_id? | default '')
+    }
+}
 
 export def jj-decode [kind: string]: string -> table {
     let lines = lines | each { split row "\t" }
@@ -38,17 +81,19 @@ export def jj-decode [kind: string]: string -> table {
         bookmark => ($rows | default null remote | default [] tracking_target)
         _ => $rows
     }
-    let colors = $rows | zip $painted | where ($it.1 | length) == ($jj_painted | length) | reduce --fold {} {|pair acc|
-        $acc | insert $pair.0.commit_id ($jj_painted | zip $pair.1 | reduce --fold {} {|kv r| $r | insert $kv.0 $kv.1 })
+    let base = if $kind == 'evolog' { 'commit' } else { $kind }
+    let columns = $jj_painted | get --optional $base | default []
+    let colors = $rows | zip $painted | where ($columns | is-not-empty) and ($it.1 | length) == ($columns | length) | reduce --fold {} {|pair acc|
+        $acc | upsert ($pair.0 | jj-key $base) ($columns | zip $pair.1 | reduce --fold {} {|kv r| $r | insert $kv.0 $kv.1 })
     }
     $rows
-    | display tag $"jj-(if $kind == 'evolog' { 'commit' } else { $kind })"
+    | display tag $"jj-($base)"
     | metadata set {|m| if ($colors | is-empty) { $m } else { $m | merge {jj_colors: $colors} } }
 }
 
-def jj-paint [row: record, meta: record, column: string, fallback: closure]: any -> any {
+def jj-paint [kind: string, row: record, meta: record, column: string, fallback: closure]: any -> any {
     let cell = $in
-    let painted = $meta.jj_colors? | default {} | get --optional ($row.commit_id? | default '') | default {} | get --optional $column
+    let painted = $meta.jj_colors? | default {} | get --optional ($row | jj-key $kind) | default {} | get --optional $column
     if $painted == null { $cell | do $fallback } else { $painted }
 }
 
@@ -73,11 +118,11 @@ export-env {
     display add jj-commit {
         table: {|| let rows = $in; if 'change_id' in ($rows | columns) { $rows | move change_id --first } else { $rows } }
         columns: {
-            change_id: {|r m| jj-paint $r $m change_id {|| jj-change } }
-            commit_id: {|r m| jj-paint $r $m commit_id {|| jj-commit-id } }
-            description: {|r m| jj-paint $r $m description {|| jj-subject } }
-            author: {|r m| jj-paint $r $m author {|| get email } }
-            committer: {|r m| jj-paint $r $m committer {|| get timestamp } }
+            change_id: {|r m| jj-paint commit $r $m change_id {|| jj-change } }
+            commit_id: {|r m| jj-paint commit $r $m commit_id {|| jj-commit-id } }
+            description: {|r m| jj-paint commit $r $m description {|| jj-subject } }
+            author: {|r m| jj-paint commit $r $m author {|| get email } }
+            committer: {|r m| jj-paint commit $r $m committer {|| get timestamp } }
             operation: {|| get id | jj-op-id }
         }
         hide: [parents]
@@ -85,16 +130,18 @@ export-env {
     }
     display add jj-op {
         columns: {
-            id: {|| jj-op-id }
-            time: {|| get start }
+            id: {|r m| jj-paint op $r $m id {|| jj-op-id } }
+            time: {|r m| jj-paint op $r $m time {|| get start } }
+            description: {|r m| jj-paint op $r $m description {|| $in } }
         }
         hide: [parents hostname username is_snapshot workspace_name attributes]
         headers: {time: started}
     }
     display add jj-bookmark {
         columns: {
-            name: {|| $"(ansi magenta)($in)(ansi reset)" }
-            target: {|| each { jj-commit-id } | str join ' ' }
+            name: {|r m| jj-paint bookmark $r $m name {|| $"(ansi magenta)($in)(ansi reset)" } }
+            remote: {|r m| jj-paint bookmark $r $m remote {|| $in } }
+            target: {|r m| jj-paint bookmark $r $m target {|| each { jj-commit-id } | str join ' ' } }
             tracking_target: {|| each { jj-commit-id } | str join ' ' }
         }
         headers: {tracking_target: tracking}
@@ -118,19 +165,19 @@ export extern "jj log" [...args]
 export extern "jj evolog" [...args]
 
 @complete complete-jj
-@structured [--no-graph -T 'json(self) ++ "\n"'] { jj-decode op }
+@structured [--color always --no-graph -T $jj_op_template] { jj-decode op }
 export extern "jj op log" [...args]
 
 @complete complete-jj
-@structured [--no-graph -T 'json(self) ++ "\n"'] { jj-decode op }
+@structured [--color always --no-graph -T $jj_op_template] { jj-decode op }
 export extern "jj operation log" [...args]
 
 @complete complete-jj
-@structured [-T 'json(self) ++ "\n"'] { jj-decode bookmark }
+@structured [--color always -T $jj_bookmark_template] { jj-decode bookmark }
 export extern "jj bookmark list" [...args]
 
 @complete complete-jj
-@structured [-T 'json(self) ++ "\n"'] { jj-decode bookmark }
+@structured [--color always -T $jj_tag_template] { jj-decode bookmark }
 export extern "jj tag list" [...args]
 
 @complete complete-jj
