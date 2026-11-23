@@ -3,6 +3,7 @@
   pkgs-unstable,
   self,
   inputs,
+  public,
 }:
 let
   inherit (pkgs) lib;
@@ -61,5 +62,12 @@ in
     ];
   };
 
-  hosts = import ./hosts.nix { inherit pkgs self inputs; };
+  hosts = import ./hosts.nix {
+    inherit
+      pkgs
+      self
+      inputs
+      public
+      ;
+  };
 }

@@ -2,6 +2,7 @@
   pkgs,
   self,
   inputs,
+  public,
 }:
 let
   inherit (pkgs) lib;
@@ -66,7 +67,7 @@ let
     computerName = null;
   };
 
-  expected = {
+  expected = public {
     strange-quark = work // {
       coderTools = true;
       hostName = null;
