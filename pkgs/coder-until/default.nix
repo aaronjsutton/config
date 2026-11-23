@@ -3,11 +3,11 @@
   lib,
   nushell,
   writeShellApplication,
-  writers,
+  writeText,
 }:
 
 let
-  script = writers.writeNu "coder-until.nu" (
+  script = writeText "coder-until.nu" (
     builtins.replaceStrings [ "@coder@" ] [ "^${lib.getExe coder}" ] (
       builtins.readFile ./coder-until.nu
     )
