@@ -14,6 +14,7 @@ let
       ../modules/home-manager/nushell/completion.nu
       ../modules/home-manager/nushell/display.nu
       ../modules/home-manager/coder/coder.nu
+      ../modules/home-manager/jujutsu/jj.nu
       ../modules/home-manager/shadowenv/shadowenv.nu
       ../pkgs/coder-until/coder-until.nu
     ];
@@ -28,6 +29,8 @@ in
     substituteInPlace modules/home-manager/coder/coder.nu \
       --replace-fail @completion@ "$PWD/modules/home-manager/nushell/completion.nu" \
       --replace-fail @display@ "$PWD/modules/home-manager/nushell/display.nu"
+    substituteInPlace modules/home-manager/jujutsu/jj.nu \
+      --replace-fail @completion@ "$PWD/modules/home-manager/nushell/completion.nu"
     substituteInPlace modules/home-manager/shadowenv/shadowenv.nu \
       --replace-fail @shadowenv@ ${lib.getExe pkgs.shadowenv}
     substituteInPlace pkgs/coder-until/coder-until.nu \
