@@ -8,9 +8,10 @@
   programs.nushell.extraConfig = ''
     use ${
       pkgs.writeTextDir "coder.nu" (
-        builtins.replaceStrings [ "@completion@" ] [ "${../nushell/completion.nu}" ] (
-          builtins.readFile ./coder.nu
-        )
+        builtins.replaceStrings
+          [ "@completion@" "@display@" ]
+          [ "${../nushell/completion.nu}" "${../nushell/display.nu}" ]
+          (builtins.readFile ./coder.nu)
       )
     }/coder.nu *
   '';

@@ -1,4 +1,5 @@
 use @completion@ [complete-probe]
+use @display@ ["display add" "display tag"]
 
 # coder's built-in top-level aliases.
 const coder_aliases = {
@@ -63,7 +64,7 @@ export def coder-decode-list []: string -> table {
         }
     }
     | sort-by workspace
-    | metadata set {|m| $m | merge {view: coder} }
+    | display tag coder
 }
 
 export def coder-decode-schedule []: string -> table {
@@ -71,7 +72,7 @@ export def coder-decode-schedule []: string -> table {
     | select workspace stops_next
     | update stops_next { coder-time }
     | sort-by workspace stops_next
-    | metadata set {|m| $m | merge {view: coder} }
+    | display tag coder
 }
 
 # Format a time as Eastern time: "17:00 ET", or "Sat 17:00 ET" when it isn't
@@ -93,7 +94,7 @@ export def coder-et [--color]: [datetime -> any, string -> any, nothing -> any] 
 # owner (the default owner:me search); keep it when owners are mixed.
 export def coder-strip-owner []: table -> table {
     let rows = $in
-    if ($rows | is-empty) { return $rows }
+    if ($rows | is-empty) or 'workspace' not-in ($rows | columns) { return $rows }
     let owners = $rows | get workspace | each { split row '/' | first } | uniq
     if ($owners | length) > 1 { return $rows }
     $rows | update workspace { str replace -r '^[^/]+/' '' }
@@ -132,21 +133,18 @@ export def coder-status [outdated: bool = false]: string -> string {
     $"(ansi $'($style.1)_bold')($style.0)(ansi reset)"
 }
 
-def coder-pprint []: table -> table {
-    let rows = $in
-    let has = {|c| $c in ($rows | columns) }
-    let headers = if (do $has status) { {status: (char --unicode '23fb')} } else { {} }
-    $rows
-    | if (do $has workspace) { coder-strip-owner | update workspace { coder-color-workspace } } else { $in }
-    | if (do $has status) { update status {|r| $r.status | coder-status ($r.outdated? | default false) } } else { $in }
-    | if (do $has outdated) { reject outdated } else { $in }
-    | if (do $has stops_at) { update stops_at { coder-et --color } } else { $in }
-    | if (do $has stops_next) { update stops_next { coder-et --color } } else { $in }
-    | metadata set {|m| $m | merge {headers: $headers} }
-}
-
 export-env {
-    $env.PPRINT_DISPATCH = $env.PPRINT_DISPATCH? | default {} | merge {coder: {|| coder-pprint }}
+    display add coder {
+        table: {|| coder-strip-owner }
+        columns: {
+            workspace: {|| coder-color-workspace }
+            status: {|r| $r.status | coder-status ($r.outdated? | default false) }
+            stops_at: {|| coder-et --color }
+            stops_next: {|| coder-et --color }
+        }
+        hide: [outdated]
+        headers: {status: (char --unicode '23fb')}
+    }
 }
 
 @complete complete-coder

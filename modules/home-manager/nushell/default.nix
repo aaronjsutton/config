@@ -15,7 +15,7 @@
         ./vz.nu
       ]
       + ''
-        use ${./display.nu} *
+        use ${pkgs.writeTextDir "display.nu" (builtins.readFile ./display.nu)}/display.nu *
       '';
     settings = {
       completions.algorithm = "fuzzy";
