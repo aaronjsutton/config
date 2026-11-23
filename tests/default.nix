@@ -4,7 +4,8 @@
 }:
 let
   inherit (pkgs) lib;
-  nu = lib.getExe pkgs-unstable.nushell;
+  nushell = pkgs-unstable.callPackage ../pkgs/nushell { };
+  nu = lib.getExe nushell;
 
   src = lib.fileset.toSource {
     root = ../.;
@@ -30,7 +31,7 @@ in
     substituteInPlace pkgs/coder-until/coder-until.nu \
       --replace-fail @coder@ ^coder
     ${nu} --no-config-file -c '
-      use ${pkgs-unstable.nushell.src}/crates/nu-std/testing.nu
+      use ${nushell.src}/crates/nu-std/testing.nu
       testing run-tests --path tests
     '
     touch "$out"

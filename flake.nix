@@ -37,9 +37,11 @@
           # See: https://github.com/NixOS/nixpkgs/pull/569465
           git = prev.git.override { pythonSupport = false; };
           coder = final.callPackage ./pkgs/coder { };
-          coder-until = final.callPackage ./pkgs/coder-until {
-            inherit (inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}) nushell;
-          };
+          coder-until = final.callPackage ./pkgs/coder-until { };
+          nushell =
+            inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}.callPackage
+              ./pkgs/nushell
+              { };
         })
       ];
 
