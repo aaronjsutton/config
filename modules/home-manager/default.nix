@@ -9,7 +9,6 @@
     ./carapace
     ./claude
     ./delta
-    ./direnv
     ./eza
     ./fzf
     ./git
@@ -32,7 +31,6 @@
         tree-sitter-cli
         ;
       inherit (pkgs)
-        awscli2
         gh
         jq
         just
