@@ -1,21 +1,6 @@
 use @completion@ [complete-probe]
 
-# Subcommands that accept `--output json` (coder v2.36).
-const coder_json_commands = [
-    "ai-gateway keys list" "external-auth access-token"
-    "external-workspaces agent-instructions" "external-workspaces list"
-    "features list" "groups list" "licenses list" "list"
-    "organizations list" "organizations members list" "organizations roles show"
-    "organizations roles update" "organizations show" "provisioner jobs list"
-    "provisioner keys list" "provisioner list" "schedule show" "secret list"
-    "speedtest" "stat" "stat cpu" "stat disk" "stat mem" "task list" "task logs"
-    "task status" "templates list" "templates presets list"
-    "templates versions list" "tokens list" "tokens view" "users list"
-    "users oidc-claims" "users show" "version" "whoami"
-]
-
-# coder's built-in top-level aliases, expanded first so they also get JSON
-# output and defaults.
+# coder's built-in top-level aliases.
 const coder_aliases = {
     ls: list rm: delete fav: favorite favourite: favorite feature: features
     group: groups license: licenses notification: notifications
@@ -34,8 +19,9 @@ export def coder-expand []: list<string> -> list<string> {
 # Complete via coder's own protocol (what its fish script does): run the
 # words so far with COMPLETION_MODE=1. Covers flags, unlike an arg completer.
 def complete-coder [place: record] {
-    let prev = $place.command | skip 1 | drop 1 | coder-expand
-    let current = $place.command | last
+    let words = $place.command | first | split row ' ' | append ($place.command | skip 1)
+    let prev = $words | skip 1 | drop 1 | coder-expand
+    let current = $words | last
     let probe = complete-probe $current
     let candidates = if ($prev | get 0?) == 'until' {
         if ($current | str starts-with '-') {
@@ -45,7 +31,7 @@ def complete-coder [place: record] {
             coder-complete [ssh ''] | each { split row '.' | first }
         }
     } else if ($prev | is-empty) {
-        coder-complete [$probe] | append until
+        coder-complete [$probe] | append [until view]
     } else {
         coder-complete [...$prev $probe]
     }
@@ -56,10 +42,40 @@ def coder-complete [words: list<string>] {
     with-env {COMPLETION_MODE: '1'} { ^coder ...$words | complete } | get stdout | lines
 }
 
-# Format a coder timestamp as Eastern time: "17:00 ET", or "Sat 17:00 ET"
-# when it isn't today. Blank timestamps pass through as null. With --color,
-# shade by time left: red under 30m, yellow under 2h, otherwise green.
-export def coder-et [--color]: [string -> any, nothing -> any] {
+def coder-time []: [string -> any, nothing -> any] {
+    let raw = $in
+    if ($raw | is-empty) or ($raw | str starts-with '0001') { return null }
+    $raw | into datetime
+}
+
+export def coder-decode-list []: string -> table {
+    from json
+    | each {|w|
+        let build = $w.latest_build
+        let running = $build.status == 'running'
+        let healthy = $w.health.healthy? | default true
+        {
+            status: (if $running and not $healthy { 'unhealthy' } else { $build.status })
+            workspace: $"($w.owner_name)/($w.name)"
+            outdated: $w.outdated
+            stops_at: (if $running { $build.deadline? | coder-time })
+            last_used: ($w.last_used_at | coder-time)
+        }
+    }
+    | sort-by workspace
+}
+
+export def coder-decode-schedule []: string -> table {
+    from json
+    | select workspace stops_next
+    | update stops_next { coder-time }
+    | sort-by workspace stops_next
+}
+
+# Format a time as Eastern time: "17:00 ET", or "Sat 17:00 ET" when it isn't
+# today. Null passes through. With --color, shade by time left: red under
+# 30m, yellow under 2h, otherwise green.
+export def coder-et [--color]: [datetime -> any, string -> any, nothing -> any] {
     let raw = $in
     if ($raw | is-empty) { return null }
     let t = $raw | into datetime | date to-timezone America/New_York
@@ -94,11 +110,9 @@ export def coder-color-workspace []: string -> string {
     $"(ansi $shade)($name)(ansi reset)"
 }
 
-# Show a build status as a coloured glyph; a running workspace that fails
-# health checks counts as "unhealthy".
-export def coder-status [healthy: bool, outdated: bool = false]: string -> string {
-    let status = if $in == 'running' and not $healthy { 'unhealthy' } else { $in }
-    let style = match [$status $outdated] {
+# Show a build status as a coloured glyph.
+export def coder-status [outdated: bool = false]: string -> string {
+    let style = match [$in $outdated] {
         ['running' true] => ['◐' 'light_blue']
         ['stopped' true] => ['◌' 'light_blue']
         ['running' _] => ['●' 'green']
@@ -142,69 +156,170 @@ export-env {
     }
 }
 
-# Post-processing applied to a command's parsed JSON output.
-export def coder-defaults [] {
-    {
-        "schedule show": {||
-            select workspace stops_next
-            | coder-strip-owner
-            | sort-by workspace stops_next
-            | update workspace { coder-color-workspace }
-            | update stops_next { coder-et --color }
-        }
-        "list": {||
-            let rows = each {|w|
-                let running = $w.latest_build.status == 'running'
-                let deadline = $w.latest_build.deadline? | default ''
-                {
-                    status: ($w.latest_build.status | coder-status ($w.health.healthy? | default true) $w.outdated)
-                    workspace: $"($w.owner_name)/($w.name)"
-                    stops_at: (if $running and not ($deadline | str starts-with '0001') { $deadline | coder-et --color })
-                    last_used: ($w.last_used_at | into datetime)
-                }
-            }
-            $rows
-            | coder-strip-owner
-            | sort-by workspace
-            | update workspace { coder-color-workspace }
-            | metadata set {|m| $m | merge {headers: {status: (char --unicode '23fb')}} }
-        }
-    }
+export def "coder view" []: table -> table {
+    let rows = $in
+    let has = {|c| $c in ($rows | columns) }
+    $rows
+    | if (do $has workspace) { coder-strip-owner | update workspace { coder-color-workspace } } else { $in }
+    | if (do $has status) { update status {|r| $r.status | coder-status ($r.outdated? | default false) } } else { $in }
+    | if (do $has outdated) { reject outdated } else { $in }
+    | if (do $has stops_at) { update stops_at { coder-et --color } } else { $in }
+    | if (do $has stops_next) { update stops_next { coder-et --color } } else { $in }
+    | if (do $has status) { metadata set {|m| $m | merge {headers: {status: (char --unicode '23fb')}} } } else { $in }
 }
 
-# Longest leading run of words that names a JSON-capable command.
-export def coder-json-command [args: list<string>]: nothing -> any {
-    let words = $args | take while {|a| not ($a | str starts-with '-') }
-    $words
-    | enumerate
-    | each {|w| $words | first ($w.index + 1) | str join ' ' }
-    | where $it in $coder_json_commands
-    | last
-}
-
-# Default coder output to JSON, parsed into nushell data.
 @complete complete-coder
-export def --wrapped main [...args] {
-    let args = $args | coder-expand
-    let explicit = $args | any {|a|
-        $a in ['-o' '--output' '-h' '--help'] or ($a =~ '^(-o|--output)=')
-    }
-    let command = coder-json-command $args
-    # External calls must be the tail expression of each branch: wrapping one
-    # in `return (...)` captures its output, so coder loses the terminal and
-    # drops prompts and progress (e.g. `coder create`).
-    if ($args | get 0?) == 'until' {
-        # Our own command (pkgs/coder-until).
-        ^coder-until ...($args | skip 1)
-    } else if $command == null or $explicit {
-        ^coder ...$args
-    } else {
-        let output = ^coder ...$args --output json | from json
-        let defaults = coder-defaults
-        if $command in ($defaults | columns) {
-            $output | do ($defaults | get $command)
-        } else {
-            $output
-        }
-    }
+export def --wrapped "coder until" [...args] {
+    ^coder-until ...$args
 }
+
+@complete complete-coder
+export extern main [...args]
+
+@complete complete-coder
+@structured [--output json] { coder-decode-list }
+export extern "coder list" [...args]
+
+@complete complete-coder
+@structured [--output json] { coder-decode-list }
+export extern "coder ls" [...args]
+
+@complete complete-coder
+@structured [--output json] { coder-decode-schedule }
+export extern "coder schedule show" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder ai-gateway keys list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder external-auth access-token" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder external-workspaces agent-instructions" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder external-workspaces list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder features list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder groups list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder licenses list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder organizations list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder organizations members list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder organizations roles show" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder organizations roles update" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder organizations show" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder provisioner jobs list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder provisioner keys list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder provisioner list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder secret list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder speedtest" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder stat" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder stat cpu" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder stat disk" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder stat mem" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder task list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder task logs" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder task status" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder templates list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder templates presets list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder templates versions list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder tokens list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder tokens view" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder users list" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder users oidc-claims" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder users show" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder version" [...args]
+
+@complete complete-coder
+@structured [--output json] { from json }
+export extern "coder whoami" [...args]
