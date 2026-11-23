@@ -16,21 +16,6 @@ let
       ../pkgs/coder-until/coder-until.nu
     ];
   };
-
-  nuTest =
-    name:
-    {
-      sources,
-      path ? [ ],
-    }:
-    pkgs.runCommand "test-${name}" { nativeBuildInputs = path; } ''
-      export HOME="$TMPDIR"
-      ${nu} --no-config-file ${
-        pkgs.writeText "${name}.nu" (lib.concatMapStrings (f: "source ${f}\n") sources)
-      }
-      touch "$out"
-    '';
-
 in
 {
   nu = pkgs.runCommand "test-nu" { nativeBuildInputs = [ pkgs.shadowenv ]; } ''
@@ -50,5 +35,4 @@ in
     '
     touch "$out"
   '';
-
 }
