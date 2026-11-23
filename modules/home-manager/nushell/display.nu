@@ -26,13 +26,15 @@ export def --env "display add" [name: string, spec: record] {
     $env.DISPLAY_FORMATS = $env.DISPLAY_FORMATS? | default {} | upsert $name $spec
 }
 
-def apply-format [spec: record]: table -> table {
+def apply-format [spec: record, meta: record]: table -> table {
     let input = $in
-    let rows = if $spec.table? == null { $input } else { $input | do $spec.table }
+    let rows = if $spec.table? == null { $input } else { $input | do $spec.table $meta }
     let present = $rows | columns
     let formats = $spec.columns? | default {} | transpose name format | where name in $present
-    $formats
-    | reduce --fold $rows {|f acc| $acc | update $f.name $f.format }
+    $rows
+    | each {|row|
+        $formats | reduce --fold $row {|f acc| $acc | update $f.name ($row | get $f.name | do $f.format $row $meta) }
+    }
     | reject --optional ...($spec.hide? | default [])
 }
 
@@ -47,9 +49,9 @@ export def main []: any -> any {
         if $spec == null {
             do $plain
         } else if ($shape | str starts-with 'table') {
-            try { $out | apply-format $spec | metadata set $keep } catch { do $plain }
+            try { $out | apply-format $spec $base | metadata set $keep } catch { do $plain }
         } else if ($shape | str starts-with 'record') {
-            try { [$out] | apply-format $spec | first | metadata set $keep } catch { do $plain }
+            try { [$out] | apply-format $spec $base | first | metadata set $keep } catch { do $plain }
         } else {
             do $plain
         }

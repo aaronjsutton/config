@@ -103,3 +103,10 @@ def "d is display" [] {
     ten
     assert equal ([[a b]; [1 x]] | display tag ten | d | display headers) [[A b]; [10 x]]
 }
+
+@test
+def "formats see the original row and the metadata" [] {
+    display add meta {columns: {a: {|r m| $"($r.a)-($m.extra)" }, b: {|r| $r.a }}}
+    let shown = [[a b]; [1 x]] | display tag meta | metadata set {|m| $m | merge {extra: E} } | display
+    assert equal $shown [[a b]; ['1-E' 1]]
+}
