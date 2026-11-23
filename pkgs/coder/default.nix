@@ -2,8 +2,6 @@
   lib,
   fetchurl,
   installShellFiles,
-  makeBinaryWrapper,
-  terraform,
   stdenvNoCC,
   unzip,
 }:
@@ -50,7 +48,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [
     installShellFiles
-    makeBinaryWrapper
     unzip
   ];
 
@@ -71,11 +68,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     install -D -m755 coder $out/bin/coder
 
     runHook postInstall
-  '';
-
-  postInstall = ''
-    wrapProgram $out/bin/coder \
-      --prefix PATH : ${lib.makeBinPath [ terraform ]}
   '';
 
   # integration tests require network access

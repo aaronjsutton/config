@@ -13,7 +13,6 @@ let
       builtins.elem (lib.getName pkg) [
         "bambu-studio"
         "claude-code"
-        "terraform"
       ];
   };
 in
