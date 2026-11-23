@@ -25,7 +25,6 @@ let visits = do --env {
             path_type: ($env.PATH | describe)
             path: $env.PATH
             error: $error
-            prompt: (do $env.PROMPT_COMMAND_RIGHT | ansi strip)
             change: (shadowenv-change $before ($env.__shadowenv_data? | default ''))
         }
     }
@@ -57,9 +56,6 @@ run-tests {
     }
     "the hook never raises an error": {||
         assert equal ($visits | where error != null | get dir) []
-    }
-    "the right prompt shows when a project is active": {||
-        assert equal ($visits | get prompt) ['' ░ ░ '' '']
     }
     "entering, leaving and switching are told apart": {||
         let off = '0000000000000000:{}'

@@ -40,7 +40,3 @@ $env.config.hooks.pre_prompt ++= [{||
 def shadowenv-active [data: string]: nothing -> bool {
     ($data | is-not-empty) and not ($data | str starts-with '0000000000000000')
 }
-
-$env.PROMPT_COMMAND_RIGHT = {||
-    if (shadowenv-active ($env.__shadowenv_data? | default '')) { $"(ansi light_gray)░(ansi reset)" } else { '' }
-}
