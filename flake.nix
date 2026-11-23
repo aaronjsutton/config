@@ -35,7 +35,11 @@
         inputs.neovim-nightly-overlay.overlays.default
         (final: prev: {
           # See: https://github.com/NixOS/nixpkgs/pull/569465
-          git = (prev.git.override { pythonSupport = false; }).overrideAttrs { doInstallCheck = false; };
+          git =
+            if prev.stdenv.hostPlatform.isDarwin then
+              prev.git.override { pythonSupport = false; }
+            else
+              prev.git;
           coder = final.callPackage ./pkgs/coder { };
           coder-until = final.callPackage ./pkgs/coder-until { };
           nushell =
