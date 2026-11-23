@@ -138,36 +138,36 @@ def "schedule decodes stop times" [] {
 }
 
 @test
-def "view shows the status as the power icon" [] {
+def "list prints with the status as the power icon" [] {
+    use ../modules/home-manager/coder/coder.nu []
     let icon = char --unicode '23fb'
-    let view = [(workspace dev stopped)] | to json | coder-decode-list | coder view
-    let shown = {|| [(workspace dev stopped)] | to json | coder-decode-list | coder view | display-headers }
-    assert equal ($view | columns) [status workspace stops_at last_used]
-    assert equal (do $shown | columns) [$icon workspace stops_at last_used]
-    assert equal ($view.0.status | ansi strip) ◌
-    assert equal ($view.0.workspace | ansi strip) dev
+    let shown = {|| [(workspace dev stopped)] | to json | coder-decode-list | pretty-print }
+    assert equal (do $shown | columns) [status workspace stops_at last_used]
+    assert equal (do $shown | display-headers | columns) [$icon workspace stops_at last_used]
+    assert equal (do $shown | get 0.status | ansi strip) ◌
+    assert equal (do $shown | get 0.workspace | ansi strip) dev
 }
 
 @test
-def "view formats schedule stop times" [] {
-    let view = [[workspace stops_next]; [me/dev 2030-01-02T15:00:00Z]] | coder view
-    assert equal ($view.0.stops_next | ansi strip) 'Wed 10:00 ET'
-    assert equal ($view | display-headers | columns) [workspace stops_next]
+def "schedule prints stop times in Eastern time" [] {
+    use ../modules/home-manager/coder/coder.nu []
+    let shown = {|| [{workspace: me/dev, stops_next: '2030-01-02T15:00:00Z'}] | to json | coder-decode-schedule | pretty-print }
+    assert equal (do $shown | get 0.stops_next | ansi strip) 'Wed 10:00 ET'
+    assert equal (do $shown | display-headers | columns) [workspace stops_next]
 }
 
 @test
-def "decoded output is tagged for the coder view" [] {
+def "decoded output is tagged for the coder printer" [] {
     assert equal ([(workspace dev stopped)] | to json | coder-decode-list | metadata | get view) coder
     assert equal ([{workspace: me/dev, stops_next: ''}] | to json | coder-decode-schedule | metadata | get view) coder
 }
 
 @test
-def "tagged output renders through the registered view" [] {
+def "tagged output prints through the registered printer" [] {
     use ../modules/home-manager/coder/coder.nu []
     let icon = char --unicode '23fb'
     let shown = {|| [(workspace dev running) (workspace ops stopped)] | to json | coder-decode-list }
     assert equal (do $shown | pretty-print | display-headers | columns) [$icon workspace stops_at last_used]
     assert equal (do $shown | where status == running | pretty-print | get workspace | ansi strip) [dev]
     assert equal (do $shown | first | pretty-print | get status | ansi strip) ●
-    assert equal (do $shown | coder view | pretty-print | get status | ansi strip) [● ◌]
 }

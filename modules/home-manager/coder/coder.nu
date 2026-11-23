@@ -31,7 +31,7 @@ def complete-coder [place: record] {
             coder-complete [ssh ''] | each { split row '.' | first }
         }
     } else if ($prev | is-empty) {
-        coder-complete [$probe] | append [until view]
+        coder-complete [$probe] | append until
     } else {
         coder-complete [...$prev $probe]
     }
@@ -132,7 +132,7 @@ export def coder-status [outdated: bool = false]: string -> string {
     $"(ansi $'($style.1)_bold')($style.0)(ansi reset)"
 }
 
-export def "coder view" []: table -> table {
+def coder-pprint []: table -> table {
     let rows = $in
     let has = {|c| $c in ($rows | columns) }
     let headers = if (do $has status) { {status: (char --unicode '23fb')} } else { {} }
@@ -142,11 +142,11 @@ export def "coder view" []: table -> table {
     | if (do $has outdated) { reject outdated } else { $in }
     | if (do $has stops_at) { update stops_at { coder-et --color } } else { $in }
     | if (do $has stops_next) { update stops_next { coder-et --color } } else { $in }
-    | metadata set {|m| $m | reject --optional view | merge {headers: $headers} }
+    | metadata set {|m| $m | merge {headers: $headers} }
 }
 
 export-env {
-    $env.PPRINT_DISPATCH = $env.PPRINT_DISPATCH? | default {} | merge {coder: {|| coder view }}
+    $env.PPRINT_DISPATCH = $env.PPRINT_DISPATCH? | default {} | merge {coder: {|| coder-pprint }}
 }
 
 @complete complete-coder
