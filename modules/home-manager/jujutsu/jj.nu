@@ -20,9 +20,17 @@ def jj-commit-times []: record -> record {
     jj-times $.author.timestamp $.committer.timestamp
 }
 
+const jj_painted = [change_id commit_id description author committer]
+
+const jj_log_template = 'label(separate(" ", if(current_working_copy, "working_copy"), if(immutable, "immutable", "mutable"), if(conflict, "conflicted")), format_short_change_id_with_change_offset(self) ++ "\t" ++ format_short_commit_id(commit_id) ++ "\t" ++ if(description, description.first_line(), label(if(empty, "empty"), description_placeholder)) ++ "\t" ++ format_short_signature(author) ++ "\t" ++ format_timestamp(commit_timestamp(self))) ++ "\t" ++ json(self) ++ "\n"'
+
+const jj_evolog_template = 'label(separate(" ", if(commit.current_working_copy(), "working_copy"), if(commit.immutable(), "immutable", "mutable"), if(commit.conflict(), "conflicted")), format_short_change_id_with_change_offset(commit) ++ "\t" ++ format_short_commit_id(commit.commit_id()) ++ "\t" ++ if(commit.description(), commit.description().first_line(), label(if(commit.empty(), "empty"), description_placeholder)) ++ "\t" ++ format_short_signature(commit.author()) ++ "\t" ++ format_timestamp(commit_timestamp(commit))) ++ "\t" ++ json(self) ++ "\n"'
+
 export def jj-decode [kind: string]: string -> table {
-    let rows = lines | each { from json }
-    match $kind {
+    let lines = lines | each { split row "\t" }
+    let painted = $lines | each { drop 1 }
+    let rows = $lines | each { last | from json }
+    let rows = match $kind {
         commit => ($rows | each { jj-commit-times })
         evolog => ($rows | each {|e| $e.commit | jj-commit-times | insert operation ($e.operation | jj-times $.time.start $.time.end) })
         op => ($rows | each { jj-times $.time.start $.time.end })
@@ -30,7 +38,18 @@ export def jj-decode [kind: string]: string -> table {
         bookmark => ($rows | default null remote | default [] tracking_target)
         _ => $rows
     }
+    let colors = $rows | zip $painted | where ($it.1 | length) == ($jj_painted | length) | reduce --fold {} {|pair acc|
+        $acc | insert $pair.0.commit_id ($jj_painted | zip $pair.1 | reduce --fold {} {|kv r| $r | insert $kv.0 $kv.1 })
+    }
+    $rows
     | display tag $"jj-(if $kind == 'evolog' { 'commit' } else { $kind })"
+    | metadata set {|m| if ($colors | is-empty) { $m } else { $m | merge {jj_colors: $colors} } }
+}
+
+def jj-paint [row: record, meta: record, column: string, fallback: closure]: any -> any {
+    let cell = $in
+    let painted = $meta.jj_colors? | default {} | get --optional ($row.commit_id? | default '') | default {} | get --optional $column
+    if $painted == null { $cell | do $fallback } else { $painted }
 }
 
 def jj-change []: string -> string {
@@ -54,11 +73,11 @@ export-env {
     display add jj-commit {
         table: {|| let rows = $in; if 'change_id' in ($rows | columns) { $rows | move change_id --first } else { $rows } }
         columns: {
-            change_id: {|| jj-change }
-            commit_id: {|| jj-commit-id }
-            description: {|| jj-subject }
-            author: {|| get name }
-            committer: {|| get timestamp }
+            change_id: {|r m| jj-paint $r $m change_id {|| jj-change } }
+            commit_id: {|r m| jj-paint $r $m commit_id {|| jj-commit-id } }
+            description: {|r m| jj-paint $r $m description {|| jj-subject } }
+            author: {|r m| jj-paint $r $m author {|| get email } }
+            committer: {|r m| jj-paint $r $m committer {|| get timestamp } }
             operation: {|| get id | jj-op-id }
         }
         hide: [parents]
@@ -91,11 +110,11 @@ export-env {
 export extern main [...args]
 
 @complete complete-jj
-@structured [--no-graph -T 'json(self) ++ "\n"'] { jj-decode commit }
+@structured [--color always --no-graph -T $jj_log_template] { jj-decode commit }
 export extern "jj log" [...args]
 
 @complete complete-jj
-@structured [--no-graph -T 'json(self) ++ "\n"'] { jj-decode evolog }
+@structured [--color always --no-graph -T $jj_evolog_template] { jj-decode evolog }
 export extern "jj evolog" [...args]
 
 @complete complete-jj

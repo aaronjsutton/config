@@ -83,7 +83,7 @@ def "commits display with short ids and subjects" [] {
     assert equal (do $shown | display headers | columns) [change commit description author committed]
     assert equal (do $shown | get change_id | ansi strip) [abcdefgh klmnopqr]
     assert equal (do $shown | get description | ansi strip) [subject '(no description set)']
-    assert equal (do $shown | get author) [Me Me]
+    assert equal (do $shown | get author) [me@example.com me@example.com]
     assert equal (do $shown | get 0.committer) 2030-01-02T16:00:00-05:00
 }
 
@@ -111,4 +111,33 @@ def "workspaces display their target commit" [] {
     use ../modules/home-manager/jujutsu/jj.nu []
     let shown = [{name: default, target: (commit abcdefghij "subject")}] | json-lines | jj-decode workspace | display
     assert equal ($shown.0.target | ansi strip) 'abcdefgh subject'
+}
+
+def painted [row: record]: nothing -> string {
+    [(ansi red)C (ansi red)K (ansi red)D (ansi red)A (ansi red)T ($row | to json --raw)] | str join "\t"
+}
+
+@test
+def "jj colours go to metadata and the data stays plain" [] {
+    let row = commit abcdefghij 'subject'
+    let rows = painted $row | jj-decode commit
+    assert equal ($rows.0.change_id) abcdefghij-change-id
+    assert not ($rows | to json | str contains (ansi escape))
+    let colors = painted $row | jj-decode commit | metadata | get jj_colors
+    assert equal ($colors | get abcdefghij-commit-id) {change_id: $"(ansi red)C", commit_id: $"(ansi red)K", description: $"(ansi red)D", author: $"(ansi red)A", committer: $"(ansi red)T"}
+}
+
+@test
+def "commits display in jj colours" [] {
+    use ../modules/home-manager/jujutsu/jj.nu []
+    let shown = painted (commit abcdefghij 'subject') | jj-decode commit | display
+    assert equal ($shown.0 | select change_id commit_id description author committer | values) [$"(ansi red)C" $"(ansi red)K" $"(ansi red)D" $"(ansi red)A" $"(ansi red)T"]
+}
+
+@test
+def "commits without their id fall back to our own colours" [] {
+    use ../modules/home-manager/jujutsu/jj.nu []
+    let shown = painted (commit abcdefghij 'subject') | jj-decode commit | select change_id description | display
+    assert equal ($shown.0.change_id | ansi strip) abcdefgh
+    assert equal ($shown.0.description) subject
 }
