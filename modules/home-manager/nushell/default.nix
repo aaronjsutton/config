@@ -12,6 +12,7 @@
       ./theme.nu
       ./prompt.nu
       ./completion.nu
+      ./vz.nu
     ];
     settings = {
       completions.algorithm = "fuzzy";
