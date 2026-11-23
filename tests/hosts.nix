@@ -48,6 +48,7 @@ let
     coderTools = lib.any (p: (p.pname or "") == "coder") h.home.home.packages;
     hostName = if h.system == null then null else h.system.networking.hostName;
     computerName = h.system.networking.computerName or null;
+    casks = lib.sort lib.lessThan (map (c: c.name) h.system.homebrew.casks);
   };
 
   work = {
@@ -72,6 +73,7 @@ let
       coderTools = true;
       hostName = null;
       computerName = null;
+      casks = [ "ghostty" ];
     };
     kaon = work // {
       coderTools = false;
@@ -79,6 +81,10 @@ let
     };
     charm-quark = personal // {
       hostName = "charm-quark";
+      casks = [
+        "ghostty"
+        "openscad@snapshot"
+      ];
     };
     gluon = personal // {
       hostName = "gluon";

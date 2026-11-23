@@ -76,6 +76,7 @@
           user = "aaron";
           darwin = true;
           setHostName = true;
+          modules = [ ./modules/homebrew/personal.nix ];
         };
 
         strange-quark = {
@@ -84,6 +85,7 @@
           user = "aaron";
           username = "aaronsutton";
           darwin = true;
+          modules = [ ./modules/homebrew/work.nix ];
           homeModules = [
             ./modules/home-manager/coder
             inputs.private.homeManagerModules.default

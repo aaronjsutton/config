@@ -8,9 +8,6 @@
     enable = true;
     user = username;
     enableZshIntegration = true;
-    casks = [
-      "ghostty"
-      "openscad@snapshot"
-    ];
+    casks = [ "ghostty" ];
   };
 }
