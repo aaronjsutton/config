@@ -1,9 +1,6 @@
 {
   pkgs,
   pkgs-unstable,
-  self,
-  inputs,
-  public,
 }:
 let
   inherit (pkgs) lib;
@@ -60,14 +57,5 @@ in
       coderUntil
       ./coder-until.nu
     ];
-  };
-
-  hosts = import ./hosts.nix {
-    inherit
-      pkgs
-      self
-      inputs
-      public
-      ;
   };
 }

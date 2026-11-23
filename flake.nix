@@ -29,11 +29,7 @@
   };
 
   outputs =
-    {
-      nixpkgs,
-      self,
-      ...
-    }@inputs:
+    { nixpkgs, ... }@inputs:
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
@@ -50,14 +46,7 @@
         import ./tests {
           pkgs = nixpkgs.legacyPackages.${system};
           pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${system};
-          inherit self inputs public;
         };
-
-      work = [
-        "strange-quark"
-        "kaon"
-      ];
-      public = attrs: if inputs.private.stub or false then removeAttrs attrs work else attrs;
 
       lib = import ./lib {
         inherit
@@ -110,16 +99,7 @@
         };
       };
 
-      checks = {
-        aarch64-darwin =
-          public (builtins.mapAttrs (_: c: c.system) self.darwinConfigurations) // tests "aarch64-darwin";
-        x86_64-linux =
-          public {
-            gluon = self.nixosConfigurations.gluon.config.system.build.toplevel;
-            kaon = self.homeConfigurations.kaon.activationPackage;
-          }
-          // tests "x86_64-linux";
-      };
+      checks = nixpkgs.lib.genAttrs [ "aarch64-darwin" "x86_64-linux" ] tests;
 
       formatter = builtins.mapAttrs (_: pkgs: pkgs.nixfmt-tree) inputs.nixpkgs.legacyPackages;
     };
