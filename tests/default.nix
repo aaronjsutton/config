@@ -11,6 +11,7 @@ let
     fileset = lib.fileset.unions [
       (lib.fileset.fileFilter (f: lib.hasPrefix "test_" f.name) ./.)
       ../modules/home-manager/shadowenv/shadowenv.nu
+      ../pkgs/coder-until/coder-until.nu
     ];
   };
 
@@ -28,11 +29,6 @@ let
       touch "$out"
     '';
 
-  coderUntil = pkgs.writeText "coder-until.nu" (
-    builtins.replaceStrings [ "def main [" "@coder@" ] [ "def coder-until [" "^coder" ] (
-      builtins.readFile ../pkgs/coder-until/coder-until.nu
-    )
-  );
 in
 {
   nu = pkgs.runCommand "test-nu" { nativeBuildInputs = [ pkgs.shadowenv ]; } ''
@@ -42,6 +38,8 @@ in
     cd src
     substituteInPlace modules/home-manager/shadowenv/shadowenv.nu \
       --replace-fail @shadowenv@ ${lib.getExe pkgs.shadowenv}
+    substituteInPlace pkgs/coder-until/coder-until.nu \
+      --replace-fail @coder@ ^coder
     ${nu} --no-config-file -c '
       use ${pkgs-unstable.nushell.src}/crates/nu-std/testing.nu
       testing run-tests --path tests
@@ -58,11 +56,4 @@ in
     ];
   };
 
-  coder-until = nuTest "coder-until" {
-    sources = [
-      ./runner.nu
-      coderUntil
-      ./coder-until.nu
-    ];
-  };
 }

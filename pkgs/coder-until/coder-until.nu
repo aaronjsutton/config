@@ -5,7 +5,7 @@
 # (read in --tz unless it carries an offset). It must be at least 30 minutes
 # away. Named workspaces are started first if stopped; with no names, only
 # running workspaces change unless --start is given.
-def main [
+export def main [
     time: string = "17:30:00"            # HH:MM[:SS] or ISO datetime
     ...workspaces: string                # my workspaces (owner/ optional); default: all running
     --start (-s)                         # also start my stopped workspaces
@@ -73,7 +73,7 @@ def main [
     if ($results | any { not $in.ok }) { exit 1 }
 }
 
-def looks-like-time [s: string]: nothing -> bool {
+export def looks-like-time [s: string]: nothing -> bool {
     $s =~ '^\d{1,2}:\d{2}(:\d{2})?$' or $s =~ '^\d{4}-\d{2}-\d{2}T'
 }
 
@@ -105,7 +105,7 @@ def apply [w: record, target: datetime, dry_run: bool] {
 }
 
 # Interpret TIME as an instant. Times without an offset are read in `tz`.
-def resolve [time: string, tz: string]: nothing -> datetime {
+export def resolve [time: string, tz: string]: nothing -> datetime {
     if $time =~ '(Z|[+-]\d{2}:?\d{2})$' { return ($time | into datetime) }
     let naive = if $time =~ '^\d{4}-' {
         $time
@@ -120,13 +120,13 @@ def resolve [time: string, tz: string]: nothing -> datetime {
     $"($naive)($offset)" | into datetime
 }
 
-def parse-deadline []: any -> any {
+export def parse-deadline []: any -> any {
     let d = $in
     if ($d | is-empty) or ($d | str starts-with '0001') { null } else { $d | into datetime }
 }
 
 # "17:30 ET", or "Sat 17:30 ET" when not today.
-def fmt [t: datetime, tz: string]: nothing -> string {
+export def fmt [t: datetime, tz: string]: nothing -> string {
     let local = $t | date to-timezone $tz
     let zone = if $tz == 'America/New_York' { 'ET' } else { $local | format date '%Z' }
     let today = date now | date to-timezone $tz | format date '%F'
@@ -134,10 +134,10 @@ def fmt [t: datetime, tz: string]: nothing -> string {
     $"($day)($local | format date '%H:%M') ($zone)"
 }
 
-def fmt-or-dash [tz: string]: any -> string {
+export def fmt-or-dash [tz: string]: any -> string {
     if $in == null { '—' } else { fmt $in $tz }
 }
 
-def last-line [r: record]: nothing -> string {
+export def last-line [r: record]: nothing -> string {
     [$r.stderr $r.stdout] | str join "\n" | lines | where $it != '' | last | default 'unknown error'
 }
