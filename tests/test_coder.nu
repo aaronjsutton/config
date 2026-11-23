@@ -1,7 +1,7 @@
 use std/assert
 use std/testing *
 use ../modules/home-manager/coder/coder.nu *
-use ../modules/home-manager/nushell/display.nu [display-headers display-view]
+use ../modules/home-manager/nushell/display.nu [display-headers pretty-print]
 
 def shade [s: string]: nothing -> string {
     [green red yellow cyan light_blue light_gray dark_gray xterm_darkorange3b] | where {|c| ($s | str starts-with (ansi $c)) or ($s | str starts-with (ansi $"($c)_bold")) } | first
@@ -166,8 +166,8 @@ def "tagged output renders through the registered view" [] {
     use ../modules/home-manager/coder/coder.nu []
     let icon = char --unicode '23fb'
     let shown = {|| [(workspace dev running) (workspace ops stopped)] | to json | coder-decode-list }
-    assert equal (do $shown | display-view | display-headers | columns) [$icon workspace stops_at last_used]
-    assert equal (do $shown | where status == running | display-view | get workspace | ansi strip) [dev]
-    assert equal (do $shown | first | display-view | get status | ansi strip) ●
-    assert equal (do $shown | coder view | display-view | get status | ansi strip) [● ◌]
+    assert equal (do $shown | pretty-print | display-headers | columns) [$icon workspace stops_at last_used]
+    assert equal (do $shown | where status == running | pretty-print | get workspace | ansi strip) [dev]
+    assert equal (do $shown | first | pretty-print | get status | ansi strip) ●
+    assert equal (do $shown | coder view | pretty-print | get status | ansi strip) [● ◌]
 }

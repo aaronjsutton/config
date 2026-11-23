@@ -146,7 +146,7 @@ export def "coder view" []: table -> table {
 }
 
 export-env {
-    $env.VIEWS = $env.VIEWS? | default {} | merge {coder: {|| coder view }}
+    $env.PPRINT_DISPATCH = $env.PPRINT_DISPATCH? | default {} | merge {coder: {|| coder view }}
 }
 
 @complete complete-coder

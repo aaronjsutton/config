@@ -27,20 +27,20 @@ def "ls output keeps its path columns for display" [] {
 
 @test
 def "a registered view formats tagged tables" [] {
-    $env.VIEWS = {ten: {|| times-ten }}
-    assert equal ([[a b]; [1 x]] | tagged ten | display-view | display-headers) [[A b]; [10 x]]
+    $env.PPRINT_DISPATCH = {ten: {|| times-ten }}
+    assert equal ([[a b]; [1 x]] | tagged ten | pretty-print | display-headers) [[A b]; [10 x]]
 }
 
 @test
 def "a view applies to a single tagged row" [] {
-    $env.VIEWS = {ten: {|| times-ten }}
-    assert equal ([[a b]; [1 x]] | tagged ten | first | display-view | display-headers) {A: 10, b: x}
+    $env.PPRINT_DISPATCH = {ten: {|| times-ten }}
+    assert equal ([[a b]; [1 x]] | tagged ten | first | pretty-print | display-headers) {A: 10, b: x}
 }
 
 @test
 def "the view tag is consumed and other metadata kept" [] {
-    $env.VIEWS = {ten: {|| times-ten }}
-    let meta = [[a b]; [1 x]] | tagged ten | metadata set {|m| $m | merge {path_columns: [b]} } | display-view | metadata
+    $env.PPRINT_DISPATCH = {ten: {|| times-ten }}
+    let meta = [[a b]; [1 x]] | tagged ten | metadata set {|m| $m | merge {path_columns: [b]} } | pretty-print | metadata
     assert equal ($meta.view?) null
     assert equal ($meta.path_columns) [b]
     assert equal ($meta.headers) {a: A}
@@ -48,16 +48,16 @@ def "the view tag is consumed and other metadata kept" [] {
 
 @test
 def "untagged, unknown and non-table output pass through" [] {
-    $env.VIEWS = {ten: {|| times-ten }}
-    assert equal ([[a]; [1]] | display-view) [[a]; [1]]
-    assert equal ([[a]; [1]] | tagged nope | display-view) [[a]; [1]]
-    assert equal ([[a]; [1]] | tagged ten | get a | display-view) [1]
+    $env.PPRINT_DISPATCH = {ten: {|| times-ten }}
+    assert equal ([[a]; [1]] | pretty-print) [[a]; [1]]
+    assert equal ([[a]; [1]] | tagged nope | pretty-print) [[a]; [1]]
+    assert equal ([[a]; [1]] | tagged ten | get a | pretty-print) [1]
 }
 
 @test
 def "a failing view falls back to the plain table" [] {
-    $env.VIEWS = {ten: {|| times-ten }}
-    assert equal ([[a]; [y]] | tagged ten | display-view) [[a]; [y]]
+    $env.PPRINT_DISPATCH = {ten: {|| times-ten }}
+    assert equal ([[a]; [y]] | tagged ten | pretty-print) [[a]; [y]]
 }
 
 @test

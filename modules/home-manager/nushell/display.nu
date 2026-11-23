@@ -18,10 +18,10 @@ export def display-headers []: any -> any {
     }
 }
 
-export def display-view []: any -> any {
+export def pretty-print []: any -> any {
     metadata access {|m|
         let out = $in
-        let view = $env.VIEWS? | default {} | get --optional ($m.view? | default '')
+        let view = $env.PPRINT_DISPATCH? | default {} | get --optional ($m.view? | default '')
         let shape = $out | describe
         let keep = {|c| $m | reject --optional span view | merge ($c | reject --optional span view) }
         let plain = {|| $out | metadata set {|c| $c | merge ($m | reject --optional span view) } }
@@ -42,8 +42,8 @@ export def v []: any -> any {
 }
 
 export-env {
-    $env.VIEWS = $env.VIEWS? | default {}
+    $env.PPRINT_DISPATCH = $env.PPRINT_DISPATCH? | default {}
     $env.config.hooks.display_output = {||
-        display-view | display-headers | if (term size).columns >= 100 { table -e } else { table }
+        pretty-print | display-headers | if (term size).columns >= 100 { table -e } else { table }
     }
 }
