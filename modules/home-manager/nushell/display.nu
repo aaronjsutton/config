@@ -37,6 +37,10 @@ export def display-view []: any -> any {
     }
 }
 
+export def v []: any -> any {
+    collect
+}
+
 export-env {
     $env.VIEWS = $env.VIEWS? | default {}
     $env.config.hooks.display_output = {||

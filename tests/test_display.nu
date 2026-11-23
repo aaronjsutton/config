@@ -59,3 +59,10 @@ def "a failing view falls back to the plain table" [] {
     $env.VIEWS = {ten: {|| times-ten }}
     assert equal ([[a]; [y]] | tagged ten | display-view) [[a]; [y]]
 }
+
+@test
+def "v passes data through with its view tag" [] {
+    let shown = {|| [[a b]; [1 x]] | tagged ten | v }
+    assert equal (do $shown) [[a b]; [1 x]]
+    assert equal (do $shown | metadata | get view) ten
+}
