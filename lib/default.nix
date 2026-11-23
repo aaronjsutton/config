@@ -56,6 +56,7 @@ in
       user,
       username ? user,
       darwin ? false,
+      modules ? [ ],
       homeModules ? [ ],
       setHostName ? false,
     }:
@@ -94,6 +95,7 @@ in
             users.${username}.imports = [ ../users/${user}/home.nix ] ++ homeModules;
           };
         }
-      ];
+      ]
+      ++ modules;
     };
 }
