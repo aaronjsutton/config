@@ -1,16 +1,114 @@
 use std/assert
 use std/testing *
 use ../modules/home-manager/jujutsu/jj.nu *
+use ../modules/home-manager/nushell/display.nu [main "display headers"]
+
+def commit [change: string, description: string]: nothing -> record {
+    {
+        commit_id: $"($change)-commit-id"
+        parents: [parent-commit-id]
+        change_id: $"($change)-change-id"
+        description: $description
+        author: {name: Me, email: me@example.com, timestamp: '2030-01-02T15:00:00-05:00'}
+        committer: {name: Me, email: me@example.com, timestamp: '2030-01-02T16:00:00-05:00'}
+    }
+}
+
+def operation [id: string]: nothing -> record {
+    {
+        id: $"($id)-operation-id"
+        parents: [parent-operation-id]
+        time: {start: '2030-01-02T15:00:00-05:00', end: '2030-01-02T15:00:01-05:00'}
+        description: 'snapshot working copy'
+        hostname: host
+        username: me
+        is_snapshot: true
+        workspace_name: default
+        attributes: {}
+    }
+}
+
+def json-lines []: list -> string {
+    each { to json --raw } | str join "\n"
+}
 
 @test
-def "each JSON line decodes to a row" [] {
-    let out = '{"name":"main","target":["abc"]}
-{"name":"dev","target":["def"]}
-' | jj-decode
-    assert equal $out [[name target]; [main [abc]] [dev [def]]]
+def "commits decode with real timestamps" [] {
+    let rows = [(commit abc 'one')] | json-lines | jj-decode commit
+    assert equal ($rows.0.author.timestamp) 2030-01-02T15:00:00-05:00
+    assert equal ($rows.0.committer.timestamp | describe) datetime
+    assert equal ([(commit abc 'one')] | json-lines | jj-decode commit | metadata | get display) jj-commit
+}
+
+@test
+def "evolog entries flatten into commits with their operation" [] {
+    let rows = [{commit: (commit abc 'one'), operation: (operation op)}] | json-lines | jj-decode evolog
+    assert equal ($rows.0.change_id) abc-change-id
+    assert equal ($rows.0.operation.id) op-operation-id
+    assert equal ($rows.0.operation.time.start | describe) datetime
+    assert equal ([{commit: (commit abc 'one'), operation: (operation op)}] | json-lines | jj-decode evolog | metadata | get display) jj-commit
+}
+
+@test
+def "operations decode with real times" [] {
+    let rows = [(operation op)] | json-lines | jj-decode op
+    assert equal ($rows.0.time.end) 2030-01-02T15:00:01-05:00
+    assert equal ([(operation op)] | json-lines | jj-decode op | metadata | get display) jj-op
+}
+
+@test
+def "local and remote bookmarks share columns" [] {
+    let rows = [
+        {name: main, target: [a]}
+        {name: main, remote: origin, target: [a], tracking_target: [a]}
+    ] | json-lines | jj-decode bookmark
+    assert equal $rows [[name target remote tracking_target]; [main [a] null []] [main [a] origin [a]]]
+}
+
+@test
+def "workspace targets decode as commits" [] {
+    let rows = [{name: default, target: (commit abc 'one')}] | json-lines | jj-decode workspace
+    assert equal ($rows.0.target.author.timestamp | describe) datetime
 }
 
 @test
 def "empty output decodes to no rows" [] {
-    assert equal ('' | jj-decode) []
+    assert equal ('' | jj-decode commit) []
+}
+
+@test
+def "commits display with short ids and subjects" [] {
+    use ../modules/home-manager/jujutsu/jj.nu []
+    let shown = {|| [(commit abcdefghij "subject\n\nbody") (commit klmnopqrst '')] | json-lines | jj-decode commit | display }
+    assert equal (do $shown | display headers | columns) [change commit description author committed]
+    assert equal (do $shown | get change_id | ansi strip) [abcdefgh klmnopqr]
+    assert equal (do $shown | get description | ansi strip) [subject '(no description set)']
+    assert equal (do $shown | get author) [Me Me]
+    assert equal (do $shown | get 0.committer) 2030-01-02T16:00:00-05:00
+}
+
+@test
+def "operations display with short ids and start times" [] {
+    use ../modules/home-manager/jujutsu/jj.nu []
+    let shown = {|| [(operation abcdefghijklmnop)] | json-lines | jj-decode op | display }
+    assert equal (do $shown | display headers | columns) [id started description]
+    assert equal (do $shown | get 0.id | ansi strip) abcdefghijkl
+}
+
+@test
+def "bookmarks display with short targets" [] {
+    use ../modules/home-manager/jujutsu/jj.nu []
+    let shown = [
+        {name: main, target: ['0123456789abcdef']}
+        {name: main, remote: origin, target: ['0123456789abcdef'], tracking_target: ['0123456789abcdef']}
+    ] | json-lines | jj-decode bookmark | display
+    assert equal ($shown | get target | ansi strip) ['01234567' '01234567']
+    assert equal ($shown | get tracking_target | ansi strip) ['' '01234567']
+}
+
+@test
+def "workspaces display their target commit" [] {
+    use ../modules/home-manager/jujutsu/jj.nu []
+    let shown = [{name: default, target: (commit abcdefghij "subject")}] | json-lines | jj-decode workspace | display
+    assert equal ($shown.0.target | ansi strip) 'abcdefgh subject'
 }

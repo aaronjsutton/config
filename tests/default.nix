@@ -30,7 +30,8 @@ in
       --replace-fail @completion@ "$PWD/modules/home-manager/nushell/completion.nu" \
       --replace-fail @display@ "$PWD/modules/home-manager/nushell/display.nu"
     substituteInPlace modules/home-manager/jujutsu/jj.nu \
-      --replace-fail @completion@ "$PWD/modules/home-manager/nushell/completion.nu"
+      --replace-fail @completion@ "$PWD/modules/home-manager/nushell/completion.nu" \
+      --replace-fail @display@ "$PWD/modules/home-manager/nushell/display.nu"
     substituteInPlace modules/home-manager/shadowenv/shadowenv.nu \
       --replace-fail @shadowenv@ ${lib.getExe pkgs.shadowenv}
     substituteInPlace pkgs/coder-until/coder-until.nu \
