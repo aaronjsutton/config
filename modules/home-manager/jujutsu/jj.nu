@@ -1,3 +1,5 @@
+use @completion@ [complete-probe]
+
 def complete-jj [place: record] {
     let current = $place.command | last
     let words = $place.command | drop 1 | append (complete-probe $current)
@@ -8,4 +10,4 @@ def complete-jj [place: record] {
 }
 
 @complete complete-jj
-extern jj [...args]
+export extern main [...args]

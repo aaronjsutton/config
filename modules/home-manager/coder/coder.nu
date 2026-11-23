@@ -1,3 +1,5 @@
+use @completion@ [complete-probe]
+
 # Subcommands that accept `--output json` (coder v2.36).
 const coder_json_commands = [
     "ai-gateway keys list" "external-auth access-token"
@@ -23,7 +25,7 @@ const coder_aliases = {
     token: tokens unfav: unfavorite unfavourite: unfavorite user: users
 }
 
-def coder-expand []: list<string> -> list<string> {
+export def coder-expand []: list<string> -> list<string> {
     let args = $in
     if ($args | is-empty) { return $args }
     $args | update 0 {|a| $coder_aliases | get --optional $a | default $a }
@@ -57,7 +59,7 @@ def coder-complete [words: list<string>] {
 # Format a coder timestamp as Eastern time: "17:00 ET", or "Sat 17:00 ET"
 # when it isn't today. Blank timestamps pass through as null. With --color,
 # shade by time left: red under 30m, yellow under 2h, otherwise green.
-def coder-et [--color]: [string -> any, nothing -> any] {
+export def coder-et [--color]: [string -> any, nothing -> any] {
     let raw = $in
     if ($raw | is-empty) { return null }
     let t = $raw | into datetime | date to-timezone America/New_York
@@ -71,7 +73,7 @@ def coder-et [--color]: [string -> any, nothing -> any] {
 
 # Drop the "owner/" prefix from workspace names when every row shares one
 # owner (the default owner:me search); keep it when owners are mixed.
-def coder-strip-owner []: table -> table {
+export def coder-strip-owner []: table -> table {
     let rows = $in
     if ($rows | is-empty) { return $rows }
     let owners = $rows | get workspace | each { split row '/' | first } | uniq
@@ -82,7 +84,7 @@ def coder-strip-owner []: table -> table {
 # Colour a workspace name: orange for ticket-named workspaces (abc-123),
 # cyan otherwise.
 # Matches after any "owner/" prefix.
-def coder-color-workspace []: string -> string {
+export def coder-color-workspace []: string -> string {
     let name = $in
     let shade = if (($name | split row '/' | last) =~ '^[a-z]+-\d+$') {
         'xterm_darkorange3b'
@@ -94,7 +96,7 @@ def coder-color-workspace []: string -> string {
 
 # Show a build status as a coloured glyph; a running workspace that fails
 # health checks counts as "unhealthy".
-def coder-status [healthy: bool, outdated: bool = false]: string -> string {
+export def coder-status [healthy: bool, outdated: bool = false]: string -> string {
     let status = if $in == 'running' and not $healthy { 'unhealthy' } else { $in }
     let style = match [$status $outdated] {
         ['running' true] => ['◐' 'light_blue']
@@ -116,7 +118,7 @@ def coder-status [healthy: bool, outdated: bool = false]: string -> string {
 
 # Rename columns for display only, as listed in the input's "headers"
 # metadata, so the data keeps names that are easy to select.
-def display-headers []: any -> any {
+export def display-headers []: any -> any {
     metadata access {|m|
         let out = $in
         let headers = $m.headers? | default {}
@@ -127,12 +129,14 @@ def display-headers []: any -> any {
     }
 }
 
-$env.config.hooks.display_output = {||
-    display-headers | if (term size).columns >= 100 { table -e } else { table }
+export-env {
+    $env.config.hooks.display_output = {||
+        display-headers | if (term size).columns >= 100 { table -e } else { table }
+    }
 }
 
 # Post-processing applied to a command's parsed JSON output.
-def coder-defaults [] {
+export def coder-defaults [] {
     {
         "schedule show": {||
             select workspace stops_next
@@ -162,7 +166,7 @@ def coder-defaults [] {
 }
 
 # Longest leading run of words that names a JSON-capable command.
-def coder-json-command [args: list<string>]: nothing -> any {
+export def coder-json-command [args: list<string>]: nothing -> any {
     let words = $args | take while {|a| not ($a | str starts-with '-') }
     $words
     | enumerate
@@ -173,7 +177,7 @@ def coder-json-command [args: list<string>]: nothing -> any {
 
 # Default coder output to JSON, parsed into nushell data.
 @complete complete-coder
-def --wrapped coder [...args] {
+export def --wrapped main [...args] {
     let args = $args | coder-expand
     let explicit = $args | any {|a|
         $a in ['-o' '--output' '-h' '--help'] or ($a =~ '^(-o|--output)=')

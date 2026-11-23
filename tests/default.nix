@@ -10,6 +10,8 @@ let
     root = ../.;
     fileset = lib.fileset.unions [
       (lib.fileset.fileFilter (f: lib.hasPrefix "test_" f.name) ./.)
+      ../modules/home-manager/nushell/completion.nu
+      ../modules/home-manager/coder/coder.nu
       ../modules/home-manager/shadowenv/shadowenv.nu
       ../pkgs/coder-until/coder-until.nu
     ];
@@ -36,6 +38,8 @@ in
     cp -r ${src} src
     chmod -R u+w src
     cd src
+    substituteInPlace modules/home-manager/coder/coder.nu \
+      --replace-fail @completion@ "$PWD/modules/home-manager/nushell/completion.nu"
     substituteInPlace modules/home-manager/shadowenv/shadowenv.nu \
       --replace-fail @shadowenv@ ${lib.getExe pkgs.shadowenv}
     substituteInPlace pkgs/coder-until/coder-until.nu \
@@ -46,14 +50,5 @@ in
     '
     touch "$out"
   '';
-
-  coder = nuTest "coder" {
-    sources = [
-      ./runner.nu
-      ../modules/home-manager/nushell/completion.nu
-      ../modules/home-manager/coder/coder.nu
-      ./coder.nu
-    ];
-  };
 
 }

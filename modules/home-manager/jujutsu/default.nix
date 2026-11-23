@@ -1,4 +1,4 @@
-{ pkgs-unstable, ... }:
+{ pkgs, pkgs-unstable, ... }:
 {
 
   programs.jujutsu = {
@@ -67,5 +67,13 @@
     };
   };
 
-  programs.nushell.extraConfig = builtins.readFile ./jj.nu;
+  programs.nushell.extraConfig = ''
+    use ${
+      pkgs.writeTextDir "jj.nu" (
+        builtins.replaceStrings [ "@completion@" ] [ "${../nushell/completion.nu}" ] (
+          builtins.readFile ./jj.nu
+        )
+      )
+    }/jj.nu *
+  '';
 }
