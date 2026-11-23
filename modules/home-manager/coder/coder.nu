@@ -1,4 +1,4 @@
-use @completion@ [complete-probe]
+use @completion@ [complete-probe complete-words]
 use @display@ ["display add" "display tag"]
 
 # coder's built-in top-level aliases.
@@ -20,7 +20,7 @@ export def coder-expand []: list<string> -> list<string> {
 # Complete via coder's own protocol (what its fish script does): run the
 # words so far with COMPLETION_MODE=1. Covers flags, unlike an arg completer.
 def complete-coder [place: record] {
-    let words = $place.command | first | split row ' ' | append ($place.command | skip 1)
+    let words = complete-words $place
     let prev = $words | skip 1 | drop 1 | coder-expand
     let current = $words | last
     let probe = complete-probe $current

@@ -7,3 +7,7 @@ export def complete-probe [token: string]: nothing -> string {
         ''
     }
 }
+
+export def complete-words [place: record]: nothing -> list<string> {
+    $place.command | first | split row ' ' | append ($place.command | skip 1)
+}

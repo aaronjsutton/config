@@ -1,8 +1,8 @@
-use @completion@ [complete-probe]
+use @completion@ [complete-probe complete-words]
 use @display@ ["display add" "display tag"]
 
 def complete-jj [place: record] {
-    let typed = $place.command | first | split row ' ' | append ($place.command | skip 1)
+    let typed = complete-words $place
     let current = $typed | last
     let words = $typed | drop 1 | append (complete-probe $current)
     with-env {COMPLETE: fish} { ^jj -- ...$words | complete }
