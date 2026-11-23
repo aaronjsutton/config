@@ -21,7 +21,6 @@
       table.index_mode = "auto";
       table.mode = "single";
     };
-    # Shared aliases without eza; nushell's structured `ls` covers it.
     shellAliases = lib.mkForce (
       builtins.removeAttrs config.home.shellAliases [
         "la"
