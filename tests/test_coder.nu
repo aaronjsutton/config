@@ -1,7 +1,7 @@
 use std/assert
 use std/testing *
 use ../modules/home-manager/coder/coder.nu *
-use ../modules/home-manager/nushell/display.nu [display-headers]
+use ../modules/home-manager/nushell/display.nu [display-headers display-view]
 
 def shade [s: string]: nothing -> string {
     [green red yellow cyan light_blue light_gray dark_gray xterm_darkorange3b] | where {|c| ($s | str starts-with (ansi $c)) or ($s | str starts-with (ansi $"($c)_bold")) } | first
@@ -153,4 +153,21 @@ def "view formats schedule stop times" [] {
     let view = [[workspace stops_next]; [me/dev 2030-01-02T15:00:00Z]] | coder view
     assert equal ($view.0.stops_next | ansi strip) 'Wed 10:00 ET'
     assert equal ($view | display-headers | columns) [workspace stops_next]
+}
+
+@test
+def "decoded output is tagged for the coder view" [] {
+    assert equal ([(workspace dev stopped)] | to json | coder-decode-list | metadata | get view) coder
+    assert equal ([{workspace: me/dev, stops_next: ''}] | to json | coder-decode-schedule | metadata | get view) coder
+}
+
+@test
+def "tagged output renders through the registered view" [] {
+    use ../modules/home-manager/coder/coder.nu []
+    let icon = char --unicode '23fb'
+    let shown = {|| [(workspace dev running) (workspace ops stopped)] | to json | coder-decode-list }
+    assert equal (do $shown | display-view | display-headers | columns) [$icon workspace stops_at last_used]
+    assert equal (do $shown | where status == running | display-view | get workspace | ansi strip) [dev]
+    assert equal (do $shown | first | display-view | get status | ansi strip) ●
+    assert equal (do $shown | coder view | display-view | get status | ansi strip) [● ◌]
 }

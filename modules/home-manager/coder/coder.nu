@@ -63,6 +63,7 @@ export def coder-decode-list []: string -> table {
         }
     }
     | sort-by workspace
+    | metadata set {|m| $m | merge {view: coder} }
 }
 
 export def coder-decode-schedule []: string -> table {
@@ -70,6 +71,7 @@ export def coder-decode-schedule []: string -> table {
     | select workspace stops_next
     | update stops_next { coder-time }
     | sort-by workspace stops_next
+    | metadata set {|m| $m | merge {view: coder} }
 }
 
 # Format a time as Eastern time: "17:00 ET", or "Sat 17:00 ET" when it isn't
@@ -133,13 +135,18 @@ export def coder-status [outdated: bool = false]: string -> string {
 export def "coder view" []: table -> table {
     let rows = $in
     let has = {|c| $c in ($rows | columns) }
+    let headers = if (do $has status) { {status: (char --unicode '23fb')} } else { {} }
     $rows
     | if (do $has workspace) { coder-strip-owner | update workspace { coder-color-workspace } } else { $in }
     | if (do $has status) { update status {|r| $r.status | coder-status ($r.outdated? | default false) } } else { $in }
     | if (do $has outdated) { reject outdated } else { $in }
     | if (do $has stops_at) { update stops_at { coder-et --color } } else { $in }
     | if (do $has stops_next) { update stops_next { coder-et --color } } else { $in }
-    | if (do $has status) { metadata set {|m| $m | merge {headers: {status: (char --unicode '23fb')}} } } else { $in }
+    | metadata set {|m| $m | reject --optional view | merge {headers: $headers} }
+}
+
+export-env {
+    $env.VIEWS = $env.VIEWS? | default {} | merge {coder: {|| coder view }}
 }
 
 @complete complete-coder
