@@ -15,7 +15,7 @@ def shadowenv-announce [change: string]: nothing -> string {
     let marks = $change | split chars | each {|c|
         match $c { '+' => $"(ansi green)+(ansi reset)", '-' => $"(ansi red)-(ansi reset)", _ => $c }
     }
-    $"(ansi light_gray)░shadowenv[(ansi reset)($marks | str join)(ansi light_gray)](ansi reset)"
+    $"(ansi light_gray)shadowenv[(ansi reset)($marks | str join)(ansi light_gray)](ansi reset)"
 }
 
 $env.config.hooks.pre_prompt = $env.config.hooks.pre_prompt? | default []

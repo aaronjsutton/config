@@ -67,10 +67,10 @@ run-tests {
         assert equal (shadowenv-change '' $off) null
         assert equal (shadowenv-change '' '') null
     }
-    "announcements match the zsh hook's text": {||
-        assert equal (shadowenv-announce '+' | ansi strip) '░shadowenv[+]'
-        assert equal (shadowenv-announce '-' | ansi strip) '░shadowenv[-]'
-        assert equal (shadowenv-announce '+|-' | ansi strip) '░shadowenv[+|-]'
+    "announcements show the change marks": {||
+        assert equal (shadowenv-announce '+' | ansi strip) 'shadowenv[+]'
+        assert equal (shadowenv-announce '-' | ansi strip) 'shadowenv[-]'
+        assert equal (shadowenv-announce '+|-' | ansi strip) 'shadowenv[+|-]'
         assert ((shadowenv-announce '+') | str contains $"(ansi green)+")
         assert ((shadowenv-announce '-') | str contains $"(ansi red)-")
     }
