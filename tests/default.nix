@@ -12,6 +12,7 @@ let
     fileset = lib.fileset.unions [
       (lib.fileset.fileFilter (f: lib.hasPrefix "test_" f.name) ./.)
       ../modules/home-manager/nushell/completion.nu
+      ../modules/home-manager/nushell/display.nu
       ../modules/home-manager/coder/coder.nu
       ../modules/home-manager/shadowenv/shadowenv.nu
       ../pkgs/coder-until/coder-until.nu

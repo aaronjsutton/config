@@ -130,32 +130,6 @@ export def coder-status [outdated: bool = false]: string -> string {
     $"(ansi $'($style.1)_bold')($style.0)(ansi reset)"
 }
 
-# Rename columns for display only, as listed in the input's "headers"
-# metadata, so the data keeps names that are easy to select.
-export def display-headers []: any -> any {
-    metadata access {|m|
-        let out = $in
-        let headers = $m.headers? | default {}
-        let present = if ($headers | is-empty) or (($out | describe) !~ '^(table|record)') {
-            []
-        } else {
-            $headers | transpose old new | where old in ($out | columns)
-        }
-        if ($present | is-empty) {
-            $out
-        } else {
-            $out | rename --column ($present | reduce --fold {} {|h acc| $acc | insert $h.old $h.new })
-        }
-        | metadata set {|c| $c | merge ($m | reject --optional span) }
-    }
-}
-
-export-env {
-    $env.config.hooks.display_output = {||
-        display-headers | if (term size).columns >= 100 { table -e } else { table }
-    }
-}
-
 export def "coder view" []: table -> table {
     let rows = $in
     let has = {|c| $c in ($rows | columns) }

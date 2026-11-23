@@ -1,6 +1,7 @@
 use std/assert
 use std/testing *
 use ../modules/home-manager/coder/coder.nu *
+use ../modules/home-manager/nushell/display.nu [display-headers]
 
 def shade [s: string]: nothing -> string {
     [green red yellow cyan light_blue light_gray dark_gray xterm_darkorange3b] | where {|c| ($s | str starts-with (ansi $c)) or ($s | str starts-with (ansi $"($c)_bold")) } | first
@@ -152,19 +153,4 @@ def "view formats schedule stop times" [] {
     let view = [[workspace stops_next]; [me/dev 2030-01-02T15:00:00Z]] | coder view
     assert equal ($view.0.stops_next | ansi strip) 'Wed 10:00 ET'
     assert equal ($view | display-headers | columns) [workspace stops_next]
-}
-
-@test
-def "untagged output keeps its headers" [] {
-    assert equal ([{status: x}] | display-headers | columns) [status]
-    assert equal ('text' | display-headers) 'text'
-    assert equal ([{a: 1}] | metadata set {|m| $m | merge {headers: {status: state}} } | display-headers | columns) [a]
-}
-
-@test
-def "ls output keeps its path columns for display" [] {
-    let tag = {|m| $m | merge {path_columns: [name]} }
-    assert equal ([{name: x, type: file}] | metadata set $tag | display-headers | metadata | get path_columns?) [name]
-    assert equal ([{name: x, type: file}] | metadata set $tag | metadata set {|m| $m | merge {headers: {type: kind}} } | display-headers | metadata | get path_columns?) [name]
-    assert equal ([{name: x, type: file}] | metadata set $tag | metadata set {|m| $m | merge {headers: {type: kind}} } | display-headers | columns) [name kind]
 }

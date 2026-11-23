@@ -8,11 +8,15 @@
   programs.nushell = {
     enable = true;
     package = pkgs.nushell;
-    extraConfig = lib.concatMapStrings builtins.readFile [
-      ./theme.nu
-      ./prompt.nu
-      ./vz.nu
-    ];
+    extraConfig =
+      lib.concatMapStrings builtins.readFile [
+        ./theme.nu
+        ./prompt.nu
+        ./vz.nu
+      ]
+      + ''
+        use ${./display.nu} *
+      '';
     settings = {
       completions.algorithm = "fuzzy";
       show_banner = false;
